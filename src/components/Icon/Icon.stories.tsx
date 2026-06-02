@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Icon } from "./Icon";
-import { Compass, Banana, ArrowRight } from "./icons";
+import { Compass, icons, iconNames } from "./icons";
 
 const meta = {
   title: "Components/Icon",
@@ -32,12 +32,40 @@ export const Sizes: Story = {
   ),
 };
 
-export const BuiltInIcons: Story = {
+/** Oversikt over alle ikonene i settet (fra "Icons"-siden i Figma). */
+export const Oversikt: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-      <Icon size="large"><Compass /></Icon>
-      <Icon size="large"><Banana /></Icon>
-      <Icon size="large"><ArrowRight /></Icon>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+        gap: 16,
+        width: 640,
+        maxWidth: "100%",
+      }}
+    >
+      {iconNames.map((name) => {
+        const IconComponent = icons[name];
+        return (
+          <div
+            key={name}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 10,
+              padding: "20px 8px",
+              border: "1px solid #e4e5e7",
+              borderRadius: 12,
+            }}
+          >
+            <Icon size="large">
+              <IconComponent />
+            </Icon>
+            <code style={{ fontSize: 12, color: "#494a50" }}>{name}</code>
+          </div>
+        );
+      })}
     </div>
   ),
 };
