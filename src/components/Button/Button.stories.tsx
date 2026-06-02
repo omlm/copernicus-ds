@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "./Button";
+import { iconNames } from "../Icon";
 
 const meta = {
   title: "Components/Button",
@@ -12,6 +13,8 @@ const meta = {
     variant: { control: "inline-radio", options: ["primary", "secondary"] },
     size: { control: "inline-radio", options: ["medium", "large"] },
     trailingIcon: { control: "boolean" },
+    // Velg fritt fra hele Lucide-settet; overstyrer standard-pilen.
+    trailingIconName: { control: "select", options: [undefined, ...iconNames] },
     disabled: { control: "boolean" },
     children: { control: "text" },
   },
@@ -37,6 +40,11 @@ export const WithIcon: Story = {
   args: { trailingIcon: true },
 };
 
+/** Bytt ut pilen med et hvilket som helst Lucide-ikon. */
+export const SwappedIcon: Story = {
+  args: { trailingIconName: "heart" },
+};
+
 export const Disabled: Story = {
   args: { disabled: true },
 };
@@ -52,7 +60,7 @@ export const AllVariants: Story = {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Button variant="secondary" size="large">Secondary Large</Button>
         <Button variant="secondary" size="medium">Secondary Medium</Button>
-        <Button variant="secondary" size="large" trailingIcon>Med ikon</Button>
+        <Button variant="secondary" size="large" trailingIconName="settings">Innstillinger</Button>
       </div>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Button variant="primary" disabled>Primary Disabled</Button>

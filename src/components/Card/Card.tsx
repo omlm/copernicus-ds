@@ -1,6 +1,6 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 import { Button } from "../Button";
-import { Icon, Banana } from "../Icon";
+import { Icon, type IconName } from "../Icon";
 import styles from "./Card.module.css";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -8,8 +8,8 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   description: string;
   /** Vis ikonet øverst. */
   showIcon?: boolean;
-  /** Ikon-innhold (SVG). Default er Banana. */
-  icon?: ReactNode;
+  /** Lucide-ikon (velg fritt fra hele settet). Default er "banana". */
+  iconName?: IconName;
   /** Vis CTA-knappen nederst. */
   showButton?: boolean;
   buttonLabel?: string;
@@ -20,7 +20,7 @@ export function Card({
   title,
   description,
   showIcon = true,
-  icon = <Banana />,
+  iconName = "banana",
   showButton = true,
   buttonLabel = "Kom igang",
   onButtonClick,
@@ -30,7 +30,7 @@ export function Card({
   const classes = [styles.card, className].filter(Boolean).join(" ");
   return (
     <div className={classes} {...rest}>
-      {showIcon && <Icon size="huge">{icon}</Icon>}
+      {showIcon && <Icon size="huge" name={iconName} />}
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
       {showButton && (

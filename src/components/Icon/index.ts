@@ -11,7 +11,8 @@ export {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
-  icons,
+  DynamicIcon,
   iconNames,
+  featuredIconNames,
 } from "./icons";
-export type { IconName, LucideIcon } from "./icons";
+export type { IconName, FeaturedIconName, LucideIcon } from "./icons";

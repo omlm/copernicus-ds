@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Icon } from "./Icon";
-import { Compass, icons, iconNames } from "./icons";
+import { featuredIconNames, iconNames } from "./icons";
 
 const meta = {
   title: "Components/Icon",
@@ -9,30 +9,33 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     size: { control: "inline-radio", options: ["small", "medium", "large", "huge"] },
+    // Velg fritt fra hele Lucide-katalogen (~1500 ikoner).
+    name: { control: "select", options: iconNames },
   },
   args: {
     size: "large",
-    children: <Compass />,
+    name: "compass",
   },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Velg hvilket som helst Lucide-ikon i kontrollen «name». */
 export const Default: Story = {};
 
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-      <Icon size="small"><Compass /></Icon>
-      <Icon size="medium"><Compass /></Icon>
-      <Icon size="large"><Compass /></Icon>
-      <Icon size="huge"><Compass /></Icon>
+      <Icon size="small" name="compass" />
+      <Icon size="medium" name="compass" />
+      <Icon size="large" name="compass" />
+      <Icon size="huge" name="compass" />
     </div>
   ),
 };
 
-/** Oversikt over alle ikonene i settet (fra "Icons"-siden i Figma). */
+/** Det kuraterte DS-settet (ikonene fra «Icons»-siden i Figma). */
 export const Oversikt: Story = {
   render: () => (
     <div
@@ -44,28 +47,23 @@ export const Oversikt: Story = {
         maxWidth: "100%",
       }}
     >
-      {iconNames.map((name) => {
-        const IconComponent = icons[name];
-        return (
-          <div
-            key={name}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 10,
-              padding: "20px 8px",
-              border: "1px solid #e4e5e7",
-              borderRadius: 12,
-            }}
-          >
-            <Icon size="large">
-              <IconComponent />
-            </Icon>
-            <code style={{ fontSize: 12, color: "#494a50" }}>{name}</code>
-          </div>
-        );
-      })}
+      {featuredIconNames.map((name) => (
+        <div
+          key={name}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 10,
+            padding: "20px 8px",
+            border: "1px solid #e4e5e7",
+            borderRadius: 12,
+          }}
+        >
+          <Icon size="large" name={name} />
+          <code style={{ fontSize: 12, color: "#494a50" }}>{name}</code>
+        </div>
+      ))}
     </div>
   ),
 };
