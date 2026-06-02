@@ -1,0 +1,10 @@
+.pageTitle {
+  margin: 0;
+  padding-top: var(--spacing-32);
+  font-family: var(--typography-family-headers);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--spacing-40);
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--foreground-primary);
+}
