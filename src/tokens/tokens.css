@@ -1,53 +1,63 @@
 /*
  * Copernicus DS — design tokens
  *
- * Placeholder-verdier. Skal etter hvert speile variablene i Figma
- * (Copernicus UI.fig). Hold variabelnavn synkronisert med Figma.
+ * Speiler variablene i Copernicus UI (Figma). Navnekonvensjon:
+ * Figma-variabel "foreground/primary" -> CSS "--foreground-primary"
+ * (skråstrek -> bindestrek, desimalkomma -> bindestrek: "1,75" -> "1-75").
+ *
+ * Hold denne fila synkronisert med Figma. Hver Figma-variabel = én custom property.
+ * Verdiene under er hentet fra Figma (lys modus).
  */
 
 :root {
-  /* Color — brand */
-  --cds-color-brand-primary: oklch(58% 0.22 280);
-  --cds-color-brand-primary-hover: oklch(52% 0.22 280);
-  --cds-color-brand-primary-active: oklch(46% 0.22 280);
+  /* ---------- Primitives: størrelse / spacing ---------- */
+  --size-16: 16px;
+  --size-24: 24px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --border-width-1: 1px;
+  --border-width-1-75: 1.75px;
 
-  /* Color — neutrals */
-  --cds-color-bg: oklch(99% 0 0);
-  --cds-color-surface: oklch(96% 0 0);
-  --cds-color-border: oklch(88% 0 0);
-  --cds-color-border-strong: oklch(70% 0 0);
-  --cds-color-text: oklch(20% 0 0);
-  --cds-color-text-muted: oklch(45% 0 0);
-  --cds-color-text-on-brand: oklch(99% 0 0);
-  --cds-color-text-disabled: oklch(65% 0 0);
+  /* ---------- Primitives: farge-utility ---------- */
+  --color-utility-purple-500: #8a38f5;
 
-  /* Color — focus */
-  --cds-color-focus-ring: oklch(70% 0.18 250);
+  /* ---------- Typografi ---------- */
+  --typography-family-default: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  /* Radius */
-  --cds-radius-sm: 4px;
-  --cds-radius-md: 8px;
-  --cds-radius-lg: 12px;
-  --cds-radius-pill: 999px;
+  /* ---------- Semantisk: foreground ---------- */
+  --foreground-primary: #000000;
+  --foreground-secondary: #494a50;
+  --foreground-action: #ff1a6e;
+  --foreground-on-action: #ffffff;
+  --foreground-on-primary: #ffffff;
+  --foreground-on-action-disabled: #ff81af;
 
-  /* Spacing (4px-skala) */
-  --cds-space-1: 4px;
-  --cds-space-2: 8px;
-  --cds-space-3: 12px;
-  --cds-space-4: 16px;
-  --cds-space-5: 20px;
-  --cds-space-6: 24px;
+  /* ---------- Semantisk: background ---------- */
+  --background-canvas: #ffffff;
+  --background-primary: #f3e6e3;
+  --background-secondary: #7a7c87;
+  --background-action: #ff1a6e;
+  --background-action-hover: #990038;
+  --background-action-active: #55001f;
+  --background-action-disabled: #ffb4d0;
+  --background-accent-weak: #ffb4d0;
 
-  /* Typography */
-  --cds-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --cds-font-size-sm: 14px;
-  --cds-font-size-md: 16px;
-  --cds-font-size-lg: 18px;
-  --cds-font-weight-regular: 400;
-  --cds-font-weight-medium: 500;
-  --cds-font-weight-semibold: 600;
+  /* ---------- Semantisk: radius ---------- */
+  --semantic-radius-button: 999px;
 
-  /* Motion */
-  --cds-duration-fast: 120ms;
-  --cds-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* ---------- Komponent: button ---------- */
+  --button-size-large: 48px;
+  --button-size-medium: 32px;
+  --button-color-secondary-foreground: #000000;
+  --button-color-secondary-background: #e4e5e7;
+  --button-color-secondary-background-hover: #cbcbd0;
+  --button-color-secondary-background-active: #afb0b7;
+  --button-color-secondary-foreground-disabled: #afb0b7;
+  --button-color-secondary-background-disabled: #e4e5e7;
+
+  /* ---------- Komponent: rating ---------- */
+  --component-rating-foreground: #1d1619;
+  --component-rating-foreground-active: #1d1619;
+  --component-rating-background: #ebd5d2;
+  --component-rating-background-active: #40bf51;
 }
