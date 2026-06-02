@@ -1,0 +1,19 @@
+@import "../tokens/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--cds-font-family-base);
+  font-size: var(--cds-font-size-md);
+  color: var(--cds-color-text);
+  background: var(--cds-color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

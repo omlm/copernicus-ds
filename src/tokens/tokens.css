@@ -1,0 +1,53 @@
+/*
+ * Copernicus DS — design tokens
+ *
+ * Placeholder-verdier. Skal etter hvert speile variablene i Figma
+ * (Copernicus UI.fig). Hold variabelnavn synkronisert med Figma.
+ */
+
+:root {
+  /* Color — brand */
+  --cds-color-brand-primary: oklch(58% 0.22 280);
+  --cds-color-brand-primary-hover: oklch(52% 0.22 280);
+  --cds-color-brand-primary-active: oklch(46% 0.22 280);
+
+  /* Color — neutrals */
+  --cds-color-bg: oklch(99% 0 0);
+  --cds-color-surface: oklch(96% 0 0);
+  --cds-color-border: oklch(88% 0 0);
+  --cds-color-border-strong: oklch(70% 0 0);
+  --cds-color-text: oklch(20% 0 0);
+  --cds-color-text-muted: oklch(45% 0 0);
+  --cds-color-text-on-brand: oklch(99% 0 0);
+  --cds-color-text-disabled: oklch(65% 0 0);
+
+  /* Color — focus */
+  --cds-color-focus-ring: oklch(70% 0.18 250);
+
+  /* Radius */
+  --cds-radius-sm: 4px;
+  --cds-radius-md: 8px;
+  --cds-radius-lg: 12px;
+  --cds-radius-pill: 999px;
+
+  /* Spacing (4px-skala) */
+  --cds-space-1: 4px;
+  --cds-space-2: 8px;
+  --cds-space-3: 12px;
+  --cds-space-4: 16px;
+  --cds-space-5: 20px;
+  --cds-space-6: 24px;
+
+  /* Typography */
+  --cds-font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cds-font-size-sm: 14px;
+  --cds-font-size-md: 16px;
+  --cds-font-size-lg: 18px;
+  --cds-font-weight-regular: 400;
+  --cds-font-weight-medium: 500;
+  --cds-font-weight-semibold: 600;
+
+  /* Motion */
+  --cds-duration-fast: 120ms;
+  --cds-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
