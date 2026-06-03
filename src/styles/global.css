@@ -13,8 +13,8 @@ body {
   padding: 0;
   font-family: var(--typography-family-default);
   font-size: var(--size-16);
-  color: var(--foreground-primary);
-  background: var(--background-canvas);
+  color: var(--color-foreground-primary);
+  background: var(--color-background-canvas);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

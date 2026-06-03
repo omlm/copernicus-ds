@@ -30,7 +30,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
           margin: "0 0 16px",
           fontFamily: "var(--typography-family-headers)",
           fontSize: 18,
-          color: "var(--foreground-primary)",
+          color: "var(--color-foreground-primary)",
         }}
       >
         {title}
@@ -55,7 +55,7 @@ function ColorSwatch({ token }: { token: string }) {
         }}
       />
       <code style={mono}>{token}</code>
-      <code style={{ ...mono, color: "var(--foreground-secondary)" }}>{value || "—"}</code>
+      <code style={{ ...mono, color: "var(--color-foreground-secondary)" }}>{value || "—"}</code>
     </div>
   );
 }
@@ -83,7 +83,7 @@ function DimensionRow({ token }: { token: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "8px 0" }}>
       <code style={{ ...mono, width: 200, flexShrink: 0 }}>{token}</code>
-      <code style={{ ...mono, width: 56, flexShrink: 0, color: "var(--foreground-secondary)" }}>
+      <code style={{ ...mono, width: 56, flexShrink: 0, color: "var(--color-foreground-secondary)" }}>
         {value || "—"}
       </code>
       <div
@@ -91,7 +91,7 @@ function DimensionRow({ token }: { token: string }) {
           height: 16,
           width: value || 0,
           maxWidth: 480,
-          background: "var(--background-action)",
+          background: "var(--color-background-action)",
           borderRadius: 4,
         }}
       />
@@ -101,7 +101,7 @@ function DimensionRow({ token }: { token: string }) {
 
 function DimensionList({ tokens }: { tokens: string[] }) {
   return (
-    <div style={{ borderTop: "1px solid var(--background-primary)" }}>
+    <div style={{ borderTop: "1px solid var(--color-background-primary)" }}>
       {tokens.map((t) => (
         <DimensionRow key={t} token={t} />
       ))}
@@ -119,13 +119,13 @@ function RadiusSwatch({ token }: { token: string }) {
         style={{
           width: 96,
           height: 64,
-          background: "var(--background-primary)",
-          border: "1.5px solid var(--background-action)",
+          background: "var(--color-background-primary)",
+          border: "1.5px solid var(--color-background-action)",
           borderRadius: `var(${token})`,
         }}
       />
       <code style={mono}>{token}</code>
-      <code style={{ ...mono, color: "var(--foreground-secondary)" }}>{value || "—"}</code>
+      <code style={{ ...mono, color: "var(--color-foreground-secondary)" }}>{value || "—"}</code>
     </div>
   );
 }
@@ -135,105 +135,100 @@ function RadiusSwatch({ token }: { token: string }) {
 function TypeSample({ token, sample }: { token: string; sample: string }) {
   const value = useVar(token);
   return (
-    <div style={{ padding: "12px 0", borderTop: "1px solid var(--background-primary)" }}>
+    <div style={{ padding: "12px 0", borderTop: "1px solid var(--color-background-primary)" }}>
       <div
         style={{
           fontFamily: token.includes("family") ? `var(${token})` : undefined,
           fontWeight: token.includes("weight") ? `var(${token})` : undefined,
           fontSize: 24,
-          color: "var(--foreground-primary)",
+          color: "var(--color-foreground-primary)",
           marginBottom: 6,
         }}
       >
         {sample}
       </div>
       <code style={mono}>{token}</code>{" "}
-      <code style={{ ...mono, color: "var(--foreground-secondary)" }}>{value || "—"}</code>
+      <code style={{ ...mono, color: "var(--color-foreground-secondary)" }}>{value || "—"}</code>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Token-lister — speiler grupperingen i tokens.css                     */
+/* Token-lister — speiler tokens.css (hentet fra Figma)                 */
 /* ------------------------------------------------------------------ */
 
-const foregroundColors = [
-  "--foreground-primary",
-  "--foreground-secondary",
-  "--foreground-action",
-  "--foreground-on-action",
-  "--foreground-on-primary",
-  "--foreground-on-action-disabled",
+const scale = (hue: string, steps: number[]) => steps.map((s) => `--color-${hue}-${s}`);
+
+const primitivePink = scale("pink", [100, 200, 300, 400, 500, 600, 700, 800, 900]);
+const primitiveSand = scale("sand", [100, 200, 300, 400, 500, 600, 700, 800, 900]);
+const primitiveNeutral = scale("neutral", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]);
+const primitiveUtility = [
+  "--color-utility-red-500",
+  "--color-utility-green-500",
+  "--color-utility-orange-500",
+  "--color-utility-blue-500",
+  "--color-utility-purple-500",
 ];
 
-const backgroundColors = [
-  "--background-canvas",
-  "--background-primary",
-  "--background-secondary",
-  "--background-action",
-  "--background-action-hover",
-  "--background-action-active",
-  "--background-action-disabled",
-  "--background-accent-weak",
+const semanticForeground = [
+  "--color-foreground-primary",
+  "--color-foreground-secondary",
+  "--color-foreground-action",
+  "--color-foreground-on-action",
+  "--color-foreground-on-action-disabled",
 ];
 
-const componentColors = [
+const semanticBackground = [
+  "--color-background-canvas",
+  "--color-background-primary",
+  "--color-background-secondary",
+  "--color-background-action",
+  "--color-background-action-hover",
+  "--color-background-action-active",
+  "--color-background-action-disabled",
+  "--color-background-accent-weak",
+];
+
+const semanticBorder = ["--color-border-default", "--color-border-action"];
+
+const buttonSecondary = [
   "--button-color-secondary-foreground",
+  "--button-color-secondary-foreground-disabled",
   "--button-color-secondary-background",
   "--button-color-secondary-background-hover",
   "--button-color-secondary-background-active",
-  "--button-color-secondary-foreground-disabled",
   "--button-color-secondary-background-disabled",
-  "--component-rating-foreground",
-  "--component-rating-foreground-active",
-  "--component-rating-background",
-  "--component-rating-background-active",
 ];
-
-/* Primitiver — råverdiene som de semantiske tokenene peker på. */
-const primitivePink = [
-  "--color-pink-200",
-  "--color-pink-300",
-  "--color-pink-500",
-  "--color-pink-700",
-  "--color-pink-900",
-];
-
-const primitiveRose = ["--color-rose-100", "--color-rose-200"];
-
-const primitiveNeutral = [
-  "--color-neutral-0",
-  "--color-neutral-200",
-  "--color-neutral-300",
-  "--color-neutral-400",
-  "--color-neutral-500",
-  "--color-neutral-700",
-  "--color-neutral-900",
-  "--color-neutral-1000",
-];
-
-const primitiveOther = ["--color-green-500", "--color-purple-500"];
 
 const spacing = [
   "--spacing-0",
+  "--spacing-4",
+  "--spacing-8",
+  "--spacing-12",
+  "--spacing-14",
   "--spacing-16",
   "--spacing-20",
   "--spacing-24",
   "--spacing-32",
   "--spacing-40",
+  "--spacing-48",
   "--spacing-64",
+  "--spacing-80",
+  "--spacing-96",
+  "--spacing-128",
 ];
 
-const sizes = ["--size-16", "--size-24", "--size-32", "--size-64"];
+const sizes = ["--size-16", "--size-24", "--size-32", "--size-48", "--size-64"];
 
 const borders = [
   "--border-width-1",
   "--border-width-1-5",
   "--border-width-1-75",
+  "--border-width-2",
   "--border-width-3",
 ];
 
-const radii = ["--semantic-radius-button", "--radius-999"];
+const radii = ["--radius-0", "--radius-4", "--radius-12", "--radius-999"];
 
 const meta = {
   title: "Foundations/Design Tokens",
@@ -246,39 +241,42 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Primitiver — fargeskalaene som alt annet bygger på. */
+/** Primitiver — fargeskalaene alt annet bygger på. */
 export const Primitiver: Story = {
   render: () => (
     <div style={{ maxWidth: 920 }}>
-      <Section title="Pink (brand)">
+      <Section title="color/pink">
         <ColorGrid tokens={primitivePink} />
       </Section>
-      <Section title="Rose (varme nøytraler)">
-        <ColorGrid tokens={primitiveRose} />
+      <Section title="color/sand">
+        <ColorGrid tokens={primitiveSand} />
       </Section>
-      <Section title="Neutral (gråtoner)">
+      <Section title="color/neutral">
         <ColorGrid tokens={primitiveNeutral} />
       </Section>
-      <Section title="Green & purple">
-        <ColorGrid tokens={primitiveOther} />
+      <Section title="color/utility">
+        <ColorGrid tokens={primitiveUtility} />
       </Section>
     </div>
   ),
 };
 
-/** Semantiske farger — peker på primitivene over. */
+/** Semantiske farger — peker på primitivene over (modus: light). */
 export const SemantiskeFarger: Story = {
   name: "Semantiske farger",
   render: () => (
     <div style={{ maxWidth: 920 }}>
       <Section title="Foreground">
-        <ColorGrid tokens={foregroundColors} />
+        <ColorGrid tokens={semanticForeground} />
       </Section>
       <Section title="Background">
-        <ColorGrid tokens={backgroundColors} />
+        <ColorGrid tokens={semanticBackground} />
       </Section>
-      <Section title="Komponent">
-        <ColorGrid tokens={componentColors} />
+      <Section title="Border">
+        <ColorGrid tokens={semanticBorder} />
+      </Section>
+      <Section title="Komponent — button (secondary)">
+        <ColorGrid tokens={buttonSecondary} />
       </Section>
     </div>
   ),
@@ -323,6 +321,7 @@ export const Typografi: Story = {
         <TypeSample token="--typography-family-headers" sample="Outfit — overskrifter" />
       </Section>
       <Section title="Font-vekt">
+        <TypeSample token="--typography-weight-normal" sample="Normal (350) — Mental Momentum" />
         <TypeSample token="--typography-weight-bold" sample="Bold (550) — Mental Momentum" />
       </Section>
     </div>

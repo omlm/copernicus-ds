@@ -6,7 +6,7 @@
   width: 342px;
   max-width: 100%;
   padding: var(--spacing-32) var(--spacing-20) var(--spacing-20);
-  background: var(--background-primary);
+  background: var(--color-background-primary);
   border-radius: var(--spacing-20);
 }
 
@@ -18,7 +18,7 @@
   font-size: var(--spacing-24);
   line-height: var(--size-24);
   letter-spacing: 2px;
-  color: var(--foreground-primary);
+  color: var(--color-foreground-primary);
   text-align: center;
 }
 
@@ -30,6 +30,6 @@
   font-size: var(--spacing-16);
   line-height: var(--spacing-20);
   letter-spacing: 0;
-  color: var(--foreground-secondary);
+  color: var(--color-foreground-secondary);
   text-align: center;
 }

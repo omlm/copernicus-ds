@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: var(--foreground-primary);
+  color: var(--color-foreground-primary);
 }
 
 .icon svg {

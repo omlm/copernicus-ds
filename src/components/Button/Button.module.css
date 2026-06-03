@@ -4,7 +4,7 @@
   justify-content: center;
   gap: 10px;
   border: var(--border-width-1) solid transparent;
-  border-radius: var(--semantic-radius-button);
+  border-radius: var(--radius-999);
   font-family: var(--typography-family-default);
   font-weight: 600;
   font-size: var(--size-16);
@@ -14,13 +14,13 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--cds-duration, 120ms) ease,
-    color var(--cds-duration, 120ms) ease,
-    border-color var(--cds-duration, 120ms) ease;
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--foreground-action);
+  outline: 2px solid var(--color-foreground-action);
   outline-offset: 2px;
 }
 
@@ -41,21 +41,21 @@
 
 /* Primary */
 .primary {
-  background: var(--background-action);
-  color: var(--foreground-on-action);
+  background: var(--color-background-action);
+  color: var(--color-foreground-on-action);
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--background-action-hover);
+  background: var(--color-background-action-hover);
 }
 
 .primary:active:not(:disabled) {
-  background: var(--background-action-active);
+  background: var(--color-background-action-active);
 }
 
 .primary:disabled {
-  background: var(--background-action-disabled);
-  color: var(--foreground-on-action-disabled);
+  background: var(--color-background-action-disabled);
+  color: var(--color-foreground-on-action-disabled);
 }
 
 /* Secondary */
