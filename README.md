@@ -2,6 +2,8 @@
 
 React-komponentbibliotek bygd rundt Copernicus DS i Figma. Storybook er hovedflaten — komponentene utvikles, dokumenteres og previewes der.
 
+**Live Storybook:** https://omlm.github.io/copernicus-ds/ (deployes automatisk fra `main` via GitHub Actions).
+
 ## Stack
 
 - React 19 + TypeScript
