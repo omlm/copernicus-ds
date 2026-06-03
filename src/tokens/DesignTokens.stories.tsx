@@ -188,8 +188,31 @@ const componentColors = [
   "--component-rating-foreground-active",
   "--component-rating-background",
   "--component-rating-background-active",
-  "--color-utility-purple-500",
 ];
+
+/* Primitiver — råverdiene som de semantiske tokenene peker på. */
+const primitivePink = [
+  "--color-pink-200",
+  "--color-pink-300",
+  "--color-pink-500",
+  "--color-pink-700",
+  "--color-pink-900",
+];
+
+const primitiveRose = ["--color-rose-100", "--color-rose-200"];
+
+const primitiveNeutral = [
+  "--color-neutral-0",
+  "--color-neutral-200",
+  "--color-neutral-300",
+  "--color-neutral-400",
+  "--color-neutral-500",
+  "--color-neutral-700",
+  "--color-neutral-900",
+  "--color-neutral-1000",
+];
+
+const primitiveOther = ["--color-green-500", "--color-purple-500"];
 
 const spacing = [
   "--spacing-0",
@@ -223,7 +246,29 @@ const meta = {
 export default meta;
 type Story = StoryObj;
 
-export const Farger: Story = {
+/** Primitiver — fargeskalaene som alt annet bygger på. */
+export const Primitiver: Story = {
+  render: () => (
+    <div style={{ maxWidth: 920 }}>
+      <Section title="Pink (brand)">
+        <ColorGrid tokens={primitivePink} />
+      </Section>
+      <Section title="Rose (varme nøytraler)">
+        <ColorGrid tokens={primitiveRose} />
+      </Section>
+      <Section title="Neutral (gråtoner)">
+        <ColorGrid tokens={primitiveNeutral} />
+      </Section>
+      <Section title="Green & purple">
+        <ColorGrid tokens={primitiveOther} />
+      </Section>
+    </div>
+  ),
+};
+
+/** Semantiske farger — peker på primitivene over. */
+export const SemantiskeFarger: Story = {
+  name: "Semantiske farger",
   render: () => (
     <div style={{ maxWidth: 920 }}>
       <Section title="Foreground">
@@ -232,7 +277,7 @@ export const Farger: Story = {
       <Section title="Background">
         <ColorGrid tokens={backgroundColors} />
       </Section>
-      <Section title="Komponent & utility">
+      <Section title="Komponent">
         <ColorGrid tokens={componentColors} />
       </Section>
     </div>

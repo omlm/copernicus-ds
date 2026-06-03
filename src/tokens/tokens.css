@@ -1,22 +1,57 @@
 /*
  * Copernicus DS — design tokens
  *
- * Speiler variablene i Copernicus UI (Figma). Navnekonvensjon:
- * Figma-variabel "foreground/primary" -> CSS "--foreground-primary"
- * (skråstrek -> bindestrek, desimalkomma -> bindestrek: "1,75" -> "1-75").
+ * To lag:
+ *   1) PRIMITIVER — råverdiene (fargeskalaer, px-verdier). Refereres ikke
+ *      direkte i komponenter.
+ *   2) SEMANTISKE / KOMPONENT — peker på primitivene via var(). Det er disse
+ *      komponentene bruker.
  *
- * Hold denne fila synkronisert med Figma. Hver Figma-variabel = én custom property.
- * Verdiene under er hentet fra Figma (lys modus).
+ * Navnekonvensjon speiler Figma der vi har navnet (skråstrek -> bindestrek).
+ * NB: Figma har en egen "primitives/color"-samling som ikke er lesbar via
+ * MCP-verktøyene. Primitiv-navnene under (pink/rose/neutral/green) er derfor
+ * utledet fra de faktiske verdiene — juster dem til å matche Figma ved behov.
  */
 
 :root {
-  /* ---------- Primitives: størrelse ---------- */
+  /* ================================================================= */
+  /* 1. PRIMITIVER                                                       */
+  /* ================================================================= */
+
+  /* ---------- Farge: pink (brand-magenta) ---------- */
+  --color-pink-200: #ffb4d0;
+  --color-pink-300: #ff81af;
+  --color-pink-500: #ff1a6e;
+  --color-pink-700: #990038;
+  --color-pink-900: #55001f;
+
+  /* ---------- Farge: rose (varme, lyse nøytraler) ---------- */
+  --color-rose-100: #f3e6e3;
+  --color-rose-200: #ebd5d2;
+
+  /* ---------- Farge: neutral (kjølige gråtoner) ---------- */
+  --color-neutral-0: #ffffff;
+  --color-neutral-200: #e4e5e7;
+  --color-neutral-300: #cbcbd0;
+  --color-neutral-400: #afb0b7;
+  --color-neutral-500: #7a7c87;
+  --color-neutral-700: #494a50;
+  --color-neutral-900: #1d1619;
+  --color-neutral-1000: #000000;
+
+  /* ---------- Farge: green ---------- */
+  --color-green-500: #40bf51;
+
+  /* ---------- Farge: purple (Figma: color/utility/purple/500) ---------- */
+  --color-purple-500: #8a38f5;
+
+  /* ---------- Størrelse ---------- */
   --size-16: 16px;
   --size-24: 24px;
   --size-32: 32px;
   --size-64: 64px;
 
-  /* ---------- Primitives: spacing ---------- */
+  /* ---------- Spacing ---------- */
   --spacing-0: 0px;
   --spacing-16: 16px;
   --spacing-20: 20px;
@@ -25,56 +60,61 @@
   --spacing-40: 40px;
   --spacing-64: 64px;
 
-  /* ---------- Primitives: border-bredde ---------- */
+  /* ---------- Border-bredde ---------- */
   --border-width-1: 1px;
   --border-width-1-5: 1.5px;
   --border-width-1-75: 1.75px;
   --border-width-3: 3px;
-
-  /* ---------- Primitives: farge-utility ---------- */
-  --color-utility-purple-500: #8a38f5;
 
   /* ---------- Typografi ---------- */
   --typography-family-default: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --typography-family-headers: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --typography-weight-bold: 550;
 
-  /* ---------- Semantisk: foreground ---------- */
-  --foreground-primary: #000000;
-  --foreground-secondary: #494a50;
-  --foreground-action: #ff1a6e;
-  --foreground-on-action: #ffffff;
-  --foreground-on-primary: #ffffff;
-  --foreground-on-action-disabled: #ff81af;
+  /* ================================================================= */
+  /* 2. SEMANTISKE TOKENS (peker på primitivene)                        */
+  /* ================================================================= */
 
-  /* ---------- Semantisk: background ---------- */
-  --background-canvas: #ffffff;
-  --background-primary: #f3e6e3;
-  --background-secondary: #7a7c87;
-  --background-action: #ff1a6e;
-  --background-action-hover: #990038;
-  --background-action-active: #55001f;
-  --background-action-disabled: #ffb4d0;
-  --background-accent-weak: #ffb4d0;
+  /* ---------- Foreground ---------- */
+  --foreground-primary: var(--color-neutral-1000);
+  --foreground-secondary: var(--color-neutral-700);
+  --foreground-action: var(--color-pink-500);
+  --foreground-on-action: var(--color-neutral-0);
+  --foreground-on-primary: var(--color-neutral-0);
+  --foreground-on-action-disabled: var(--color-pink-300);
 
-  /* ---------- Semantisk: radius ---------- */
+  /* ---------- Background ---------- */
+  --background-canvas: var(--color-neutral-0);
+  --background-primary: var(--color-rose-100);
+  --background-secondary: var(--color-neutral-500);
+  --background-action: var(--color-pink-500);
+  --background-action-hover: var(--color-pink-700);
+  --background-action-active: var(--color-pink-900);
+  --background-action-disabled: var(--color-pink-200);
+  --background-accent-weak: var(--color-pink-200);
+
+  /* ---------- Radius ---------- */
   --semantic-radius-button: 999px;
   /* NB: Figma-variabelen heter "raduis/999" (skrivefeil i Figma) */
   --radius-999: 999px;
 
-  /* ---------- Komponent: button ---------- */
+  /* ================================================================= */
+  /* 3. KOMPONENT-TOKENS                                                 */
+  /* ================================================================= */
+
+  /* ---------- Button ---------- */
   --button-size-large: 48px;
   --button-size-medium: 32px;
-  --button-color-secondary-foreground: #000000;
-  --button-color-secondary-background: #e4e5e7;
-  --button-color-secondary-background-hover: #cbcbd0;
-  --button-color-secondary-background-active: #afb0b7;
-  --button-color-secondary-foreground-disabled: #afb0b7;
-  --button-color-secondary-background-disabled: #e4e5e7;
+  --button-color-secondary-foreground: var(--color-neutral-1000);
+  --button-color-secondary-background: var(--color-neutral-200);
+  --button-color-secondary-background-hover: var(--color-neutral-300);
+  --button-color-secondary-background-active: var(--color-neutral-400);
+  --button-color-secondary-foreground-disabled: var(--color-neutral-400);
+  --button-color-secondary-background-disabled: var(--color-neutral-200);
 
-  /* ---------- Komponent: rating ---------- */
-  --component-rating-foreground: #1d1619;
-  --component-rating-foreground-active: #1d1619;
-  --component-rating-background: #ebd5d2;
-  --component-rating-background-active: #40bf51;
+  /* ---------- Rating ---------- */
+  --component-rating-foreground: var(--color-neutral-900);
+  --component-rating-foreground-active: var(--color-neutral-900);
+  --component-rating-background: var(--color-rose-200);
+  --component-rating-background-active: var(--color-green-500);
 }
