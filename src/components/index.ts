@@ -7,6 +7,9 @@ export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button";
 export { IconButton } from "./IconButton";
 export type { IconButtonProps, IconButtonVariant, IconButtonSize } from "./IconButton";
 
+export { Chip } from "./Chip";
+export type { ChipProps, ChipVariant } from "./Chip";
+
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
 
