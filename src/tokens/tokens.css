@@ -156,4 +156,12 @@
   --button-color-secondary-background-hover: var(--color-neutral-200);
   --button-color-secondary-background-active: var(--color-neutral-300);
   --button-color-secondary-background-disabled: var(--color-neutral-100);
+
+  /* ---------- chip/color ---------- */
+  --chip-background-neutral: var(--color-neutral-700);
+  --chip-background-accent: var(--color-pink-500);
+  --chip-background-info: var(--color-utility-blue-500);
+  --chip-background-success: var(--color-utility-green-500);
+  --chip-background-danger: var(--color-utility-red-500);
+  --chip-foreground: var(--color-neutral-50);
 }
