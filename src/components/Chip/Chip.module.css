@@ -2,33 +2,102 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-4);
   padding: var(--spacing-4) var(--spacing-12);
   border-radius: var(--radius-999);
+  border: var(--border-width-1) solid transparent;
   font-family: var(--typography-family-default);
-  font-weight: 600;
-  font-size: var(--size-16);
+  font-weight: var(--typography-weight-normal);
+  font-size: 14px;
   line-height: 1;
   white-space: nowrap;
-  color: var(--chip-foreground);
 }
 
-/* Variants */
+/* ----------------------------------------------------------------- */
+/* Dismiss (Figma "Dismissable") — Lucide X, arver chip-fargen        */
+/* ----------------------------------------------------------------- */
+.dismiss,
+.dismissIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.dismiss {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--radius-999);
+  cursor: pointer;
+}
+
+.dismiss:focus-visible {
+  outline: var(--border-width-1) solid currentColor;
+  outline-offset: var(--border-width-1);
+}
+
+.dismiss svg,
+.dismissIcon svg {
+  display: block;
+}
+
+/* ----------------------------------------------------------------- */
+/* Emphasis (Figma "Type"): strong = fylt, weak = lys m/ border       */
+/* Hver variant-klasse setter de lokale --_* variablene under.        */
+/* ----------------------------------------------------------------- */
+.strong {
+  background: var(--_strong-bg);
+  color: var(--_strong-fg);
+}
+
+.weak {
+  background: var(--_weak-bg);
+  color: var(--_weak-fg);
+  border-color: var(--_weak-border);
+}
+
+/* ----------------------------------------------------------------- */
+/* Varianter (Figma "Variant") — peker på color/system/*-tokens       */
+/* ----------------------------------------------------------------- */
 .neutral {
-  background: var(--chip-background-neutral);
-}
-
-.accent {
-  background: var(--chip-background-accent);
+  --_strong-bg: var(--color-system-neutral-strong);
+  --_strong-fg: var(--color-system-neutral-on-strong);
+  --_weak-bg: var(--color-system-neutral-weak);
+  --_weak-fg: var(--color-system-neutral-on-weak);
+  --_weak-border: var(--color-system-neutral-weak-border);
 }
 
 .info {
-  background: var(--chip-background-info);
+  --_strong-bg: var(--color-system-info-strong);
+  --_strong-fg: var(--color-system-info-on-strong);
+  --_weak-bg: var(--color-system-info-weak);
+  --_weak-fg: var(--color-system-info-on-weak);
+  --_weak-border: var(--color-system-info-weak-border);
 }
 
 .success {
-  background: var(--chip-background-success);
+  --_strong-bg: var(--color-system-success-strong);
+  --_strong-fg: var(--color-system-success-on-strong);
+  --_weak-bg: var(--color-system-success-weak);
+  --_weak-fg: var(--color-system-success-on-weak);
+  --_weak-border: var(--color-system-success-weak-border);
 }
 
 .danger {
-  background: var(--chip-background-danger);
+  --_strong-bg: var(--color-system-danger-strong);
+  --_strong-fg: var(--color-system-danger-on-strong);
+  --_weak-bg: var(--color-system-danger-weak);
+  --_weak-fg: var(--color-system-danger-on-weak);
+  --_weak-border: var(--color-system-danger-weak-border);
+}
+
+.warning {
+  --_strong-bg: var(--color-system-warning-strong);
+  --_strong-fg: var(--color-system-warning-on-strong);
+  --_weak-bg: var(--color-system-warning-weak);
+  --_weak-fg: var(--color-system-warning-on-weak);
+  --_weak-border: var(--color-system-warning-weak-border);
 }

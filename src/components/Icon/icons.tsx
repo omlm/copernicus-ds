@@ -28,6 +28,7 @@ export {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
+  X,
 } from "lucide-react";
 export type { LucideIcon } from "lucide-react";
 
@@ -53,6 +54,7 @@ export const featuredIconNames = [
   "chevron-down",
   "chevron-up",
   "chevrons-up-down",
+  "x",
 ] as const satisfies readonly IconName[];
 
 export type FeaturedIconName = (typeof featuredIconNames)[number];

@@ -1,26 +1,70 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
+import { X } from "../Icon";
 import styles from "./Chip.module.css";
 
-export type ChipVariant = "neutral" | "accent" | "info" | "success" | "danger";
+export type ChipVariant = "neutral" | "info" | "success" | "danger" | "warning";
+export type ChipEmphasis = "strong" | "weak";
 
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Fargefamilie (Figma: "Variant"). */
   variant?: ChipVariant;
+  /** Visuell tyngde (Figma: "Type"). strong = fylt, weak = lys m/ border. */
+  emphasis?: ChipEmphasis;
+  /** Viser et X-ikon (Lucide) for å lukke chip-en (Figma: "Dismissable"). */
+  dismissable?: boolean;
+  /**
+   * Kalles når X-ikonet trykkes. Når satt blir X-en en interaktiv knapp;
+   * hvis ikke er X-en kun dekorativ (matcher Figma-boolean-en).
+   */
+  onDismiss?: (event: MouseEvent<HTMLButtonElement>) => void;
+  /** Tilgjengelig etikett på lukk-knappen. */
+  dismissLabel?: string;
   children: ReactNode;
 }
 
 const variantClass: Record<ChipVariant, string> = {
   neutral: styles.neutral,
-  accent: styles.accent,
   info: styles.info,
   success: styles.success,
   danger: styles.danger,
+  warning: styles.warning,
 };
 
-export function Chip({ variant = "neutral", className, children, ...rest }: ChipProps) {
-  const classes = [styles.chip, variantClass[variant], className].filter(Boolean).join(" ");
+const emphasisClass: Record<ChipEmphasis, string> = {
+  strong: styles.strong,
+  weak: styles.weak,
+};
+
+export function Chip({
+  variant = "neutral",
+  emphasis = "strong",
+  dismissable = false,
+  onDismiss,
+  dismissLabel = "Fjern",
+  className,
+  children,
+  ...rest
+}: ChipProps) {
+  const classes = [styles.chip, variantClass[variant], emphasisClass[emphasis], className]
+    .filter(Boolean)
+    .join(" ");
+
+  // X-en arver chip-fargen via currentColor (per variant), som i Figma.
+  const dismissIcon = <X size={16} strokeWidth={1.5} aria-hidden="true" />;
+
   return (
     <span className={classes} {...rest}>
       {children}
+      {dismissable &&
+        (onDismiss ? (
+          <button type="button" className={styles.dismiss} onClick={onDismiss} aria-label={dismissLabel}>
+            {dismissIcon}
+          </button>
+        ) : (
+          <span className={styles.dismissIcon} aria-hidden="true">
+            {dismissIcon}
+          </span>
+        ))}
     </span>
   );
 }

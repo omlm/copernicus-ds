@@ -11,6 +11,7 @@ export {
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
+  X,
   DynamicIcon,
   iconNames,
   featuredIconNames,
