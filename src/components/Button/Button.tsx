@@ -3,7 +3,7 @@ import { ArrowRight, DynamicIcon, type IconName } from "../Icon";
 import styles from "./Button.module.css";
 
 export type ButtonVariant = "primary" | "secondary";
-export type ButtonSize = "medium" | "large";
+export type ButtonSize = "small" | "medium" | "large";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -20,6 +20,7 @@ const variantClass: Record<ButtonVariant, string> = {
 };
 
 const sizeClass: Record<ButtonSize, string> = {
+  small: styles.sizeSmall,
   medium: styles.sizeMedium,
   large: styles.sizeLarge,
 };
