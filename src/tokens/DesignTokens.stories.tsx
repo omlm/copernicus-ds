@@ -159,16 +159,15 @@ function TypeSample({ token, sample }: { token: string; sample: string }) {
 
 const scale = (hue: string, steps: number[]) => steps.map((s) => `--color-${hue}-${s}`);
 
-const primitivePink = scale("pink", [100, 200, 300, 400, 500, 600, 700, 800, 900]);
-const primitiveSand = scale("sand", [100, 200, 300, 400, 500, 600, 700, 800, 900]);
-const primitiveNeutral = scale("neutral", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]);
-const primitiveUtility = [
-  "--color-utility-red-500",
-  "--color-utility-green-500",
-  "--color-utility-orange-500",
-  "--color-utility-blue-500",
-  "--color-utility-purple-500",
-];
+const fullSteps = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+const primitivePink = scale("pink", fullSteps);
+const primitiveSand = scale("sand", fullSteps);
+const primitiveNeutral = scale("neutral", [50, ...fullSteps]);
+const primitiveRed = scale("red", fullSteps);
+const primitiveOrange = scale("orange", fullSteps);
+const primitiveGreen = scale("green", fullSteps);
+const primitiveBlue = scale("blue", fullSteps);
+const primitivePurple = scale("purple", [500]);
 
 const semanticForeground = [
   "--color-foreground-primary",
@@ -189,7 +188,27 @@ const semanticBackground = [
   "--color-background-accent-weak",
 ];
 
-const semanticBorder = ["--color-border-default", "--color-border-action"];
+const semanticBorder = [
+  "--color-border-default",
+  "--color-border-action",
+  "--color-border-focus-ring",
+];
+
+const systemParts = [
+  "strong",
+  "strong-hover",
+  "on-strong",
+  "weak",
+  "weak-hover",
+  "on-weak",
+  "strong-border",
+  "weak-border",
+];
+const systemScale = (name: string) => systemParts.map((p) => `--color-system-${name}-${p}`);
+const systemDanger = systemScale("danger");
+const systemInfo = systemScale("info");
+const systemSuccess = systemScale("success");
+const systemWarning = systemScale("warning");
 
 const buttonSecondary = [
   "--button-color-secondary-foreground",
@@ -254,8 +273,20 @@ export const Primitiver: Story = {
       <Section title="color/neutral">
         <ColorGrid tokens={primitiveNeutral} />
       </Section>
-      <Section title="color/utility">
-        <ColorGrid tokens={primitiveUtility} />
+      <Section title="color/red">
+        <ColorGrid tokens={primitiveRed} />
+      </Section>
+      <Section title="color/orange">
+        <ColorGrid tokens={primitiveOrange} />
+      </Section>
+      <Section title="color/green">
+        <ColorGrid tokens={primitiveGreen} />
+      </Section>
+      <Section title="color/blue">
+        <ColorGrid tokens={primitiveBlue} />
+      </Section>
+      <Section title="color/purple">
+        <ColorGrid tokens={primitivePurple} />
       </Section>
     </div>
   ),
@@ -277,6 +308,27 @@ export const SemantiskeFarger: Story = {
       </Section>
       <Section title="Komponent — button (secondary)">
         <ColorGrid tokens={buttonSecondary} />
+      </Section>
+    </div>
+  ),
+};
+
+/** System-farger — danger/info/success/warning (modus: light). */
+export const SystemFarger: Story = {
+  name: "System-farger",
+  render: () => (
+    <div style={{ maxWidth: 920 }}>
+      <Section title="Danger (red)">
+        <ColorGrid tokens={systemDanger} />
+      </Section>
+      <Section title="Info (blue)">
+        <ColorGrid tokens={systemInfo} />
+      </Section>
+      <Section title="Success (green)">
+        <ColorGrid tokens={systemSuccess} />
+      </Section>
+      <Section title="Warning (orange)">
+        <ColorGrid tokens={systemWarning} />
       </Section>
     </div>
   ),

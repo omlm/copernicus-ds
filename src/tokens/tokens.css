@@ -1,14 +1,16 @@
 /*
  * Copernicus DS — design tokens
  *
- * Speiler variablene i Copernicus DS (Figma) 1:1. Hentet direkte fra Figmas
- * variabel-samlinger via Plugin-API. Tre lag, slik som i Figma:
- *   1) primitives — råverdier (fargeskalaer, px, typografi)
- *   2) semantic   — peker på primitivene via var()  (modus: light)
- *   3) component  — komponent-spesifikke tokens, peker på semantic/primitives
+ * Auto-generert speiling av variablene i Copernicus DS (Figma), hentet via
+ * Plugin-API. Tre lag, slik som i Figma:
+ *   1) primitives — råverdier (fargeskalaer, px, typografi). Farger som hex.
+ *   2) semantic   — peker på primitivene via var(). Light i :root, dark overstyres.
+ *   3) component  — komponent-spesifikke tokens, peker på semantic/primitives.
  *
  * Navnekonvensjon: Figma "color/foreground/primary" -> "--color-foreground-primary"
- * (skråstrek -> bindestrek, desimalkomma -> bindestrek: "1,5" -> "1-5").
+ * (skråstrek/komma/mellomrom -> bindestrek). Figma-samlingen "raduis" (skrivefeil)
+ * normaliseres til "--radius-*". Dark mode: legg data-theme="dark" på <html>, eller
+ * la systemets fargevalg styre (prefers-color-scheme).
  */
 
 :root {
@@ -50,12 +52,52 @@
   --color-neutral-800: #313136;
   --color-neutral-900: #000000;
 
-  /* ---------- color/utility ---------- */
-  --color-utility-red-500: #be4040;
-  --color-utility-green-500: #40bf51;
-  --color-utility-orange-500: #bea140;
-  --color-utility-blue-500: #406abe;
-  --color-utility-purple-500: #8a38f5;
+  /* ---------- color/red ---------- */
+  --color-red-100: #f2d9d9;
+  --color-red-200: #e5b3b3;
+  --color-red-300: #d88d8d;
+  --color-red-400: #cc6666;
+  --color-red-500: #be4040;
+  --color-red-600: #993333;
+  --color-red-700: #722727;
+  --color-red-800: #4c1a1a;
+  --color-red-900: #260d0d;
+
+  /* ---------- color/orange ---------- */
+  --color-orange-100: #fcefcf;
+  --color-orange-200: #fade9e;
+  --color-orange-300: #f7ce6e;
+  --color-orange-400: #f4be3e;
+  --color-orange-500: #f2af13;
+  --color-orange-600: #c18b0b;
+  --color-orange-700: #916808;
+  --color-orange-800: #614505;
+  --color-orange-900: #302303;
+
+  /* ---------- color/green ---------- */
+  --color-green-100: #d9f2dc;
+  --color-green-200: #b3e5b9;
+  --color-green-300: #8dd897;
+  --color-green-400: #66cc74;
+  --color-green-500: #40bf51;
+  --color-green-600: #339941;
+  --color-green-700: #267331;
+  --color-green-800: #194d20;
+  --color-green-900: #0d2610;
+
+  /* ---------- color/blue ---------- */
+  --color-blue-100: #d9e1f2;
+  --color-blue-200: #b3c4e5;
+  --color-blue-300: #8da6d8;
+  --color-blue-400: #6688cc;
+  --color-blue-500: #406abe;
+  --color-blue-600: #335599;
+  --color-blue-700: #274072;
+  --color-blue-800: #1a2b4c;
+  --color-blue-900: #0d1526;
+
+  /* ---------- color/purple ---------- */
+  --color-purple-500: #8a38f5;
 
   /* ---------- spacing ---------- */
   --spacing-0: 0px;
@@ -95,73 +137,188 @@
   --radius-999: 999px;
 
   /* ---------- typography ---------- */
+  --typography-weight-normal: 350;
+  --typography-line-height: 120%;
+  --typography-weight-bold: 550;
   --typography-family-default: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --typography-family-headers: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --typography-weight-normal: 350;
-  --typography-weight-bold: 550;
-  --typography-line-height: 120%;
+
+  /* ---------- deprecated alias (gammelt "utility"-navn, hold for bakoverkomp.) ---------- */
+  --color-utility-red-500: var(--color-red-500);
+  --color-utility-green-500: var(--color-green-500);
+  --color-utility-orange-500: var(--color-orange-500);
+  --color-utility-blue-500: var(--color-blue-500);
+  --color-utility-purple-500: var(--color-purple-500);
 
   /* ================================================================= */
-  /* 2. SEMANTIC (modus: light) — peker på primitivene                  */
+  /* 2. SEMANTIC (light) — peker på primitivene                         */
   /* ================================================================= */
-
-  /* ---------- color/foreground ---------- */
-  --color-foreground-primary: var(--color-neutral-900);
-  --color-foreground-secondary: var(--color-neutral-700);
-  --color-foreground-action: var(--color-pink-500);
-  --color-foreground-on-action: var(--color-neutral-50);
-  /* Figma-navnet har en skrivefeil ("on -action-disabled"); normalisert her */
-  --color-foreground-on-action-disabled: var(--color-pink-300);
-
-  /* ---------- color/background ---------- */
   --color-background-canvas: var(--color-neutral-50);
   --color-background-primary: var(--color-sand-200);
   --color-background-secondary: var(--color-neutral-500);
   --color-background-action: var(--color-pink-500);
-  --color-background-action-hover: var(--color-pink-700);
-  --color-background-action-active: var(--color-pink-900);
+  --color-background-action-hover: var(--color-pink-600);
+  --color-background-action-active: var(--color-pink-600);
   --color-background-action-disabled: var(--color-pink-200);
   --color-background-accent-weak: var(--color-pink-200);
-
-  /* ---------- color/border ---------- */
+  --color-foreground-primary: var(--color-neutral-900);
+  --color-foreground-secondary: var(--color-neutral-700);
+  --color-foreground-action: var(--color-pink-500);
+  --color-foreground-on-action: var(--color-neutral-50);
+  --color-foreground-on-action-disabled: var(--color-pink-300);
+  --color-system-neutral-strong: var(--color-neutral-800);
+  --color-system-neutral-strong-hover: var(--color-neutral-900);
+  --color-system-neutral-strong-border: var(--color-border-transparent);
+  --color-system-neutral-on-strong: var(--color-neutral-50);
+  --color-system-neutral-weak: var(--color-neutral-100);
+  --color-system-neutral-weak-hover: var(--color-neutral-300);
+  --color-system-neutral-on-weak: var(--color-neutral-400);
+  --color-system-neutral-weak-border: var(--color-neutral-200);
+  --color-system-danger-strong: var(--color-red-500);
+  --color-system-danger-strong-hover: var(--color-red-600);
+  --color-system-danger-strong-border: var(--color-border-transparent);
+  --color-system-danger-on-strong: var(--color-neutral-50);
+  --color-system-danger-weak: var(--color-red-200);
+  --color-system-danger-weak-hover: var(--color-red-300);
+  --color-system-danger-on-weak: var(--color-red-700);
+  --color-system-danger-weak-border: var(--color-red-300);
   --color-border-default: var(--color-neutral-900);
   --color-border-action: var(--color-foreground-action);
+  --color-border-focus-ring: var(--color-purple-500);
+  --color-border-transparent: transparent;
+  --color-system-info-strong: var(--color-blue-500);
+  --color-system-info-strong-hover: var(--color-blue-600);
+  --color-system-info-strong-border: var(--color-border-transparent);
+  --color-system-info-on-strong: var(--color-neutral-50);
+  --color-system-info-weak: var(--color-blue-200);
+  --color-system-info-weak-hover: var(--color-blue-300);
+  --color-system-info-on-weak: var(--color-blue-700);
+  --color-system-info-weak-border: var(--color-blue-300);
+  --color-system-success-strong: var(--color-green-500);
+  --color-system-success-strong-hover: var(--color-green-600);
+  --color-system-success-strong-border: var(--color-border-transparent);
+  --color-system-success-on-strong: var(--color-neutral-50);
+  --color-system-success-weak: var(--color-green-200);
+  --color-system-success-weak-hover: var(--color-green-300);
+  --color-system-success-on-weak: var(--color-green-700);
+  --color-system-success-weak-border: var(--color-green-300);
+  --color-system-warning-strong: var(--color-orange-500);
+  --color-system-warning-strong-hover: var(--color-orange-600);
+  --color-system-warning-strong-border: var(--color-border-transparent);
+  --color-system-warning-on-strong: var(--color-neutral-900);
+  --color-system-warning-weak: var(--color-orange-200);
+  --color-system-warning-weak-hover: var(--color-orange-300);
+  --color-system-warning-on-weak: var(--color-orange-900);
+  --color-system-warning-weak-border: var(--color-orange-300);
 
   /* ================================================================= */
   /* 3. COMPONENT — peker på semantic/primitives                        */
   /* ================================================================= */
-
-  /* ---------- button/size ---------- */
+  --button-color-primary-foreground: var(--color-foreground-on-action);
+  --button-color-primary-foreground-disabled: var(--color-foreground-on-action-disabled);
+  --button-color-primary-background: var(--color-background-action);
+  --button-color-primary-background-hover: var(--color-background-action-active);
+  --button-color-primary-background-active: var(--color-background-action-active);
+  --button-color-primary-background-disabled: var(--color-background-action-disabled);
   --button-size-small: var(--size-24);
   --button-size-medium: var(--size-32);
   --button-size-large: var(--size-48);
-
-  /* ---------- button/color/primary ----------
-   * NB: I Figma er disse foreløpig placeholders (alle #ffffff og ikke
-   * koblet til primitivene). Button-komponenten bruker derfor de
-   * semantiske action-fargene (--color-background-action m.fl.) for
-   * primary, ikke disse. Tatt med for å speile Figma.
-   */
-  --button-color-primary-background: #ffffff;
-  --button-color-primary-foreground: #ffffff;
-  --button-color-primary-background-hover: #ffffff;
-  --button-color-primary-background-active: #ffffff;
-  --button-color-primary-background-disabled: #ffffff;
-  --button-color-primary-foreground-disabled: #ffffff;
-
-  /* ---------- button/color/secondary ---------- */
   --button-color-secondary-foreground: var(--color-neutral-900);
   --button-color-secondary-foreground-disabled: var(--color-neutral-300);
   --button-color-secondary-background: var(--color-neutral-100);
   --button-color-secondary-background-hover: var(--color-neutral-200);
   --button-color-secondary-background-active: var(--color-neutral-300);
   --button-color-secondary-background-disabled: var(--color-neutral-100);
-
-  /* ---------- chip/color ---------- */
   --chip-background-neutral: var(--color-neutral-700);
   --chip-background-accent: var(--color-pink-500);
-  --chip-background-info: var(--color-utility-blue-500);
-  --chip-background-success: var(--color-utility-green-500);
-  --chip-background-danger: var(--color-utility-red-500);
+  --chip-background-info: var(--color-blue-500);
+  --chip-background-success: var(--color-green-500);
+  --chip-background-danger: var(--color-red-500);
   --chip-foreground: var(--color-neutral-50);
+}
+
+/* ===================================================================== */
+/* SEMANTIC — dark mode                                                   */
+/* Aktiveres via [data-theme="dark"] eller systemets fargevalg.          */
+/* ===================================================================== */
+[data-theme="dark"] {
+  --color-background-canvas: var(--color-neutral-900);
+  --color-background-primary: var(--color-neutral-800);
+  --color-background-secondary: var(--color-neutral-700);
+  --color-background-action-hover: var(--color-pink-400);
+  --color-background-action-active: var(--color-pink-400);
+  --color-background-action-disabled: var(--color-neutral-800);
+  --color-background-accent-weak: var(--color-pink-900);
+  --color-foreground-primary: var(--color-neutral-50);
+  --color-foreground-secondary: var(--color-neutral-300);
+  --color-foreground-action: var(--color-pink-400);
+  --color-foreground-on-action-disabled: var(--color-neutral-500);
+  --color-system-neutral-strong: var(--color-neutral-100);
+  --color-system-neutral-strong-hover: var(--color-neutral-50);
+  --color-system-neutral-on-strong: var(--color-neutral-700);
+  --color-system-neutral-weak: var(--color-neutral-800);
+  --color-system-neutral-weak-hover: var(--color-neutral-900);
+  --color-system-neutral-on-weak: var(--color-neutral-50);
+  --color-system-neutral-weak-border: var(--color-neutral-700);
+  --color-system-danger-on-strong: var(--color-red-100);
+  --color-system-danger-weak: var(--color-red-800);
+  --color-system-danger-weak-hover: var(--color-red-700);
+  --color-system-danger-on-weak: var(--color-red-300);
+  --color-system-danger-weak-border: var(--color-red-700);
+  --color-border-default: var(--color-neutral-700);
+  --color-system-info-on-strong: var(--color-blue-100);
+  --color-system-info-weak: var(--color-blue-800);
+  --color-system-info-weak-hover: var(--color-blue-700);
+  --color-system-info-on-weak: var(--color-blue-300);
+  --color-system-info-weak-border: var(--color-blue-700);
+  --color-system-success-weak: var(--color-green-800);
+  --color-system-success-weak-hover: var(--color-green-700);
+  --color-system-success-on-weak: var(--color-green-300);
+  --color-system-success-weak-border: var(--color-green-700);
+  --color-system-warning-weak: var(--color-orange-800);
+  --color-system-warning-weak-hover: var(--color-orange-700);
+  --color-system-warning-on-weak: var(--color-orange-300);
+  --color-system-warning-weak-border: var(--color-orange-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background-canvas: var(--color-neutral-900);
+    --color-background-primary: var(--color-neutral-800);
+    --color-background-secondary: var(--color-neutral-700);
+    --color-background-action-hover: var(--color-pink-400);
+    --color-background-action-active: var(--color-pink-400);
+    --color-background-action-disabled: var(--color-neutral-800);
+    --color-background-accent-weak: var(--color-pink-900);
+    --color-foreground-primary: var(--color-neutral-50);
+    --color-foreground-secondary: var(--color-neutral-300);
+    --color-foreground-action: var(--color-pink-400);
+    --color-foreground-on-action-disabled: var(--color-neutral-500);
+    --color-system-neutral-strong: var(--color-neutral-100);
+    --color-system-neutral-strong-hover: var(--color-neutral-50);
+    --color-system-neutral-on-strong: var(--color-neutral-700);
+    --color-system-neutral-weak: var(--color-neutral-800);
+    --color-system-neutral-weak-hover: var(--color-neutral-900);
+    --color-system-neutral-on-weak: var(--color-neutral-50);
+    --color-system-neutral-weak-border: var(--color-neutral-700);
+    --color-system-danger-on-strong: var(--color-red-100);
+    --color-system-danger-weak: var(--color-red-800);
+    --color-system-danger-weak-hover: var(--color-red-700);
+    --color-system-danger-on-weak: var(--color-red-300);
+    --color-system-danger-weak-border: var(--color-red-700);
+    --color-border-default: var(--color-neutral-700);
+    --color-system-info-on-strong: var(--color-blue-100);
+    --color-system-info-weak: var(--color-blue-800);
+    --color-system-info-weak-hover: var(--color-blue-700);
+    --color-system-info-on-weak: var(--color-blue-300);
+    --color-system-info-weak-border: var(--color-blue-700);
+    --color-system-success-weak: var(--color-green-800);
+    --color-system-success-weak-hover: var(--color-green-700);
+    --color-system-success-on-weak: var(--color-green-300);
+    --color-system-success-weak-border: var(--color-green-700);
+    --color-system-warning-weak: var(--color-orange-800);
+    --color-system-warning-weak-hover: var(--color-orange-700);
+    --color-system-warning-on-weak: var(--color-orange-300);
+    --color-system-warning-weak-border: var(--color-orange-700);
+  }
 }
