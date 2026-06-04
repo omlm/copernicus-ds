@@ -29,3 +29,6 @@ storybook-static
 .env
 src/stories/generated
 .story-ui-history/
+
+# Story UI runtime manifest
+src/stories/.story-mappings.json

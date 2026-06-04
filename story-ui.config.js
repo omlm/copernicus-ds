@@ -1,7 +1,9 @@
-const path = require("path");
-
+// Story UI configuration.
+// NOTE: Story UI loads this in a sandbox without require/path/__dirname.
+// Use plain relative string paths — they are normalized to absolute,
+// relative to this config file's location.
 module.exports = {
-  "generatedStoriesPath": path.join(__dirname, "src/stories/generated"),
+  "generatedStoriesPath": "src/stories/generated",
   "importPath": "copernicus-ds",
   "componentPrefix": "",
   "layoutRules": {
@@ -14,11 +16,9 @@ module.exports = {
     "prohibitedElements": []
   },
   "storybookFramework": "@storybook/react-vite",
-  "componentsPath": path.join(__dirname, "src/components"),
+  "componentsPath": "src/components",
   "storyPrefix": "Generated/",
   "defaultAuthor": "Story UI AI",
   "componentFramework": "react",
-  "llmProvider": "claude",
-  "_storyUIVersion": "unknown",
-  "_lastUpdated": "2026-06-04T10:41:32.437Z"
+  "llmProvider": "claude"
 };
