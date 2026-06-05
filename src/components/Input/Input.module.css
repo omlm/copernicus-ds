@@ -1,0 +1,72 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+/* Etikett (Figma: "Label", Outfit SemiBold). */
+.label {
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+  color: var(--color-foreground-primary);
+}
+
+/* Selve feltet (Figma: "Text input"). */
+.field {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--size-48);
+  padding-inline: var(--spacing-16);
+  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border-radius: var(--radius-12);
+  background: var(--color-background-canvas);
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.field::placeholder {
+  color: var(--color-foreground-secondary);
+}
+
+/* Fokus — samme ring som RadioButton (Figma-effekt "Focus 1"). */
+.field:focus-visible {
+  outline: none;
+  border-color: var(--color-border-focus-ring);
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+/* Error (Figma: "State=Error"). Bruker danger-strong for synlig rød border. */
+.field[aria-invalid="true"] {
+  border-color: var(--color-system-danger-strong);
+}
+
+.field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Hjelpetekst (Figma: "Input description"). */
+.description,
+.errorText {
+  margin: 0;
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.description {
+  color: var(--color-foreground-secondary);
+}
+
+.errorText {
+  color: var(--color-system-danger-strong);
+}
