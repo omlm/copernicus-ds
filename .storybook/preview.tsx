@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import type { Preview } from '@storybook/react-vite'
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport'
 import '../src/styles/global.css'
+import './storybook.css'
 
 // Egne breakpoint-presets for Copernicus DS. Velg i Viewport-verktøyet i toolbaren.
 const cdsViewports = {
@@ -32,6 +34,49 @@ const cdsViewports = {
 } as const
 
 const preview: Preview = {
+  globalTypes: {
+    theme: {
+      description: 'Light/dark-tema (Copernicus DS)',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Tema',
+        icon: 'sun',
+        items: [
+          { value: 'light', title: 'Light', icon: 'sun' },
+          { value: 'dark', title: 'Dark', icon: 'moon' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+
+  decorators: [
+    (Story, context) => {
+      // Eksplisitt data-theme på <html> overstyrer OS-ens prefers-color-scheme
+      // (jf. :root:not([data-theme="light"]) i tokens.css), så begge moder kan
+      // forhåndsvises uavhengig av systeminnstillingen.
+      const theme = context.globals.theme === 'dark' ? 'dark' : 'light'
+
+      useEffect(() => {
+        // Settes (ikke fjernes ved unmount) slik at Docs-flaten beholder temaet
+        // mens flere stories rendres etter hverandre.
+        document.documentElement.setAttribute('data-theme', theme)
+      }, [theme])
+
+      return (
+        <div
+          style={{
+            background: 'var(--color-background-canvas)',
+            color: 'var(--color-foreground-primary)',
+            minHeight: '100vh',
+          }}
+        >
+          <Story />
+        </div>
+      )
+    },
+  ],
+
   parameters: {
     controls: {
       matchers: {

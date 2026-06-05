@@ -13,7 +13,7 @@ export interface RadioButtonProps
 /**
  * Ett enkelt radio-valg (Figma: "Radio button").
  *
- * Brukes helst inni en <RadioButtonGroup>, som via context styrer name,
+ * Brukes helst inni en `RadioButtonGroup`, som via context styrer name,
  * valgt verdi og onChange. Kan også brukes frittstående med vanlige
  * input-props (checked / defaultChecked / onChange).
  */

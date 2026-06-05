@@ -12,8 +12,8 @@ export interface RadioGroupContextValue {
 }
 
 /**
- * Lar en <RadioButton> koble seg automatisk til den omsluttende
- * <RadioButtonGroup> (name, valgt verdi, onChange). Er null når en
+ * Lar en `RadioButton` koble seg automatisk til den omsluttende
+ * `RadioButtonGroup` (name, valgt verdi, onChange). Er null når en
  * RadioButton brukes frittstående.
  */
 export const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);

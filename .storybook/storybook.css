@@ -1,0 +1,10 @@
+/*
+ * Storybook-spesifikk styling for Copernicus DS.
+ *
+ * Lar story-containeren i Docs (autodocs) følge temaet: bakgrunnen peker på
+ * canvas-token, som byttes av data-theme på <html> (satt i preview.tsx).
+ */
+
+.docs-story {
+  background-color: var(--color-background-canvas);
+}

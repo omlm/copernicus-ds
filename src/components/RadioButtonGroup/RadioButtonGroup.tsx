@@ -19,14 +19,14 @@ export interface RadioButtonGroupProps {
   orientation?: RadioButtonGroupOrientation;
   /** Deaktiverer alle valg i gruppa. */
   disabled?: boolean;
-  /** <RadioButton>-elementer. */
+  /** `RadioButton`-elementer. */
   children: ReactNode;
 }
 
 /**
  * Gruppe av radio-valg (Figma: "Radio button group" / "... (Horizontal)").
  *
- * Bruker en native <fieldset>/<legend> for tilgjengelighet og deler valgt
+ * Bruker en native `fieldset`/`legend` for tilgjengelighet og deler valgt
  * verdi med barna via context, slik at kun ett valg kan være aktivt.
  */
 export function RadioButtonGroup({
