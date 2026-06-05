@@ -1,0 +1,68 @@
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  min-height: var(--size-48);
+  cursor: pointer;
+  color: var(--color-foreground-primary);
+}
+
+/* Den ekte radio-inputen — visuelt skjult, men fokuserbar og tilgjengelig. */
+.input {
+  position: absolute;
+  width: var(--border-width-1);
+  height: var(--border-width-1);
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Selve sirkelen (Figma: "radio-button", 24px m/ 4px padding + 1px border). */
+.control {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-24);
+  height: var(--size-24);
+  padding: var(--spacing-4);
+  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border-radius: var(--radius-999);
+}
+
+/* Prikken i midten (Figma: "radio-button-indicator", 16px). */
+.indicator {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-999);
+  background: var(--color-foreground-primary);
+  transform: scale(0);
+  transition: transform 120ms ease;
+}
+
+.input:checked ~ .control .indicator {
+  transform: scale(1);
+}
+
+/* Fokus-ring (Figma: "State=Focus"). */
+.input:focus-visible ~ .control {
+  outline: var(--border-width-1-5) solid var(--color-border-focus-ring);
+  outline-offset: var(--border-width-1);
+}
+
+.label {
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

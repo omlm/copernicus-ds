@@ -10,6 +10,12 @@ export type { IconButtonProps, IconButtonVariant, IconButtonSize } from "./IconB
 export { Chip } from "./Chip";
 export type { ChipProps, ChipVariant } from "./Chip";
 
+export { RadioButton } from "./RadioButton";
+export type { RadioButtonProps } from "./RadioButton";
+
+export { RadioButtonGroup } from "./RadioButtonGroup";
+export type { RadioButtonGroupProps, RadioButtonGroupOrientation } from "./RadioButtonGroup";
+
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
 
