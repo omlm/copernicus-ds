@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-16);
-  min-height: var(--size-48);
+  min-height: var(--size-40);
   cursor: pointer;
   color: var(--color-foreground-primary);
 }
@@ -49,10 +49,16 @@
   transform: scale(1);
 }
 
-/* Fokus-ring (Figma: "State=Focus"). */
+/*
+ * Fokus-ring (Figma: "State=Focus" / effekt "Focus 1").
+ * Svak lilla fyll (focus-ring-bg = focus-ring @ 5%) + dobbel ring:
+ * 3px gap (canvas-bakgrunn) og 6px lilla, slik som drop-shadow-effekten.
+ */
 .input:focus-visible ~ .control {
-  outline: var(--border-width-1-5) solid var(--color-border-focus-ring);
-  outline-offset: var(--border-width-1);
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
 }
 
 .label {
