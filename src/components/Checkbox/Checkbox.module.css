@@ -1,0 +1,78 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  min-height: var(--size-40);
+  cursor: pointer;
+  color: var(--color-foreground-primary);
+}
+
+/* Den ekte checkbox-inputen — visuelt skjult, men fokuserbar og tilgjengelig. */
+.input {
+  position: absolute;
+  width: var(--border-width-1);
+  height: var(--border-width-1);
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Kvadratisk kontroll (Figma: "checkbox", 24px m/ 4px padding + 1px border). */
+.control {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--size-24);
+  height: var(--size-24);
+  padding: var(--spacing-4);
+  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border-radius: var(--radius-4);
+  background: transparent;
+  transition: background 120ms ease;
+}
+
+/* Haken — bruker canvas-fargen (hvit på svart i light, mørk i dark). */
+.check {
+  color: var(--color-background-canvas);
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.input:checked ~ .control {
+  background: var(--color-foreground-primary);
+}
+
+.input:checked ~ .control .check {
+  opacity: 1;
+}
+
+/* Fokus-ring (Figma: "State=Focus") — samme som RadioButton. */
+.input:focus-visible ~ .control {
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+/* Avkrysset + fokus: behold fyllet, men med fokus-ringen. */
+.input:checked:focus-visible ~ .control {
+  background: var(--color-foreground-primary);
+}
+
+.label {
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

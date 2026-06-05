@@ -19,6 +19,9 @@ export type { RadioButtonGroupProps, RadioButtonGroupOrientation } from "./Radio
 export { Input } from "./Input";
 export type { InputProps } from "./Input";
 
+export { Checkbox } from "./Checkbox";
+export type { CheckboxProps } from "./Checkbox";
+
 export { Card } from "./Card";
 export type { CardProps } from "./Card";
 

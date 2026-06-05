@@ -20,6 +20,7 @@
 export {
   ArrowRight,
   Banana,
+  Check,
   Compass,
   Dumbbell,
   House,

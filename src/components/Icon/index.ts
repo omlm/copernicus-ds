@@ -3,6 +3,7 @@ export type { IconProps, IconSize } from "./Icon";
 export {
   ArrowRight,
   Banana,
+  Check,
   Compass,
   Dumbbell,
   House,
