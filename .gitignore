@@ -32,3 +32,6 @@ src/stories/generated
 
 # Story UI runtime manifest
 src/stories/.story-mappings.json
+
+# Claude session data
+.claude/projects/

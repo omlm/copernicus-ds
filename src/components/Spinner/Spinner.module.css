@@ -1,0 +1,53 @@
+.spinner {
+  display: inline-block;
+  width: var(--spinner-size-medium);
+  height: var(--spinner-size-medium);
+  animation: spin var(--spinner-animation-duration) linear infinite;
+}
+
+.x-small {
+  width: var(--spinner-size-x-small);
+  height: var(--spinner-size-x-small);
+}
+
+.small {
+  width: var(--spinner-size-small);
+  height: var(--spinner-size-small);
+}
+
+.large {
+  width: var(--spinner-size-large);
+  height: var(--spinner-size-large);
+}
+
+.x-large {
+  width: var(--spinner-size-x-large);
+  height: var(--spinner-size-x-large);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.track {
+  stroke: var(--spinner-color-track);
+}
+
+.indicator {
+  stroke: var(--spinner-color-indicator);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Roterer langsommere i stedet for å stoppe — bevegelsen formidler at noe pågår. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: calc(var(--spinner-animation-duration) * 3);
+  }
+}

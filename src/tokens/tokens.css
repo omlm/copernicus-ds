@@ -117,6 +117,7 @@
   --spacing-128: 128px;
 
   /* ---------- size ---------- */
+  --size-12: 12px;
   --size-16: 16px;
   --size-24: 24px;
   --size-32: 32px;
@@ -135,7 +136,11 @@
   --radius-0: 0px;
   --radius-4: 4px;
   --radius-12: 12px;
+  --radius-24: 24px;
   --radius-999: 999px;
+
+  /* ---------- duration ---------- */
+  --duration-1000: 1000ms;
 
   /* ---------- typography ---------- */
   --typography-weight-normal: 350;
@@ -230,6 +235,14 @@
   --button-color-secondary-background-hover: var(--color-neutral-200);
   --button-color-secondary-background-active: var(--color-neutral-300);
   --button-color-secondary-background-disabled: var(--color-neutral-100);
+  --spinner-size-x-small: var(--size-12);
+  --spinner-size-small: var(--size-16);
+  --spinner-size-medium: var(--size-24);
+  --spinner-size-large: var(--size-40);
+  --spinner-size-x-large: var(--size-64);
+  --spinner-color-indicator: var(--color-foreground-action);
+  --spinner-color-track: var(--color-system-neutral-weak);
+  --spinner-animation-duration: var(--duration-1000);
 }
 
 /* ===================================================================== */
