@@ -1,0 +1,56 @@
+.alert {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  padding: var(--spacing-16);
+  border: var(--border-width-1) solid var(--alert-border);
+  border-radius: var(--radius-12);
+  background: var(--alert-background);
+  color: var(--alert-foreground);
+  font-family: var(--typography-family-default);
+}
+
+/* Overskrift (Figma: "Title", Outfit SemiBold). */
+.title {
+  margin: 0;
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+/* Brødtekst (Figma: "Description", Outfit Light). */
+.description {
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.description > p {
+  margin: 0;
+}
+
+/* Severity — system-fargenes weak-utgave, som i Figma. */
+.info {
+  --alert-background: var(--color-system-info-weak);
+  --alert-foreground: var(--color-system-info-on-weak);
+  --alert-border: var(--color-system-info-weak-border);
+}
+
+.success {
+  --alert-background: var(--color-system-success-weak);
+  --alert-foreground: var(--color-system-success-on-weak);
+  --alert-border: var(--color-system-success-weak-border);
+}
+
+.warning {
+  --alert-background: var(--color-system-warning-weak);
+  --alert-foreground: var(--color-system-warning-on-weak);
+  --alert-border: var(--color-system-warning-weak-border);
+}
+
+.danger {
+  --alert-background: var(--color-system-danger-weak);
+  --alert-foreground: var(--color-system-danger-on-weak);
+  --alert-border: var(--color-system-danger-weak-border);
+}

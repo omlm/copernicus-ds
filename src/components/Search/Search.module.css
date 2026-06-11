@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.label {
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+  color: var(--color-foreground-primary);
+}
+
+/* Felt + knapp side om side (Figma: gap spacing/8). */
+.row {
+  display: flex;
+  gap: var(--spacing-8);
+}
+
+/* Selve feltet (Figma: "Search input") — samme utseende som Input. */
+.field {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  height: var(--size-48);
+  padding-inline: var(--spacing-16);
+  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border-radius: var(--radius-12);
+  background: var(--color-background-canvas);
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.field::placeholder {
+  color: var(--color-foreground-secondary);
+}
+
+/* Fokus — samme ring som Input (Figma: "State=Focus"). */
+.field:focus-visible {
+  outline: none;
+  border-color: var(--color-border-focus-ring);
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}

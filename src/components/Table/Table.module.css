@@ -1,0 +1,39 @@
+/* Avrundet ramme rundt tabellen (Figma: radius/12 + border/default). */
+.wrapper {
+  overflow: hidden;
+  border: var(--border-width-1) solid var(--color-border-default);
+  border-radius: var(--radius-12);
+  background: var(--color-background-primary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+}
+
+/* Headerraden (Figma: "Header row" på neutral-weak). */
+.table thead th {
+  background: var(--color-system-neutral-weak);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--spacing-14);
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: var(--spacing-12) var(--spacing-16);
+}
+
+/* Cellene (Figma: "Cell", Outfit Light). */
+.table td {
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+/* Hårlinje mellom radene (Figma: strokeTop på "Row"). */
+.table tbody tr {
+  border-top: var(--border-width-1) solid var(--color-border-default);
+}

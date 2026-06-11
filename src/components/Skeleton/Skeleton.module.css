@@ -1,0 +1,40 @@
+.skeleton {
+  background: var(--color-system-neutral-weak);
+  animation: pulse var(--duration-1000) ease-in-out infinite alternate;
+}
+
+/* Figma: "Variant=Text" — én tekstlinje. */
+.text {
+  width: 100%;
+  height: var(--size-16);
+  border-radius: var(--radius-4);
+}
+
+/* Figma: "Variant=Circle" — avatar o.l. */
+.circle {
+  width: var(--size-48);
+  height: var(--size-48);
+  border-radius: var(--radius-999);
+}
+
+/* Figma: "Variant=Rectangle" — bilder, kort o.l. */
+.rectangle {
+  width: 100%;
+  height: var(--size-64);
+  border-radius: var(--radius-12);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

@@ -1,0 +1,63 @@
+.popover {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  max-width: 320px;
+  padding: var(--spacing-16);
+  border: var(--border-width-1) solid var(--color-border-default);
+  border-radius: var(--radius-12);
+  background: var(--color-background-primary);
+  box-shadow: 0 var(--spacing-4) var(--spacing-12) color-mix(in srgb, var(--color-neutral-900) 10%, transparent);
+  font-family: var(--typography-family-default);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+}
+
+/* Overskriften (Figma: "Title", Outfit SemiBold). */
+.title {
+  margin: 0;
+  color: var(--color-foreground-primary);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+/* Lukkeknappen (Figma: x-ikonet). */
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-4);
+  background: transparent;
+  color: var(--color-foreground-primary);
+  cursor: pointer;
+}
+
+.close:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+/* Innholdet (Figma: "Body", Outfit Light). */
+.body {
+  color: var(--color-foreground-secondary);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.body > p {
+  margin: 0;
+}

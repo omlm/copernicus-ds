@@ -1,0 +1,79 @@
+.dialog {
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - var(--spacing-32)));
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-24);
+  background: var(--color-background-primary);
+  color: var(--color-foreground-primary);
+  box-shadow: 0 var(--spacing-8) var(--spacing-24) color-mix(in srgb, var(--color-neutral-900) 20%, transparent);
+  font-family: var(--typography-family-default);
+}
+
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--color-neutral-900) 40%, transparent);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding: var(--spacing-24);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+}
+
+/* Overskriften (Figma: "Title", Outfit SemiBold 20, headers-fonten). */
+.title {
+  margin: 0;
+  font-family: var(--typography-family-headers);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--spacing-20);
+  line-height: var(--spacing-24);
+}
+
+/* Lukkeknappen (Figma: x-ikonet). */
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-4);
+  background: transparent;
+  color: var(--color-foreground-primary);
+  cursor: pointer;
+}
+
+.close:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+/* Brødteksten (Figma: "Body", Outfit Light). */
+.body {
+  color: var(--color-foreground-secondary);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+.body > p {
+  margin: 0;
+}
+
+/* Handlingene nederst til høyre (Figma: "Actions"). */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-8);
+}

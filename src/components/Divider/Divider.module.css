@@ -1,0 +1,19 @@
+.divider {
+  margin: 0;
+  border: none;
+  background: var(--color-border-default);
+}
+
+/* Figma: "Orientation=Horizontal" — 1px linje i full bredde. */
+.horizontal {
+  width: 100%;
+  height: var(--border-width-1);
+}
+
+/* Figma: "Orientation=Vertical" — 1px linje som fyller høyden. */
+.vertical {
+  width: var(--border-width-1);
+  height: auto;
+  align-self: stretch;
+  min-height: var(--size-24);
+}

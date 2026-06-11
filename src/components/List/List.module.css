@@ -1,0 +1,17 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  margin: 0;
+  padding-inline-start: var(--spacing-24);
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
+
+/* Markørene (Figma: "Marker") arver tekstfargen. */
+.list > li::marker {
+  color: var(--color-foreground-primary);
+}

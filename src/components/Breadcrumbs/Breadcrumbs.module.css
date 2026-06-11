@@ -1,0 +1,50 @@
+.breadcrumbs {
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--spacing-14);
+  line-height: var(--spacing-20);
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: inline-flex;
+}
+
+/* Lenkene (Figma: "Link") — aksjonsfargen, understrek på hover. */
+.link {
+  color: var(--color-foreground-action);
+  text-decoration: none;
+  border-radius: var(--radius-4);
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--spacing-4);
+}
+
+.link:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+/* Skilletegnet (Figma: "Separator"). */
+.separator {
+  color: var(--color-foreground-secondary);
+}
+
+/* Gjeldende side (Figma: "Current", Outfit SemiBold). */
+.current {
+  color: var(--color-foreground-primary);
+  font-weight: var(--typography-weight-bold);
+}

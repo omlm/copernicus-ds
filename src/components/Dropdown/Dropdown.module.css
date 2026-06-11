@@ -1,0 +1,102 @@
+.root {
+  position: relative;
+  display: inline-block;
+  min-width: 240px;
+  font-family: var(--typography-family-default);
+}
+
+/* Knappen (Figma: "Trigger") — samme utseende som Input-feltet. */
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  width: 100%;
+  height: var(--size-48);
+  padding-inline: var(--spacing-16);
+  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border-radius: var(--radius-12);
+  background: var(--color-background-canvas);
+  color: var(--color-foreground-primary);
+  font-family: inherit;
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+  cursor: pointer;
+}
+
+.trigger:focus-visible {
+  outline: none;
+  border-color: var(--color-border-focus-ring);
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+.placeholder {
+  color: var(--color-foreground-secondary);
+}
+
+/* Chevronen peker opp når menyen er åpen (Figma: chevron-down/up). */
+.chevron {
+  flex-shrink: 0;
+  transition: transform 120ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Menyen (Figma: "Menu"). */
+.menu {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + var(--spacing-8));
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: var(--spacing-8) 0;
+  list-style: none;
+  border: var(--border-width-1) solid var(--color-border-default);
+  border-radius: var(--radius-12);
+  background: var(--color-background-canvas);
+  box-shadow: 0 var(--spacing-4) var(--spacing-12) color-mix(in srgb, var(--color-neutral-900) 10%, transparent);
+  overflow: hidden;
+}
+
+/* Ett valg (Figma: "Menu item"). */
+.option {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: var(--spacing-12) var(--spacing-16);
+  border: none;
+  background: transparent;
+  color: var(--color-foreground-primary);
+  font-family: inherit;
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+  text-align: left;
+  cursor: pointer;
+}
+
+.option:hover,
+.option:focus-visible {
+  outline: none;
+  background: var(--color-system-neutral-weak);
+}
+
+.optionSelected {
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-foreground-action);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

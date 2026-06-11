@@ -1,0 +1,56 @@
+.tabs {
+  font-family: var(--typography-family-default);
+  color: var(--color-foreground-primary);
+}
+
+.tablist {
+  display: flex;
+  gap: var(--spacing-8);
+  border-bottom: var(--border-width-1) solid var(--color-system-neutral-weak-border);
+}
+
+/* Én fane (Figma: "Tab"). */
+.tab {
+  box-sizing: border-box;
+  padding: var(--spacing-12) var(--spacing-16);
+  margin-bottom: calc(-1 * var(--border-width-1));
+  border: none;
+  border-bottom: var(--border-width-2) solid transparent;
+  background: transparent;
+  color: var(--color-foreground-secondary);
+  font-family: inherit;
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+  cursor: pointer;
+}
+
+/* Figma: "State=Hover". */
+.tab:hover {
+  color: var(--color-foreground-primary);
+  border-bottom-color: var(--color-border-default);
+}
+
+/* Figma: "State=Active" — aksjonsfargen + understrek. */
+.active,
+.active:hover {
+  color: var(--color-foreground-action);
+  font-weight: var(--typography-weight-bold);
+  border-bottom-color: var(--color-border-action);
+}
+
+/* Figma: "State=Focus". */
+.tab:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+.panel {
+  padding-block: var(--spacing-16);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--size-16);
+  line-height: var(--spacing-20);
+}
