@@ -67,6 +67,9 @@ export type { LinkProps } from "./Link";
 export { List } from "./List";
 export type { ListProps, ListType } from "./List";
 
+export { ListCard } from "./ListCard";
+export type { ListCardProps, ListCardType } from "./ListCard";
+
 export { Pagination } from "./Pagination";
 export type { PaginationProps } from "./Pagination";
 

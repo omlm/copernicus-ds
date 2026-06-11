@@ -99,6 +99,11 @@
   /* ---------- color/purple ---------- */
   --color-purple-500: #8a38f5;
 
+  /* ---------- color/alpha ---------- */
+  --color-alpha-white-01: rgba(255, 255, 255, 0.01);
+  --color-alpha-black-10: rgba(0, 0, 0, 0.1);
+  --color-alpha-black-20: rgba(0, 0, 0, 0.2);
+
   /* ---------- spacing ---------- */
   --spacing-0: 0px;
   --spacing-4: 4px;
@@ -169,6 +174,8 @@
   --color-background-accent-weak: var(--color-pink-200);
   --color-foreground-primary: var(--color-neutral-900);
   --color-foreground-secondary: var(--color-neutral-700);
+  --color-foreground-disabled: var(--color-neutral-500);
+  --color-border-disabled: var(--color-neutral-500);
   --color-foreground-action: var(--color-pink-500);
   --color-foreground-on-action: var(--color-neutral-50);
   --color-foreground-on-action-disabled: var(--color-pink-300);
@@ -235,6 +242,16 @@
   --button-color-secondary-background-hover: var(--color-neutral-200);
   --button-color-secondary-background-active: var(--color-neutral-300);
   --button-color-secondary-background-disabled: var(--color-neutral-100);
+  --button-color-secondary-border: var(--color-neutral-900);
+  --button-color-secondary-border-disabled: var(--color-neutral-300);
+  --button-color-ghost-foreground: var(--color-foreground-primary);
+  --button-color-ghost-foreground-disabled: var(--color-foreground-disabled);
+  --button-color-ghost-background: var(--color-alpha-white-01);
+  --button-color-ghost-background-hover: var(--color-alpha-black-10);
+  --button-color-ghost-background-active: var(--color-alpha-black-20);
+  --card-color-foreground: var(--color-foreground-primary);
+  --card-color-background: var(--color-background-primary);
+  --card-radius-default: var(--radius-24);
   --spinner-size-x-small: var(--size-12);
   --spinner-size-small: var(--size-16);
   --spinner-size-medium: var(--size-24);
@@ -257,6 +274,8 @@
 /* Aktiveres via [data-theme="dark"] eller systemets fargevalg.          */
 /* ===================================================================== */
 [data-theme="dark"] {
+  --color-foreground-disabled: var(--color-neutral-200);
+  --color-border-disabled: var(--color-neutral-200);
   --color-background-canvas: var(--color-neutral-900);
   --color-background-primary: var(--color-neutral-800);
   --color-background-secondary: var(--color-neutral-700);
@@ -298,6 +317,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --color-foreground-disabled: var(--color-neutral-200);
+    --color-border-disabled: var(--color-neutral-200);
     --color-background-canvas: var(--color-neutral-900);
     --color-background-primary: var(--color-neutral-800);
     --color-background-secondary: var(--color-neutral-700);

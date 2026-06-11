@@ -10,7 +10,7 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    variant: { control: "inline-radio", options: ["primary", "secondary"] },
+    variant: { control: "inline-radio", options: ["primary", "secondary", "ghost"] },
     size: { control: "inline-radio", options: ["small", "medium", "large"] },
     // Velg fritt fra hele Lucide-settet; overstyrer standard-pilen.
     iconName: { control: "select", options: [undefined, ...iconNames] },
@@ -32,6 +32,11 @@ export const Primary: Story = {};
 
 export const Secondary: Story = {
   args: { variant: "secondary" },
+};
+
+/** Gjennomsiktig (Figma: "Type=Ghost"). */
+export const Ghost: Story = {
+  args: { variant: "ghost" },
 };
 
 /** Bytt ut pilen med et hvilket som helst Lucide-ikon. */
@@ -69,8 +74,15 @@ export const AllVariants: Story = {
         <IconButton variant="secondary" size="large" iconName="heart" aria-label="Lik" />
       </div>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <IconButton variant="ghost" size="large" aria-label="Ghost stor" />
+        <IconButton variant="ghost" size="medium" aria-label="Ghost medium" />
+        <IconButton variant="ghost" size="small" aria-label="Ghost liten" />
+        <IconButton variant="ghost" size="large" iconName="x" aria-label="Lukk" />
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <IconButton variant="primary" disabled aria-label="Primary deaktivert" />
         <IconButton variant="secondary" disabled aria-label="Secondary deaktivert" />
+        <IconButton variant="ghost" disabled aria-label="Ghost deaktivert" />
       </div>
     </div>
   ),

@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowRight, DynamicIcon, type IconName } from "../Icon";
 import styles from "./IconButton.module.css";
 
-export type IconButtonVariant = "primary" | "secondary";
+export type IconButtonVariant = "primary" | "secondary" | "ghost";
 export type IconButtonSize = "small" | "medium" | "large";
 
 export interface IconButtonProps
@@ -23,6 +23,7 @@ export interface IconButtonProps
 const variantClass: Record<IconButtonVariant, string> = {
   primary: styles.primary,
   secondary: styles.secondary,
+  ghost: styles.ghost,
 };
 
 const sizeClass: Record<IconButtonSize, string> = {

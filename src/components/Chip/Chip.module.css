@@ -8,7 +8,7 @@
   border: var(--border-width-1) solid transparent;
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: 14px;
+  font-size: var(--spacing-14);
   line-height: 1;
   white-space: nowrap;
 }

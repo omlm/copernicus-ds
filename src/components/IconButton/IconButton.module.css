@@ -57,10 +57,11 @@
   color: var(--color-foreground-on-action-disabled);
 }
 
-/* Secondary */
+/* Secondary — med border, som i Figma (button/color/secondary/border) */
 .secondary {
   background: var(--button-color-secondary-background);
   color: var(--button-color-secondary-foreground);
+  border-color: var(--button-color-secondary-border);
 }
 
 .secondary:hover:not(:disabled) {
@@ -74,6 +75,26 @@
 .secondary:disabled {
   background: var(--button-color-secondary-background-disabled);
   color: var(--button-color-secondary-foreground-disabled);
+  border-color: var(--button-color-secondary-border-disabled);
+}
+
+/* Ghost (Figma: "Type=Ghost") — gjennomsiktig, mørkner på hover/active */
+.ghost {
+  background: var(--button-color-ghost-background);
+  color: var(--button-color-ghost-foreground);
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--button-color-ghost-background-hover);
+}
+
+.ghost:active:not(:disabled) {
+  background: var(--button-color-ghost-background-active);
+}
+
+.ghost:disabled {
+  background: var(--button-color-ghost-background);
+  color: var(--button-color-ghost-foreground-disabled);
 }
 
 /* Icon */

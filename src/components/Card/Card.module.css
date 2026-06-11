@@ -7,7 +7,7 @@
   padding: var(--spacing-32) var(--spacing-20) var(--spacing-20);
   background: var(--color-background-primary);
   border-radius: var(--spacing-20);
-
+}
 
 .title {
   margin: 0;
@@ -28,5 +28,4 @@
   letter-spacing: 0;
   color: var(--color-foreground-secondary);
   text-align: center;
-}
 }
