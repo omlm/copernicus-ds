@@ -243,6 +243,13 @@
   --spinner-color-indicator: var(--color-foreground-action);
   --spinner-color-track: var(--color-system-neutral-weak);
   --spinner-animation-duration: var(--duration-1000);
+  --switch-color-track-on: var(--color-background-action);
+  --switch-color-track-off: var(--color-background-secondary);
+  --switch-color-track-border: var(--color-border-default);
+  --switch-color-thumb: var(--color-background-primary);
+  --switch-size-track-width: 44px;
+  --switch-size-track-height: var(--size-24);
+  --switch-size-thumb: var(--size-16);
 }
 
 /* ===================================================================== */

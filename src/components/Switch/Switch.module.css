@@ -27,32 +27,31 @@
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  width: 44px;
-  height: var(--size-24);
+  width: var(--switch-size-track-width);
+  height: var(--switch-size-track-height);
   padding: var(--spacing-4);
-  border: var(--border-width-1) solid var(--color-border-default);
+  border: var(--border-width-1) solid var(--switch-color-track-border);
   border-radius: var(--radius-999);
-  background: transparent;
+  background: var(--switch-color-track-off);
   transition: background 120ms ease;
 }
 
 /* Knotten (Figma: "thumb", 16px sirkel som glir til høyre når på). */
 .thumb {
-  width: var(--size-16);
-  height: var(--size-16);
+  width: var(--switch-size-thumb);
+  height: var(--switch-size-thumb);
   border-radius: var(--radius-999);
-  background: var(--color-foreground-primary);
+  background: var(--switch-color-thumb);
   transition: transform 120ms ease, background 120ms ease;
 }
 
 .input:checked ~ .track {
-  border-color: var(--color-background-action);
-  background: var(--color-background-action);
+  border-color: var(--switch-color-track-on);
+  background: var(--switch-color-track-on);
 }
 
 .input:checked ~ .track .thumb {
   transform: translateX(18px);
-  background: var(--color-foreground-on-action);
 }
 
 /* Fokus-ring (Figma: "State=Focus") — samme som Checkbox/RadioButton. */
