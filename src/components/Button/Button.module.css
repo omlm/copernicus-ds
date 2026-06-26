@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: var(--button-gap);
   border: var(--border-width-1) solid transparent;
   border-radius: var(--radius-999);
   font-family: var(--typography-family-default);
@@ -34,16 +34,19 @@
   padding: 0 var(--spacing-24);
 }
 
+.sizeLarge.hasIcon {
+  padding-left: var(--spacing-24);
+  padding-right: var(--spacing-20);
+}
+
 .sizeMedium {
   height: var(--button-size-medium);
   padding: 0 var(--spacing-16);
-  gap: var(--spacing-8);
 }
 
 .sizeSmall {
   height: var(--button-size-small);
   padding: 0 var(--spacing-12);
-  gap: var(--spacing-8);
   /* Figma: Size=Small bruker 14px etikett (typography/size/14). */
   font-size: var(--spacing-14);
 }

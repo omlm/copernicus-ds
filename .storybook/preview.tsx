@@ -68,7 +68,7 @@ const preview: Preview = {
           style={{
             background: 'var(--color-background-canvas)',
             color: 'var(--color-foreground-primary)',
-            minHeight: '100vh',
+            minHeight: 'auto',
           }}
         >
           <Story />

@@ -12,6 +12,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   trailingIcon?: boolean | ReactNode;
   /** Velg trailing-ikon fra hele Lucide-settet via navn (overstyrer pilen). */
   trailingIconName?: IconName;
+  /** Vis leading-ikon (før etiketten). true = standard pil, eller send et eget element. */
+  leadingIcon?: boolean | ReactNode;
+  /** Velg leading-ikon fra hele Lucide-settet via navn. */
+  leadingIconName?: IconName;
 }
 
 const variantClass: Record<ButtonVariant, string> = {
@@ -30,16 +34,13 @@ export function Button({
   size = "large",
   trailingIcon = false,
   trailingIconName,
+  leadingIcon = false,
+  leadingIconName,
   className,
   type = "button",
   children,
   ...rest
 }: ButtonProps) {
-  const classes = [styles.button, variantClass[variant], sizeClass[size], className]
-    .filter(Boolean)
-    .join(" ");
-
-  // Prioritet: valgt navn -> egendefinert element -> standard pil.
   let trailing: ReactNode = null;
   if (trailingIconName) {
     trailing = <DynamicIcon name={trailingIconName} />;
@@ -49,8 +50,30 @@ export function Button({
     trailing = trailingIcon;
   }
 
+  let leading: ReactNode = null;
+  if (leadingIconName) {
+    leading = <DynamicIcon name={leadingIconName} />;
+  } else if (leadingIcon === true) {
+    leading = <ArrowRight />;
+  } else if (leadingIcon) {
+    leading = leadingIcon;
+  }
+
+  const hasIcon = !!(leading || trailing);
+
+  const classes = [
+    styles.button,
+    variantClass[variant],
+    sizeClass[size],
+    hasIcon && styles.hasIcon,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <button type={type} className={classes} {...rest}>
+      {leading && <span className={styles.icon}>{leading}</span>}
       {children}
       {trailing && <span className={styles.icon}>{trailing}</span>}
     </button>

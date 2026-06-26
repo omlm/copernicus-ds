@@ -148,8 +148,10 @@
   --duration-1000: 1000ms;
 
   /* ---------- typography ---------- */
+  --typography-weight-light: 300;
   --typography-weight-normal: 350;
   --typography-line-height: 120%;
+  --typography-weight-semibold: 600;
   --typography-weight-bold: 550;
   --typography-family-default: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --typography-family-headers: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -236,6 +238,7 @@
   --button-size-small: var(--size-24);
   --button-size-medium: var(--size-32);
   --button-size-large: var(--size-48);
+  --button-gap: var(--spacing-4);
   --button-color-secondary-foreground: var(--color-neutral-900);
   --button-color-secondary-foreground-disabled: var(--color-neutral-300);
   --button-color-secondary-background: var(--color-neutral-100);

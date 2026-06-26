@@ -13,8 +13,9 @@ const meta = {
     variant: { control: "inline-radio", options: ["primary", "secondary"] },
     size: { control: "inline-radio", options: ["small", "medium", "large"] },
     trailingIcon: { control: "boolean" },
-    // Velg fritt fra hele Lucide-settet; overstyrer standard-pilen.
     trailingIconName: { control: "select", options: [undefined, ...iconNames] },
+    leadingIcon: { control: "boolean" },
+    leadingIconName: { control: "select", options: [undefined, ...iconNames] },
     disabled: { control: "boolean" },
     children: { control: "text" },
   },
@@ -23,6 +24,7 @@ const meta = {
     variant: "primary",
     size: "large",
     trailingIcon: false,
+    leadingIcon: false,
     disabled: false,
   },
 } satisfies Meta<typeof Button>;
@@ -36,8 +38,16 @@ export const Secondary: Story = {
   args: { variant: "secondary" },
 };
 
-export const WithIcon: Story = {
+export const WithTrailingIcon: Story = {
   args: { trailingIcon: true },
+};
+
+export const WithLeadingIcon: Story = {
+  args: { leadingIcon: true },
+};
+
+export const BothIcons: Story = {
+  args: { leadingIcon: true, trailingIcon: true },
 };
 
 /** Bytt ut pilen med et hvilket som helst Lucide-ikon. */
@@ -67,7 +77,8 @@ export const AllVariants: Story = {
         <Button variant="primary" size="large">Primary Large</Button>
         <Button variant="primary" size="medium">Primary Medium</Button>
         <Button variant="primary" size="small">Primary Small</Button>
-        <Button variant="primary" size="large" trailingIcon>Med ikon</Button>
+        <Button variant="primary" size="large" trailingIcon>Trailing ikon</Button>
+        <Button variant="primary" size="large" leadingIcon>Leading ikon</Button>
       </div>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Button variant="secondary" size="large">Secondary Large</Button>

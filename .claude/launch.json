@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "storybook", "--", "--no-open", "--quiet"],
       "port": 6006
+    },
+    {
+      "name": "story-ui",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "story-ui"],
+      "port": 4001
     }
   ]
 }

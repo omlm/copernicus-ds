@@ -34,9 +34,6 @@ export type { IconProps, IconSize } from "./Icon";
 export { Spinner } from "./Spinner";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 
-export { NewsletterSignup } from "./NewsletterSignup";
-export type { NewsletterSignupProps } from "./NewsletterSignup";
-
 export { Alert } from "./Alert";
 export type { AlertProps, AlertSeverity } from "./Alert";
 

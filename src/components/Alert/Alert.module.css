@@ -14,14 +14,14 @@
 /* Overskrift (Figma: "Title", Outfit SemiBold). */
 .title {
   margin: 0;
-  font-weight: var(--typography-weight-bold);
+  font-weight: var(--typography-weight-semibold);
   font-size: var(--size-16);
   line-height: var(--spacing-20);
 }
 
 /* Brødtekst (Figma: "Description", Outfit Light). */
 .description {
-  font-weight: var(--typography-weight-normal);
+  font-weight: var(--typography-weight-light);
   font-size: var(--size-16);
   line-height: var(--spacing-20);
 }
