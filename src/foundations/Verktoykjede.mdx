@@ -1,0 +1,54 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Foundations/Verktøykjede" />
+
+# Verktøykjede
+
+Copernicus DS bygges og vedlikeholdes med hjelp av en agentisk arbeidsflyt —
+Claude Code kobler seg til Figma, Storybook og GitHub direkte og gjør endringer
+i alle tre samtidig. Denne siden lister opp verktøyene som inngår, og hva hvert
+av dem brukes til.
+
+---
+
+## Koding
+
+| Verktøy | Formål |
+|---|---|
+| **Claude Code** | Agentisk CLI som gjør selve kodeendringene — leser/skriver filer, kjører git, og styrer de andre verktøyene under via MCP (Model Context Protocol). |
+| **React 19 + TypeScript** | Rammeverket komponentene bygges i. |
+| **Vite** | Dev-server og build for både Storybook og sandbox-appen. |
+| **ESLint / `tsc -b`** | Lint og type-sjekk — kjøres som del av `npm run build`. |
+
+## Design (Figma)
+
+| Verktøy | Formål |
+|---|---|
+| **Figma Desktop Bridge** (`figma-console` MCP) | WebSocket-bro mot en kjørende Figma Desktop-instans. Gir Claude Code direkte lese-/skrivetilgang til fila: hente variant-sett og komponent-egenskaper, ta skjermbilder for visuell verifisering, og redigere noder (tekst, klone rader, sette bundne variabler). Brukt til å analysere Button-komponentsettet og oppdatere "Button — Docs"-rammen. |
+| **Figma Dev Mode MCP** (`plugin:figma:figma` / `use_figma`) | Figmas offisielle MCP-integrasjon, med tilhørende Claude-skills (`figma-use`, `figma-generate-library`, `figma-generate-design`, `figma-code-connect` m.fl.) for å bygge komponentbiblioteker, sette opp variabler/tokens og lage Code Connect-mapping. Krever OAuth-innlogging — ikke autorisert i alle miljøer. |
+| **FigmaLint** (Figma-plugin) | Flagger hardkodede verdier i Figma-komponenter — håndhever prinsipp #4 ("Tokens er sannheten", se [Designprinsipper](/docs/foundations-designprinsipper--docs)). |
+
+## Dokumentasjon
+
+| Verktøy | Formål |
+|---|---|
+| **Storybook** | Hovedflate for komponentdokumentasjon — autodocs, a11y-addon, og denne siden. Kjøres lokalt (`npm run storybook`, port 6006) og deployes automatisk til [omlm.github.io/copernicus-ds](https://omlm.github.io/copernicus-ds/) via GitHub Actions ved push til `main`. |
+| **Story UI** | AI-drevet story-generator (`npm run story-ui`, port 4001) — genererer Storybook-stories fra naturlig språk, satt opp mot den lokale komponent-barrelen (`copernicus-ds` → `src/components/index.ts`). |
+| **`docs/`-mappen** | Markdown-referanser per komponent (f.eks. [Button.md](https://github.com/omlm/copernicus-ds/blob/main/docs/Button.md)) som organiserer props etter Figma-egenskapstype (Variant/Boolean/Text/Instance-swap) — malen ligger i `docs/COMPONENT_TEMPLATE.md`. |
+| **Mintlify** ([mmsport.mintlify.app](https://mmsport.mintlify.app)) | Separat, publisert dokside bygget fra `omlm/docs`-repoet. Dypere referansesider per komponent (anatomi, fargematrise, design–kode-paritet) enn det som er praktisk i Storybook-autodocs. |
+| **GitHub** (`gh` CLI) | Kilde til sannhet for både `copernicus-ds` og `omlm/docs`. Claude Code bruker `gh`/`git` til å committe og pushe endringer i begge repoene. |
+
+---
+
+## Hvordan de spiller sammen
+
+En typisk "sync Figma → kode → docs"-runde:
+
+1. **Figma Desktop Bridge** leser variant-sett og egenskaper fra Copernicus DS-fila i Figma.
+2. **Claude Code** oppdaterer komponent, CSS-tokens og stories i `src/components/`.
+3. **Storybook** (lokalt, via preview-verktøy) brukes til å verifisere endringen visuelt og i a11y-addonet.
+4. Referansedokumentasjon oppdateres i `docs/`-mappen, i Mintlify-repoet, og eventuelt i egne "X — Docs"-rammer inne i Figma-fila selv.
+5. Endringene committes og pushes til GitHub — Storybook redeployes automatisk, Mintlify redeployes automatisk.
+
+> **Merk:** Dette er ikke en fast pipeline, men et sett verktøy Claude Code kobler
+> sammen etter behov i den enkelte økt. Oppdater denne siden når verktøykjeden endrer seg.

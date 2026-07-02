@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { fileURLToPath } from 'node:url';
+import remarkGfm from 'remark-gfm';
 
 const config: StorybookConfig = {
   "stories": [
@@ -10,7 +11,17 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
     "@storybook/addon-a11y",
-    "@storybook/addon-docs",
+    {
+      name: "@storybook/addon-docs",
+      // Aktiverer GFM (tabeller, strikethrough, autolinks, task-lister) i .mdx-filer.
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     "@storybook/addon-mcp"
   ],
   "framework": "@storybook/react-vite",
