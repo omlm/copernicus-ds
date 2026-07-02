@@ -81,8 +81,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/images/logo-copernicus-light.svg",
+    "dark": "/images/logo-copernicus-dark.svg"
   },
   "navbar": {
     "links": [
