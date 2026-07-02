@@ -12,6 +12,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "story-ui"],
       "port": 4001
+    },
+    {
+      "name": "mintlify",
+      "runtimeExecutable": "mint",
+      "runtimeArgs": ["dev", "--port", "3111"],
+      "port": 3111,
+      "cwd": "mintlify"
     }
   ]
 }
