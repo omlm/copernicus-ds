@@ -8,7 +8,7 @@ export type ChipEmphasis = "strong" | "weak";
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   /** Fargefamilie (Figma: "Tone"). */
   tone?: ChipTone;
-  /** Visuell tyngde (Figma: "Type"). strong = fylt, weak = lys m/ border. */
+  /** Visuell tyngde (Figma: "Emphasis"). strong = fylt, weak = lys m/ border. */
   emphasis?: ChipEmphasis;
   /** Viser et X-ikon (Lucide) for å lukke chip-en (Figma: "Dismissable"). */
   dismissable?: boolean;

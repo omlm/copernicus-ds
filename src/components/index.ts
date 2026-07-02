@@ -38,7 +38,7 @@ export { Alert } from "./Alert";
 export type { AlertProps, AlertTone } from "./Alert";
 
 export { Badge } from "./Badge";
-export type { BadgeProps, BadgeTone, BadgeVariant } from "./Badge";
+export type { BadgeProps, BadgeTone, BadgeEmphasis } from "./Badge";
 
 export { Breadcrumbs } from "./Breadcrumbs";
 export type { BreadcrumbsProps, BreadcrumbItem } from "./Breadcrumbs";

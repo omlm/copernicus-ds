@@ -2,13 +2,13 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import styles from "./Badge.module.css";
 
 export type BadgeTone = "neutral" | "info" | "success" | "warning" | "danger";
-export type BadgeVariant = "strong" | "weak";
+export type BadgeEmphasis = "strong" | "weak";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /** Systemfarge (Figma: "Tone=Neutral|Info|Success|Warning|Danger"). */
   tone?: BadgeTone;
-  /** Strong = fylt, Weak = svak bakgrunn med border (Figma: "Style=Strong|Weak"). */
-  variant?: BadgeVariant;
+  /** Strong = fylt, Weak = svak bakgrunn med border (Figma: "Emphasis=Strong|Weak"). */
+  emphasis?: BadgeEmphasis;
   /** Innholdet i merket (Figma: "Label"). */
   children: ReactNode;
 }
@@ -28,13 +28,13 @@ const toneClass: Record<BadgeTone, string> = {
  * (neutral/info/success/warning/danger) i strong- eller weak-utgave.
  */
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { tone = "neutral", variant = "strong", className, children, ...rest },
+  { tone = "neutral", emphasis = "strong", className, children, ...rest },
   ref,
 ) {
   const classes = [
     styles.badge,
     toneClass[tone],
-    variant === "weak" ? styles.weak : styles.strong,
+    emphasis === "weak" ? styles.weak : styles.strong,
     className,
   ]
     .filter(Boolean)
