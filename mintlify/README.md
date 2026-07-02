@@ -1,6 +1,6 @@
 # Mintlify-dokumentasjon
 
-Kilden til den publiserte dokumentasjonssiden ([mmsport.mintlify.app](https://mmsport.mintlify.app)).
+Kilden til den publiserte dokumentasjonssiden ([mmsport.mintlify.site](https://mmsport.mintlify.site)).
 Flyttet hit fra det tidligere separate repoet `omlm/docs` slik at kode og dokumentasjon
 bor samme sted.
 

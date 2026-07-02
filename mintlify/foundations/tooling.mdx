@@ -38,8 +38,8 @@ av dem brukes til.
 | **Storybook** | Hovedflate for komponentdokumentasjon — autodocs, a11y-addon, og Foundations-sidene. Kjøres lokalt (`npm run storybook`, port 6006) og deployes automatisk til [omlm.github.io/copernicus-ds](https://omlm.github.io/copernicus-ds/) via GitHub Actions ved push til `main`. |
 | **Story UI** | AI-drevet story-generator (`npm run story-ui`, port 4001) — genererer Storybook-stories fra naturlig språk, satt opp mot den lokale komponent-barrelen (`copernicus-ds` → `src/components/index.ts`). |
 | **`docs/`-mappen** | Markdown-referanser per komponent i `copernicus-ds`-repoet (f.eks. [Button.md](https://github.com/omlm/copernicus-ds/blob/main/docs/Button.md)) som organiserer props etter Figma-egenskapstype (Variant/Boolean/Text/Instance-swap) — malen ligger i `docs/COMPONENT_TEMPLATE.md`. |
-| **Mintlify** (denne siden, [mmsport.mintlify.app](https://mmsport.mintlify.app)) | Separat, publisert dokside bygget fra `omlm/docs`-repoet. Dypere referansesider per komponent (anatomi, fargematrise, design–kode-paritet) enn det som er praktisk i Storybook-autodocs. |
-| **GitHub** (`gh` CLI) | Kilde til sannhet for både `copernicus-ds` og `omlm/docs`. Claude Code bruker `gh`/`git` til å committe og pushe endringer i begge repoene. |
+| **Mintlify** (denne siden, [mmsport.mintlify.site](https://mmsport.mintlify.site)) | Publisert dokside bygget fra `mintlify/`-mappen i dette repoet. Dypere referansesider per komponent (anatomi, fargematrise, design–kode-paritet) enn det som er praktisk i Storybook-autodocs. |
+| **GitHub** (`gh` CLI) | Kilde til sannhet for `copernicus-ds` (kode, Storybook og Mintlify-docs bor nå samme sted). Claude Code bruker `gh`/`git` til å committe og pushe. |
 
 ## Hvordan de spiller sammen
 
