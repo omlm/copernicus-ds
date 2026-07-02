@@ -53,15 +53,15 @@
   --color-neutral-900: #000000;
 
   /* ---------- color/red ---------- */
-  --color-red-100: #f2d9d9;
-  --color-red-200: #e5b3b3;
-  --color-red-300: #d88d8d;
-  --color-red-400: #cc6666;
-  --color-red-500: #be4040;
-  --color-red-600: #993333;
-  --color-red-700: #722727;
-  --color-red-800: #4c1a1a;
-  --color-red-900: #260d0d;
+  --color-red-100: #f9d2d2;
+  --color-red-200: #f2a6a6;
+  --color-red-300: #ec7979;
+  --color-red-400: #e64c4c;
+  --color-red-500: #df2020;
+  --color-red-600: #b31919;
+  --color-red-700: #861313;
+  --color-red-800: #590d0d;
+  --color-red-900: #2d0606;
 
   /* ---------- color/orange ---------- */
   --color-orange-100: #fcefcf;
