@@ -1,18 +1,18 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import styles from "./Alert.module.css";
 
-export type AlertSeverity = "info" | "success" | "warning" | "danger";
+export type AlertTone = "info" | "success" | "warning" | "danger";
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Alvorlighetsgrad (Figma: "Severity=Info|Success|Warning|Danger"). */
-  severity?: AlertSeverity;
+  /** Alvorlighetsgrad (Figma: "Tone=Info|Success|Warning|Danger"). */
+  tone?: AlertTone;
   /** Overskrift (Figma: "Title"). */
   title?: ReactNode;
   /** Brødtekst (Figma: "Description"). */
   children?: ReactNode;
 }
 
-const severityClass: Record<AlertSeverity, string> = {
+const toneClass: Record<AlertTone, string> = {
   info: styles.info,
   success: styles.success,
   warning: styles.warning,
@@ -26,11 +26,11 @@ const severityClass: Record<AlertSeverity, string> = {
  * annonseres med `role="alert"`, info og success med `role="status"`.
  */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  { severity = "info", title, className, children, ...rest },
+  { tone = "info", title, className, children, ...rest },
   ref,
 ) {
-  const classes = [styles.alert, severityClass[severity], className].filter(Boolean).join(" ");
-  const role = severity === "warning" || severity === "danger" ? "alert" : "status";
+  const classes = [styles.alert, toneClass[tone], className].filter(Boolean).join(" ");
+  const role = tone === "warning" || tone === "danger" ? "alert" : "status";
 
   return (
     <div ref={ref} className={classes} role={role} {...rest}>

@@ -89,6 +89,74 @@
   color: var(--button-color-secondary-foreground-disabled);
 }
 
+/* Tertiary */
+.tertiary {
+  background: var(--button-color-ghost-background);
+  color: var(--button-color-ghost-foreground);
+  border-color: var(--button-color-ghost-foreground);
+}
+
+.tertiary:hover:not(:disabled) {
+  background: var(--button-color-ghost-background-hover);
+}
+
+.tertiary:active:not(:disabled) {
+  background: var(--button-color-ghost-background-active);
+}
+
+.tertiary:disabled {
+  background: var(--button-color-ghost-background);
+  color: var(--button-color-ghost-foreground-disabled);
+  border-color: var(--button-color-ghost-foreground-disabled);
+}
+
+/* Tone=Danger — overstyrer variant-fargen for destruktive handlinger */
+.danger.primary {
+  background: var(--color-system-danger-strong);
+  color: var(--color-system-danger-on-strong);
+}
+
+.danger.primary:hover:not(:disabled) {
+  background: var(--color-system-danger-strong-hover);
+}
+
+.danger.primary:active:not(:disabled) {
+  background: var(--color-system-danger-strong-hover);
+}
+
+.danger.primary:disabled {
+  background: var(--color-background-action-disabled);
+  color: var(--color-foreground-on-action-disabled);
+}
+
+.danger.secondary {
+  background: var(--color-system-danger-weak);
+  color: var(--color-system-danger-on-weak);
+}
+
+.danger.secondary:hover:not(:disabled) {
+  background: var(--color-system-danger-weak-hover);
+}
+
+.danger.secondary:active:not(:disabled) {
+  background: var(--color-system-danger-weak-hover);
+}
+
+.danger.secondary:disabled {
+  background: var(--button-color-secondary-background-disabled);
+  color: var(--button-color-secondary-foreground-disabled);
+}
+
+.danger.tertiary {
+  color: var(--color-system-danger-on-weak);
+  border-color: var(--color-system-danger-on-weak);
+}
+
+.danger.tertiary:disabled {
+  color: var(--button-color-ghost-foreground-disabled);
+  border-color: var(--button-color-ghost-foreground-disabled);
+}
+
 /* Trailing icon — størrelse per knappestørrelse */
 .icon {
   display: inline-flex;

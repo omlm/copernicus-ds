@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Chip, type ChipVariant } from "./Chip";
+import { Chip, type ChipTone } from "./Chip";
 
-const variants: ChipVariant[] = ["neutral", "info", "success", "danger", "warning"];
+const tones: ChipTone[] = ["neutral", "info", "success", "danger", "warning"];
 
 const meta = {
   title: "Components/Chip",
@@ -11,9 +11,9 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    variant: {
+    tone: {
       control: "inline-radio",
-      options: variants,
+      options: tones,
     },
     emphasis: {
       control: "inline-radio",
@@ -24,7 +24,7 @@ const meta = {
   },
   args: {
     children: "Label",
-    variant: "neutral",
+    tone: "neutral",
     emphasis: "strong",
   },
 } satisfies Meta<typeof Chip>;
@@ -35,23 +35,23 @@ type Story = StoryObj<typeof meta>;
 export const Neutral: Story = {};
 
 export const Info: Story = {
-  args: { variant: "info" },
+  args: { tone: "info" },
 };
 
 export const Success: Story = {
-  args: { variant: "success" },
+  args: { tone: "success" },
 };
 
 export const Danger: Story = {
-  args: { variant: "danger" },
+  args: { tone: "danger" },
 };
 
 export const Warning: Story = {
-  args: { variant: "warning" },
+  args: { tone: "warning" },
 };
 
 export const Weak: Story = {
-  args: { variant: "info", emphasis: "weak" },
+  args: { tone: "info", emphasis: "weak" },
 };
 
 /** Dismissable — viser Lucide X. Sett onDismiss for å gjøre den klikkbar. */
@@ -65,9 +65,9 @@ export const DismissableAll: Story = {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       {(["strong", "weak"] as const).map((emphasis) => (
         <div key={emphasis} style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-          {variants.map((variant) => (
-            <Chip key={variant} variant={variant} emphasis={emphasis} dismissable onDismiss={() => {}}>
-              {variant}
+          {tones.map((tone) => (
+            <Chip key={tone} tone={tone} emphasis={emphasis} dismissable onDismiss={() => {}}>
+              {tone}
             </Chip>
           ))}
         </div>
@@ -76,15 +76,15 @@ export const DismissableAll: Story = {
   ),
 };
 
-/** Alle 10 kombinasjoner: variant × emphasis (strong / weak). */
+/** Alle 10 kombinasjoner: tone × emphasis (strong / weak). */
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       {(["strong", "weak"] as const).map((emphasis) => (
         <div key={emphasis} style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-          {variants.map((variant) => (
-            <Chip key={variant} variant={variant} emphasis={emphasis}>
-              {variant}
+          {tones.map((tone) => (
+            <Chip key={tone} tone={tone} emphasis={emphasis}>
+              {tone}
             </Chip>
           ))}
         </div>

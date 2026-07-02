@@ -64,7 +64,7 @@ export const WithBadges: Story = {
             <td>Ada Lovelace</td>
             <td>Engineer</td>
             <td>
-              <Badge color="success" variant="weak">
+              <Badge tone="success" variant="weak">
                 Active
               </Badge>
             </td>
@@ -73,7 +73,7 @@ export const WithBadges: Story = {
             <td>Alan Turing</td>
             <td>Researcher</td>
             <td>
-              <Badge color="neutral" variant="weak">
+              <Badge tone="neutral" variant="weak">
                 Inactive
               </Badge>
             </td>

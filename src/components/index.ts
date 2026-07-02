@@ -2,13 +2,13 @@
 // Story UI resolves the "copernicus-ds" import to this file (see .storybook/main.ts).
 
 export { Button } from "./Button";
-export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button";
+export type { ButtonProps, ButtonVariant, ButtonSize, ButtonTone } from "./Button";
 
 export { IconButton } from "./IconButton";
 export type { IconButtonProps, IconButtonVariant, IconButtonSize } from "./IconButton";
 
 export { Chip } from "./Chip";
-export type { ChipProps, ChipVariant } from "./Chip";
+export type { ChipProps, ChipTone } from "./Chip";
 
 export { RadioButton } from "./RadioButton";
 export type { RadioButtonProps } from "./RadioButton";
@@ -35,10 +35,10 @@ export { Spinner } from "./Spinner";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 
 export { Alert } from "./Alert";
-export type { AlertProps, AlertSeverity } from "./Alert";
+export type { AlertProps, AlertTone } from "./Alert";
 
 export { Badge } from "./Badge";
-export type { BadgeProps, BadgeColor, BadgeVariant } from "./Badge";
+export type { BadgeProps, BadgeTone, BadgeVariant } from "./Badge";
 
 export { Breadcrumbs } from "./Breadcrumbs";
 export type { BreadcrumbsProps, BreadcrumbItem } from "./Breadcrumbs";

@@ -2,12 +2,12 @@ import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 import { X } from "../Icon";
 import styles from "./Chip.module.css";
 
-export type ChipVariant = "neutral" | "info" | "success" | "danger" | "warning";
+export type ChipTone = "neutral" | "info" | "success" | "danger" | "warning";
 export type ChipEmphasis = "strong" | "weak";
 
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Fargefamilie (Figma: "Variant"). */
-  variant?: ChipVariant;
+  /** Fargefamilie (Figma: "Tone"). */
+  tone?: ChipTone;
   /** Visuell tyngde (Figma: "Type"). strong = fylt, weak = lys m/ border. */
   emphasis?: ChipEmphasis;
   /** Viser et X-ikon (Lucide) for å lukke chip-en (Figma: "Dismissable"). */
@@ -22,7 +22,7 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode;
 }
 
-const variantClass: Record<ChipVariant, string> = {
+const toneClass: Record<ChipTone, string> = {
   neutral: styles.neutral,
   info: styles.info,
   success: styles.success,
@@ -36,7 +36,7 @@ const emphasisClass: Record<ChipEmphasis, string> = {
 };
 
 export function Chip({
-  variant = "neutral",
+  tone = "neutral",
   emphasis = "strong",
   dismissable = false,
   onDismiss,
@@ -45,7 +45,7 @@ export function Chip({
   children,
   ...rest
 }: ChipProps) {
-  const classes = [styles.chip, variantClass[variant], emphasisClass[emphasis], className]
+  const classes = [styles.chip, toneClass[tone], emphasisClass[emphasis], className]
     .filter(Boolean)
     .join(" ");
 

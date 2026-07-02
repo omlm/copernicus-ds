@@ -9,7 +9,7 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    severity: { control: "select", options: ["info", "success", "warning", "danger"] },
+    tone: { control: "select", options: ["info", "success", "warning", "danger"] },
     title: { control: "text" },
   },
   args: {
@@ -28,22 +28,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Info (Figma: "Severity=Info"). */
+/** Info (Figma: "Tone=Info"). */
 export const Info: Story = {};
 
-/** Suksess (Figma: "Severity=Success"). */
+/** Suksess (Figma: "Tone=Success"). */
 export const Success: Story = {
-  args: { severity: "success", title: "Success" },
+  args: { tone: "success", title: "Success" },
 };
 
-/** Advarsel (Figma: "Severity=Warning"). */
+/** Advarsel (Figma: "Tone=Warning"). */
 export const Warning: Story = {
-  args: { severity: "warning", title: "Warning" },
+  args: { tone: "warning", title: "Warning" },
 };
 
-/** Feil (Figma: "Severity=Danger"). */
+/** Feil (Figma: "Tone=Danger"). */
 export const Danger: Story = {
-  args: { severity: "danger", title: "Something went wrong" },
+  args: { tone: "danger", title: "Something went wrong" },
 };
 
 /** Uten tittel — bare beskrivelse. */

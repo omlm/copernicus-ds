@@ -10,8 +10,9 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    variant: { control: "inline-radio", options: ["primary", "secondary"] },
+    variant: { control: "inline-radio", options: ["primary", "secondary", "tertiary"] },
     size: { control: "inline-radio", options: ["small", "medium", "large"] },
+    tone: { control: "inline-radio", options: ["neutral", "danger"] },
     trailingIcon: { control: "boolean" },
     trailingIconName: { control: "select", options: [undefined, ...iconNames] },
     leadingIcon: { control: "boolean" },
@@ -23,6 +24,7 @@ const meta = {
     children: "Label",
     variant: "primary",
     size: "large",
+    tone: "neutral",
     trailingIcon: false,
     leadingIcon: false,
     disabled: false,
@@ -36,6 +38,15 @@ export const Primary: Story = {};
 
 export const Secondary: Story = {
   args: { variant: "secondary" },
+};
+
+export const Tertiary: Story = {
+  args: { variant: "tertiary" },
+};
+
+/** Destruktiv handling — tone="danger" overstyrer variant-fargen. */
+export const Danger: Story = {
+  args: { tone: "danger", children: "Slett" },
 };
 
 export const WithTrailingIcon: Story = {
@@ -87,8 +98,19 @@ export const AllVariants: Story = {
         <Button variant="secondary" size="medium" trailingIconName="settings">Innstillinger</Button>
       </div>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <Button variant="tertiary" size="large">Tertiary Large</Button>
+        <Button variant="tertiary" size="medium">Tertiary Medium</Button>
+        <Button variant="tertiary" size="small">Tertiary Small</Button>
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Button variant="primary" disabled>Primary Disabled</Button>
         <Button variant="secondary" disabled>Secondary Disabled</Button>
+        <Button variant="tertiary" disabled>Tertiary Disabled</Button>
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <Button variant="primary" tone="danger">Primary Danger</Button>
+        <Button variant="secondary" tone="danger">Secondary Danger</Button>
+        <Button variant="tertiary" tone="danger">Tertiary Danger</Button>
       </div>
     </div>
   ),
