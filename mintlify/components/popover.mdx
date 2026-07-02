@@ -1,0 +1,163 @@
+---
+title: "Popover"
+description: "Flytende panel for kontekstuell hjelp eller handlinger i Copernicus DS"
+icon: "message-square"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3206-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Popover/Popover.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Popover/Popover.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Popover`) og Figma-komponenten
+  (node `3206:3`). I Figma finnes komponenten som **ett fast eksempel** (header
+  + body), ikke et variant-sett. Kode-komponenten gjør både tittel og
+  lukkeknapp valgfrie, og eier verken posisjonering eller åpne/lukke-tilstand.
+</Note>
+
+## Oversikt
+
+Flytende panel for kontekstuell hjelp eller handlinger, med en valgfri
+tittel-/lukkeknapp-header og et innholdsområde. Figma-eksempelet viser ett
+konkret oppsett med tittel og innhold; kode-komponenten styler kun selve
+panelet — plassering (f.eks. via CSS anchor eller et posisjonerings-bibliotek)
+og hvorvidt panelet er synlig, eies av konsumenten.
+
+## Anatomi
+
+```
+Popover (FRAME) — padding: var(--spacing-16), border: 1px solid var(--color-border-default), radius: var(--radius-12), gap: var(--spacing-8)
+├── Header (FRAME) — space-between
+│   ├── Title (TEXT) — "Popover title"
+│   └── Close (icon "X")
+└── Body (TEXT) — "This is the popover content..."
+```
+
+## Sammensetning
+
+Figma-eksempelet består av en `Header`-frame (med tittel-tekst) etterfulgt av
+en `Body`-tekst. Det er ingen variant-egenskap for om tittelen eller
+lukkeknappen vises — eksempelet viser dem begge til stede samtidig.
+
+Kode-komponenten bygger den samme to-delte strukturen, men gjør hver del av
+headeren betinget av om tilhørende prop er satt, i stedet for å alltid vise
+den:
+
+- **Header → rendres kun når `title` eller `onClose` er satt** — hvis verken
+  tittel eller lukkeknapp finnes, hoppes hele header-blokken over
+  (`(title != null || onClose != null) && …`), noe det statiske Figma-eksempelet
+  ikke viser en variant av.
+- **Title → `title`-prop** — valgfri `ReactNode` rendret i `<p>`. Uten `title`
+  vises ingen tittel, selv om headeren fortsatt kan finnes (for lukkeknappen
+  alene).
+- **Close (X-ikonet) → avledet av `onClose`** — det finnes ingen egen
+  boolsk "vis lukkeknapp"-prop. Lukkeknappen rendres **kun** når `onClose`
+  er en funksjon; da blir den en ekte `<button aria-label="Lukk">` med
+  `X`-ikonet fra Lucide.
+- **Body → `children`** — obligatorisk `ReactNode`, tilsvarer Figmas
+  "Body"-tekstlag, men kan i kode inneholde vilkårlig innhold (ikke bare tekst).
+
+Fordi Figma-eksempelet alltid viser header med både tittel og lukkeknapp,
+dekker det ikke kombinasjonene uten lukkeknapp eller uten tittel — begge vist
+i Storybook-historiene `WithoutClose` og `BodyOnly`.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding | `--spacing-16` | 16px |
+| Gap (header ↔ body) | `--spacing-8` | 8px |
+| Gap (tittel ↔ lukkeknapp) | `--spacing-8` | 8px |
+| Border width | `--border-width-1` | 1px |
+| Border radius | `--radius-12` | 12px |
+| Maks bredde | — | 320px (fast pikselverdi i `Popover.module.css`, ikke tokenisert) |
+| Skygge-avstand/spredning | `--spacing-4` / `--spacing-12` | 4px / 12px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Title | `--typography-family-default` | Bold (`--typography-weight-bold`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+| Body | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Bakgrunn | `--color-background-primary` |
+| Border | `--color-border-default` |
+| Title-tekst / Close-ikon | `--color-foreground-primary` |
+| Body-tekst | `--color-foreground-secondary` |
+| Skygge-farge | `color-mix(in srgb, var(--color-neutral-900) 10%, transparent)` |
+| Fokus-ring (Close) | `--color-border-focus-ring` (via boks-skygge) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Popover/Popover.tsx` | Komponent + eksportert type |
+| `src/components/Popover/Popover.module.css` | CSS Modules (token-bundet via `var()`, med unntak av `max-width`) |
+| `src/components/Popover/Popover.stories.tsx` | Storybook stories |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `X` |
+
+### Import
+
+```tsx
+import { Popover, type PopoverProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `ReactNode` | — | Overskrift (Figma: "Title"). Valgfri. |
+| `children` | `ReactNode` | — | Innholdet (Figma: "Body"). Påkrevd. |
+| `onClose` | `() => void` | — | Kalles når lukkeknappen klikkes. Uten denne vises ingen lukkeknapp. |
+| `...rest` | `Omit<HTMLAttributes<HTMLDivElement>, "title">` | — | Alle native `div`-attributter (unntatt `title`, reservert til prop over) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Standard — med tittel og lukkeknapp (som i Figma)
+<Popover title="Popover title" onClose={() => setOpen(false)}>
+  This is the popover content. Use it for short contextual help or actions.
+</Popover>
+
+// Uten lukkeknapp
+<Popover title="Popover title">
+  This is the popover content. Use it for short contextual help or actions.
+</Popover>
+
+// Bare innhold
+<Popover>
+  This is the popover content. Use it for short contextual help or actions.
+</Popover>
+```
+
+## Tilgjengelighet
+
+- Root-elementet har `role="dialog"` og `aria-modal="false"` — signaliserer at
+  det er et ikke-modalt, kontekstuelt panel (bakgrunnen forblir interaktiv).
+- Lukkeknappen har `aria-label="Lukk"` og synlig fokusindikator via
+  `:focus-visible` (boks-skygge med `--color-border-focus-ring`).
+- Komponenten styrer **ikke** fokus-fangst, escape-til-lukk eller
+  posisjonering — det er konsumentens ansvar å håndtere åpne/lukke-tilstand,
+  fokushåndtering ved åpning/lukking og plassering relativt til en trigger.
+- Ingen a11y-annotasjoner funnet i Figma — vurder å legge til notater om
+  forventet fokushåndtering i Dev Mode.
+
+## Design–kode-paritet
+
+| Aspekt | Figma (ett fast eksempel) | Kode (`PopoverProps`) | Status |
+|--------|----------------------------|---------------------------|--------|
+| Header (Title + Close) | Alltid til stede i eksempelet | Rendres betinget av `title \|\| onClose` | ✅ Samsvarer for standardtilfellet; kode dekker i tillegg fravær av header |
+| Title → `title` | Fast tekstlag | `ReactNode`, valgfri | ✅ Samsvarer |
+| Close-ikon → `onClose` | Fast X-ikon i headeren | Rendres kun når `onClose` er satt | ✅ Samsvarer — Figma har ingen boolsk "vis lukkeknapp"-egenskap å sammenligne med, men tilstedeværelsen stemmer med eksempelet |
+| Body → `children` | Fast tekstlag | `ReactNode`, påkrevd, valfritt innhold | ✅ Samsvarer |
+| Posisjonering / åpne-lukke | Ikke representert (statisk panel) | Eies eksplisitt av konsumenten, ikke av komponenten | ➕ Kode-only ansvarsfordeling, ingen tilsvarende Figma-egenskap |

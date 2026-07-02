@@ -1,0 +1,144 @@
+---
+title: "Link"
+description: "Tekstlenke for navigasjon i Copernicus DS"
+icon: "link"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3190-9" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Link/Link.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Link/Link.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Link`) og Figma-komponentsettet
+  (node `3190:9`). `State` er ikke en prop i kode — Default/Hover/Focus dekkes av
+  CSS-pseudoklasser på `<a>`.
+</Note>
+
+## Oversikt
+
+Lenke i aksjonsfargen med understrek, for navigasjon som endrer URL. For handlinger
+brukeren utfører (send inn, fortsett, avvis), bruk `Button` i stedet.
+
+## Anatomi
+
+```
+Link (COMPONENT) — a, farge: var(--color-foreground-action), text-decoration: underline
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Default, Hover, Focus | Default | Interaksjonstilstand — ikke en prop i kode, styres av CSS-pseudoklasser (`:hover`, `:focus-visible`). |
+
+3 varianter i Figma, 0 varianter i kode (kun interaksjonstilstander).
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Understrek-avstand | `--spacing-4` | 4px |
+| Border radius (fokusring) | `--radius-4` | 4px |
+| Line height | `--spacing-20` | 20px |
+
+### Typografi
+
+| Element | Font | Weight | Size |
+|---------|------|--------|------|
+| Lenketekst | `--typography-family-default` | Normal (`--typography-weight-normal`) | `--size-16` (16px) |
+
+### Farge
+
+| Element | Tilstand | Token |
+|---------|----------|-------|
+| Tekst | Default / Hover | `--color-foreground-action` |
+| Fokusring | Focus | `--color-border-focus-ring` |
+| Fokusring-bakgrunn | Focus | `--color-background-canvas` |
+
+<Note>
+  Focus-ringen bygges av to stablede `box-shadow`-lag (`--color-background-canvas` innerst,
+  `--color-border-focus-ring` ytterst) pluss en svak bakgrunnstone fra
+  `color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent)` — samme mønster
+  som brukes på skjemafeltene.
+</Note>
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Link/Link.tsx` | Komponent + eksporterte typer |
+| `src/components/Link/Link.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Link/Link.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Link, type LinkProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen variant-akser i kode — `State` dekkes av CSS-pseudoklasser, ikke en `Record<...>`-mapping:
+
+```css
+.link:hover {
+  text-decoration: none;
+}
+
+.link:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Lenketeksten (påkrevd). |
+| `...rest` | `AnchorHTMLAttributes<HTMLAnchorElement>` | — | Alle native `a`-attributter (`href`, `target`, `rel`, `onClick`, osv.) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Standard
+<Link href="#">This is a link</Link>
+
+// I løpende tekst
+<p>
+  Les mer om designsystemet i <Link href="/docs">dokumentasjonen</Link> før du går videre.
+</p>
+
+// Ekstern lenke
+<Link href="https://example.com" target="_blank" rel="noreferrer">
+  Ekstern lenke
+</Link>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<a>` — får tastaturfokus og aktivering (Enter) gratis.
+- Synlig fokusindikator via `:focus-visible` (dobbel box-shadow-ring), ikke kun
+  browserens default `outline`.
+- Understrek som permanent visuell markør (fjernes kun på hover) — lenker skal ikke
+  identifiseres på farge alene.
+- `href` er ikke påkrevd i typen, men komponenten er meningsløs uten — sett alltid
+  `href` i praksis.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State | Default/Hover/Focus | CSS-pseudoklasser (`:hover`, `:focus-visible`) | ✅ Dekket (ikke prop) |
+| Label → `children` | Text | `ReactNode` | ✅ Samsvarer |

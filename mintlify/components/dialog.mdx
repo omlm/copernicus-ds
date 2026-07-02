@@ -1,0 +1,125 @@
+---
+title: "Dialog"
+description: "Modal dialog bygget på det native <dialog>-elementet i Copernicus DS"
+icon: "square"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3211-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Dialog/Dialog.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Dialog/Dialog.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Dialog`). Figma-noden (`3211:3`) er ett
+  fast eksempel, ikke et variant-sett — se [Sammensetning](#sammensetning) i stedet for
+  en egenskaps-tabell.
+</Note>
+
+## Oversikt
+
+Et native `<dialog>`-element vist med `showModal()`, så fokusfelle, `Escape`-lukking
+og backdrop kommer gratis fra nettleseren. Kontrolleres med `open` og `onClose`.
+
+## Anatomi
+
+```
+Dialog (DIALOG, showModal()) — ::backdrop mørklegger bak
+└── Panel (DIV)
+    ├── Header (DIV)
+    │   ├── Title (P) — vises kun hvis satt
+    │   └── Close (BUTTON, Lucide "X")
+    ├── Body (DIV) — vises kun hvis children er satt
+    └── Actions (DIV) — vises kun hvis satt, høyrejustert
+```
+
+## Sammensetning
+
+Figma-eksemplet (node `3211:3`, 420×200) viser én fast variant med tre navngitte
+seksjoner:
+
+| Figma-seksjon | Kode-prop | Type | Notes |
+|---|---|---|---|
+| Header → Title | `title` | `ReactNode` | Vises kun hvis satt (ingen tom overskrift-plass). |
+| Body | `children` | `ReactNode` | Brødtekst/innhold. |
+| Actions | `actions` | `ReactNode` | Handlingsknapper nederst til høyre, f.eks. `<Button>`-er. |
+| — (styrer selve visningen) | `open` | `boolean` (påkrevd) | Finnes ikke som Figma-egenskap — dialogen er alltid "åpen" i designet. |
+| — (lukkeknapp, alltid i Header) | `onClose` | `() => void` | Kalles fra Escape, backdrop-klikk og X-knappen. |
+
+## Tokens
+
+| Bruk | Token |
+|------|-------|
+| Panel-bakgrunn | `--color-background-primary` |
+| Panel-tekst | `--color-foreground-primary` |
+| Radius | `--radius-24` |
+| Padding | `--spacing-24` |
+| Tittel-font | `--typography-family-headers`, `--typography-weight-bold`, `--spacing-20` |
+| Body-tekst | `--color-foreground-secondary`, `--typography-weight-normal` |
+| Focus-ring (lukkeknapp) | `--color-border-focus-ring` |
+| Backdrop | `color-mix(in srgb, --color-neutral-900 40%, transparent)` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Dialog/Dialog.tsx` | Komponent + eksportert type |
+| `src/components/Dialog/Dialog.module.css` | CSS Modules (`::backdrop` inkludert) |
+| `src/components/Dialog/Dialog.stories.tsx` | Storybook stories |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `X` |
+
+### Import
+
+```tsx
+import { Dialog, type DialogProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — (påkrevd) | Om dialogen vises (som modal, med backdrop). |
+| `title` | `ReactNode` | — | Overskrift (Figma: "Title"). |
+| `children` | `ReactNode` | — | Brødtekst/innhold (Figma: "Body"). |
+| `actions` | `ReactNode` | — | Handlingsknapper nederst til høyre (Figma: "Actions"). |
+| `onClose` | `() => void` | — | Kalles når dialogen lukkes (Escape, backdrop-klikk eller lukkeknappen). |
+| `...rest` | `DialogHTMLAttributes<HTMLDialogElement>` (uten `open`/`title`) | — | Native `<dialog>`-attributter spres på rot-elementet. |
+
+### Eksempler
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Dialog
+  open={open}
+  title="Slett element?"
+  onClose={() => setOpen(false)}
+  actions={
+    <>
+      <Button variant="tertiary" onClick={() => setOpen(false)}>Avbryt</Button>
+      <Button tone="danger" onClick={handleDelete}>Slett</Button>
+    </>
+  }
+>
+  Dette kan ikke angres.
+</Dialog>
+```
+
+## Tilgjengelighet
+
+- Native `<dialog>` + `showModal()` gir fokusfelle og `Escape`-lukking uten egen JS.
+- Klikk på `::backdrop` (utenfor panelet) lukker dialogen via `onClose`.
+- Lukkeknappen har `aria-label="Lukk"`; X-ikonet er dekorativt (`aria-hidden`).
+- `<title>`-teksten er en vanlig `<p>`, ikke koblet med `aria-labelledby` — vurder å
+  legge til om dialogens tilgjengelige navn må matche tittelen eksplisitt.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Header → Title | Tekstlag | `title?: ReactNode` | ✅ Samsvarer |
+| Body | Tekstlag | `children?: ReactNode` | ✅ Samsvarer |
+| Actions | Frame | `actions?: ReactNode` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap (fast eksempel) | `open`, `onClose` | ➕ Kode-only, styrer faktisk visning/lukking |

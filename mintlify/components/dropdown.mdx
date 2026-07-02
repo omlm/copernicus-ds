@@ -1,0 +1,120 @@
+---
+title: "Dropdown"
+description: "Nedtrekksmeny for å velge ett alternativ fra en liste i Copernicus DS"
+icon: "chevron-down"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3207-20" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Dropdown/Dropdown.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Dropdown/Dropdown.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Dropdown`) og Figma-komponentsettet
+  (node `3207:20`, 2 varianter).
+</Note>
+
+## Oversikt
+
+En knapp som åpner en meny med alternativer. Lukker ved valg, `Escape`, eller klikk
+utenfor. For native skjemavalg, vurder en `<select>` i stedet.
+
+## Anatomi
+
+```
+Dropdown (DIV, position: relative)
+├── Trigger (BUTTON) — aria-haspopup="listbox", aria-expanded
+│   ├── Label / Placeholder (SPAN)
+│   └── Chevron (chevron-down, roterer 180° når åpen)
+└── Menu (UL, role="listbox") — vises kun når åpen
+    └── Menu item (LI > BUTTON, role="option") — × N
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Closed, Open | Closed | Styrt av intern state i kode (`open`/`setOpen`), ikke en prop. CSS: `[aria-expanded="false"\|"true"]`. |
+
+Figma-eksemplet har ingen komponent-egenskaper for menyinnhold — antall og innhold i
+`Menu item`-ene er kode-only (`options`-arrayet).
+
+## Tokens
+
+| Bruk | Token |
+|------|-------|
+| Trigger-bakgrunn | `--color-background-canvas` |
+| Trigger-border/tekst | `--color-foreground-primary` |
+| Placeholder-tekst | `--color-foreground-secondary` |
+| Focus-ring | `--color-border-focus-ring` |
+| Meny-border | `--color-border-default` |
+| Valgt alternativ | `--color-foreground-action` (bold tekst) |
+| Hover/focus på alternativ | `--color-system-neutral-weak` |
+| Radius | `--radius-12` |
+| Høyde (trigger) | `--size-48` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Dropdown/Dropdown.tsx` | Komponent + eksporterte typer |
+| `src/components/Dropdown/Dropdown.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Dropdown/Dropdown.stories.tsx` | Storybook stories |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `ChevronDown` |
+
+### Import
+
+```tsx
+import { Dropdown, type DropdownProps, type DropdownOption } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `DropdownOption[]` | — (påkrevd) | Alternativene i menyen (Figma: "Menu item"). `{ value: string; label: ReactNode }`. |
+| `placeholder` | `ReactNode` | `"Choose an option"` | Tekst når ingenting er valgt (Figma: "Trigger label"). |
+| `value` | `string` | — | Valgt verdi (kontrollert). |
+| `onChange` | `(value: string) => void` | — | Kalles når brukeren velger et alternativ. |
+| `...rest` | `HTMLAttributes<HTMLDivElement>` | — | Native div-attributter spres på rot-elementet. |
+
+### Eksempler
+
+```tsx
+const options = [
+  { value: "one", label: "Option 1" },
+  { value: "two", label: "Option 2" },
+  { value: "three", label: "Option 3" },
+];
+
+// Ukontrollert
+<Dropdown options={options} />
+
+// Kontrollert
+const [value, setValue] = useState<string>();
+<Dropdown options={options} value={value} onChange={setValue} />
+
+// Egen placeholder
+<Dropdown options={options} placeholder="Velg et alternativ" />
+```
+
+## Tilgjengelighet
+
+- `Trigger` er en ekte `<button>` med `aria-haspopup="listbox"` og `aria-expanded`.
+- Menyen har `role="listbox"`; hvert alternativ er `role="option"` med `aria-selected`.
+- Lukkes med `Escape`, ved valg, eller klikk utenfor (via `pointerdown`-listener på `document`).
+- Chevron-ikonet er dekorativt (`aria-hidden`).
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State → intern state | Closed/Open | `useState<boolean>` (`open`) | ✅ Dekket (ikke prop) |
+| Trigger label → `placeholder`/valgt `label` | "Trigger label" | `ReactNode` | ✅ Samsvarer |
+| Menu item → `options` | "Option label" | `DropdownOption[]` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `value`, `onChange` | ➕ Kode-only, for kontrollert bruk |

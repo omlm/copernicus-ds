@@ -1,0 +1,124 @@
+---
+title: "List"
+description: "Punktliste eller nummerert liste i Copernicus DS"
+icon: "list"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3199-23" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/List/List.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/List/List.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/List`) og Figma-komponentsettet
+  (node `3199:23`). Merk at repoet også har en separat `ListCard`-komponent —
+  denne siden dekker kun `List` (tekstlisten).
+</Note>
+
+## Oversikt
+
+Token-stylet liste for punktoppstillinger eller nummererte sekvenser. Rendres som
+native `ul`/`ol` — send inn vanlige `li`-elementer som barn.
+
+## Anatomi
+
+```
+List (COMPONENT) — ul/ol, gap: var(--spacing-8), padding-inline-start: var(--spacing-24)
+└── li (× n) — markør arver var(--color-foreground-primary)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Type** (Variant) | Bullet, Number | Bullet | Bullet renderes som `<ul>`, Number som `<ol>`. |
+
+2 varianter totalt — ingen boolske eller tekst-egenskaper (listepunktene sendes som
+`children`, ikke en Figma Text-egenskap).
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap mellom listepunkter | `--spacing-8` | 8px |
+| Innrykk (padding-inline-start) | `--spacing-24` | 24px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Listepunkt | `--typography-family-default` | Normal (`--typography-weight-normal`) | `--size-16` (16px) | `--spacing-20` (20px) |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Tekst | `--color-foreground-primary` |
+| Markør (bullet/nummer) | `--color-foreground-primary` (arves via `::marker`) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/List/List.tsx` | Komponent + eksporterte typer |
+| `src/components/List/List.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/List/List.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { List, type ListProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const Tag = type === "number" ? "ol" : "ul";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `"bullet" \| "number"` | `"bullet"` | Punktliste (`ul`) eller nummerert liste (`ol`). |
+| `children` | `ReactNode` | — | Listepunktene — bruk vanlige `<li>`-elementer (påkrevd). |
+| `...rest` | `HTMLAttributes<HTMLUListElement \| HTMLOListElement>` | — | Alle native liste-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Punktliste (default)
+<List>
+  <li>List item 1</li>
+  <li>List item 2</li>
+  <li>List item 3</li>
+</List>
+
+// Nummerert
+<List type="number">
+  <li>List item 1</li>
+  <li>List item 2</li>
+  <li>List item 3</li>
+</List>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<ul>`/`<ol>` — skjermlesere annonserer listelengde og posisjon
+  automatisk for hvert `<li>`.
+- Markøren (bullet eller nummer) styres av `list-style` fra elementtypen, ikke
+  simulert med CSS — beholder semantikken.
+- Ingen interaksjon — rent innholdselement.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Type → `type` | Bullet, Number | `bullet`, `number` | ✅ Samsvarer |

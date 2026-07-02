@@ -1,0 +1,162 @@
+---
+title: "Breadcrumbs"
+description: "Brødsmulesti for å vise hvor brukeren er i navigasjonshierarkiet"
+icon: "slash"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3196-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Breadcrumbs/Breadcrumbs.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Breadcrumbs/Breadcrumbs.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Breadcrumbs`) og Figma-komponenten
+  (node `3196:3`). I Figma finnes komponenten som **ett fast eksempel** (to lenker +
+  gjeldende side), ikke et variant-sett med en "Variant"-egenskap. Kode-komponenten
+  er derimot prop-drevet og tar en vilkårlig lang liste med elementer via `items`.
+</Note>
+
+## Oversikt
+
+Brødsmulesti som viser brukerens plassering i navigasjonshierarkiet, med lenker
+tilbake til overliggende nivåer og gjeldende side markert til slutt. Figma-eksempelet
+viser ett fast tilfelle med tre nivåer; kode-komponenten genererer strukturen
+dynamisk fra en `items`-liste av vilkårlig lengde.
+
+## Anatomi
+
+```
+Breadcrumbs (NAV) — horizontal, gap: var(--spacing-8)
+├── Link (TEXT) — "Home"
+├── Separator (TEXT) — "/"
+├── Link (TEXT) — "Library"
+├── Separator (TEXT) — "/"
+└── Current (TEXT) — "Current page", aria-current="page"
+```
+
+## Sammensetning
+
+Figma-eksempelet er bygget som en fast rekke av tre tekst-lag med skilletegn
+mellom: `Link` → `Separator` → `Link` → `Separator` → `Current`. Det er ingen
+component-property-akse i Figma for antall ledd — eksempelet viser rett og slett
+ett konkret tilfelle.
+
+I kode er den samme strukturen generert fra en prop, ikke hardkodet:
+
+- **Link → `items[].label` + `items[].href`** — hvert ikke-siste element i `items`
+  rendres som en `<a>` i aksjonsfargen (`styles.link`), med `href` fra objektet.
+- **Separator → automatisk `/`** — komponenten setter selv inn et `/`-skilletegn
+  (`aria-hidden="true"`) mellom hvert element. Det er ikke en egen prop, kun
+  avledet av listelengden.
+- **Current → siste `items`-element** — det siste elementet i arrayet (eller et
+  element uten `href`) rendres som `<span aria-current="page">` i stedet for en
+  lenke, tilsvarende Figmas "Current"-lag.
+
+Fordi Figma bare viser ett fast eksempel med to lenker, dekker det ikke antall
+ledd som en variabel — men strukturen (lenke → skille → lenke → skille → gjeldende)
+gjentar seg for enhver listelengde i kode, som vist i Storybook-historiene
+`TwoLevels` og `Deep`.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap mellom ledd | `--spacing-8` | 8px |
+| Fokus-ring offset | `--spacing-4` | 4px (underline-offset på lenke-hover) |
+| Border radius (lenke-fokus) | `--radius-4` | 4px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Link / Separator | `--typography-family-default` | Normal (`--typography-weight-normal`) | 14px (`--spacing-14`) | 20px (`--spacing-20`) |
+| Current | `--typography-family-default` | Bold (`--typography-weight-bold`) | 14px (`--spacing-14`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Link | `--color-foreground-action` |
+| Separator | `--color-foreground-secondary` |
+| Current | `--color-foreground-primary` |
+| Fokus-ring | `--color-border-focus-ring` (via boks-skygge) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Breadcrumbs/Breadcrumbs.tsx` | Komponent + eksporterte typer |
+| `src/components/Breadcrumbs/Breadcrumbs.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Breadcrumbs/Breadcrumbs.stories.tsx` | Storybook stories |
+
+### Import
+
+```tsx
+import { Breadcrumbs, type BreadcrumbsProps, type BreadcrumbItem } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `BreadcrumbItem[]` | — | Stien, i rekkefølge. Siste element vises som gjeldende side (påkrevd). |
+| `...rest` | `HTMLAttributes<HTMLElement>` | — | Alle native `nav`-attributter spres på root-elementet. |
+
+`BreadcrumbItem`:
+
+| Felt | Type | Description |
+|------|------|-------------|
+| `label` | `ReactNode` | Synlig tekst (Figma: "Link"/"Current"). |
+| `href` | `string` (valgfri) | Mål for lenken. Siste element trenger ikke `href` — det gjør elementet til gjeldende side uansett posisjon. |
+
+### Eksempler
+
+```tsx
+// Standard — to lenker og gjeldende side (som i Figma)
+<Breadcrumbs
+  items={[
+    { label: "Home", href: "#" },
+    { label: "Library", href: "#" },
+    { label: "Current page" },
+  ]}
+/>
+
+// Kort sti — bare ett nivå opp
+<Breadcrumbs items={[{ label: "Home", href: "#" }, { label: "Current page" }]} />
+
+// Dyp sti
+<Breadcrumbs
+  items={[
+    { label: "Home", href: "#" },
+    { label: "Library", href: "#" },
+    { label: "Components", href: "#" },
+    { label: "Navigation", href: "#" },
+    { label: "Breadcrumbs" },
+  ]}
+/>
+```
+
+## Tilgjengelighet
+
+- Rendres som `<nav aria-label="Brødsmulesti">` med en `<ol>`-liste — semantisk
+  navigasjonslandemerke.
+- Gjeldende side får `aria-current="page"` på et ikke-interaktivt `<span>`,
+  fremfor en lenke til seg selv.
+- Skilletegnet (`/`) er `aria-hidden="true"` slik at skjermlesere ikke leser
+  det opp mellom hvert ledd.
+- Lenker har synlig fokusindikator via `:focus-visible` (boks-skygge med
+  `--color-border-focus-ring`) og understrek på hover.
+
+## Design–kode-paritet
+
+| Aspekt | Figma (ett fast eksempel) | Kode (`BreadcrumbsProps`) | Status |
+|--------|---------------------------|----------------------------|--------|
+| Link | To faste "Link"-tekstlag | `items[].label` + `items[].href`, vilkårlig antall | ✅ Samsvarer strukturelt — Figma viser ett tilfelle, kode generaliserer |
+| Separator | Fast "/"-tekstlag mellom hver lenke | Generert automatisk mellom elementer, ikke en prop | ✅ Samsvarer (avledet, ikke konfigurerbart i noen av delene) |
+| Current | Ett fast "Current"-tekstlag til slutt | Siste `items`-element (eller element uten `href`) | ✅ Samsvarer |
+| Antall ledd | Fast på 3 i Figma-eksempelet | `items.length` — vilkårlig | ➕ Kode er mer fleksibel enn det ene Figma-eksempelet viser |

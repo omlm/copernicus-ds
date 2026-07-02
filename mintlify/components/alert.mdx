@@ -1,0 +1,167 @@
+---
+title: "Alert"
+description: "Innrammet varselboks for status- og systemmeldinger i Copernicus DS"
+icon: "triangle-exclamation"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3195-15" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Alert/Alert.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Alert/Alert.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Alert`) og Figma-komponentsettet
+  (node `3195:15`, 4 varianter). Prop-navnet i kode het tidligere `severity` —
+  omdøpt til `tone` denne sesjonen for å samsvare med Figma-egenskapen `Tone`.
+</Note>
+
+## Oversikt
+
+Innrammet melding for status- og systemtilbakemeldinger — informasjon, suksess,
+advarsel eller feil. Komponenten har **4 varianter** i Figma, én per `Tone`.
+Tittel og beskrivelse er ikke egne Figma-tekstegenskaper, men vanlige React-props
+(`title`, `children`) i kode.
+
+## Anatomi
+
+```
+Alert (DIV) — vertical layout, gap: var(--spacing-8), padding: var(--spacing-16), radius: var(--radius-12)
+├── Title (P) — vises når title er satt
+└── Description (DIV) — vises når children er satt
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Tone** (Variant) | Info, Success, Warning, Danger | Info | Fargefamilie — bestemmer bakgrunn, tekst og border |
+
+4 varianter totalt (én per `Tone`). `Title` og `Description` er ikke eksponert
+som Figma-tekstegenskaper på komponentsettet — de er rene React-props i kode.
+
+### Fargematrise — bestemt av Tone
+
+| Tone | Background | Text | Border |
+|------|-----------|------|--------|
+| Info | `#B3C4E5` | `#274072` | `#8DA6D8` |
+| Success | `#B3E5B9` | `#267331` | `#8DD897` |
+| Warning | `#FADE9E` | `#302303` | `#F7CE6E` |
+| Danger | `#E5B3B3` | `#722727` | `#D88D8D` |
+
+<Note>
+  Alert bruker kun `weak`-utgaven av system-fargene (samme tokens som `Chip`
+  sin `Emphasis=Weak` og `Badge` sin `Emphasis=Weak`) — det finnes ingen
+  `strong`-variant av Alert i Figma.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding (alle sider) | `--spacing-16` | 16px |
+| Gap (tittel ↔ beskrivelse) | `--spacing-8` | 8px |
+| Border radius | `--radius-12` | 12px |
+| Border width | `--border-width-1` | 1px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Title | `--typography-family-default` | SemiBold (`--typography-weight-semibold`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+| Description | `--typography-family-default` | Light (`--typography-weight-light`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+Hver `Tone` peker på et eget `--color-system-<tone>-*`-sett (`weak`, `on-weak`,
+`weak-border`), delt med `Chip` og `Badge`. Ingen alert-spesifikke tokens —
+kun de globale `color-system-*`-tokenene, komponert til lokale CSS-variabler
+(`--alert-background`, `--alert-foreground`, `--alert-border`) i `Alert.module.css`.
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Alert/Alert.tsx` | Komponent + eksporterte typer |
+| `src/components/Alert/Alert.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Alert/Alert.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Alert, type AlertProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const toneClass: Record<AlertTone, string> = {
+  info: styles.info,
+  success: styles.success,
+  warning: styles.warning,
+  danger: styles.danger,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tone` | `"info" \| "success" \| "warning" \| "danger"` | `"info"` | Alvorlighetsgrad — bestemmer farge og `role`. |
+| `title` | `ReactNode` | — | Overskrift. Rendres kun når satt. |
+| `children` | `ReactNode` | — | Brødtekst/beskrivelse. Rendres kun når satt. |
+| `...rest` | `Omit<HTMLAttributes<HTMLDivElement>, "title">` | — | Alle native div-attributter (unntatt `title`, som er reservert for overskriften) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Info (default)
+<Alert title="Information">
+  This is the alert description.
+</Alert>
+
+// Suksess
+<Alert tone="success" title="Success">
+  Endringene er lagret.
+</Alert>
+
+// Advarsel
+<Alert tone="warning" title="Warning">
+  Sjekk feltene før du fortsetter.
+</Alert>
+
+// Feil
+<Alert tone="danger" title="Something went wrong">
+  Kunne ikke lagre endringene.
+</Alert>
+
+// Uten tittel — bare beskrivelse
+<Alert>Bare en kort melding.</Alert>
+```
+
+## Tilgjengelighet
+
+- `role="alert"` for `tone="warning"` og `tone="danger"` — annonseres umiddelbart
+  av skjermlesere (avbrytende).
+- `role="status"` for `tone="info"` og `tone="success"` — annonseres høflig,
+  uten å avbryte.
+- Tittel og beskrivelse er vanlig tekstinnhold (`<p>`/`<div>`), ingen skjulte
+  a11y-hull i markupen.
+- Ingen a11y-annotasjoner funnet i Figma — vurder å legge til kontrast-/aria-notater
+  i Dev Mode.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Tone → `tone` | Info/Success/Warning/Danger | `info`/`success`/`warning`/`danger` | ✅ Samsvarer |
+| Title → `title` | Ingen Figma-tekstegenskap | `ReactNode` | ➕ Kode-only prop |
+| Description → `children` | Ingen Figma-tekstegenskap | `ReactNode` | ➕ Kode-only prop |
+| Prop-navn | Figma-egenskap heter `Tone` | Kode-prop het tidligere `severity`, nå `tone` | ✅ Samsvarer (omdøpt denne sesjonen) |
+| role | Ingen tilsvarende Figma-egenskap | `"alert"` (warning/danger) / `"status"` (info/success) | ➕ Kode-only, for tilgjengelighet |

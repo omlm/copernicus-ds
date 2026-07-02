@@ -1,0 +1,125 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "palm",
+  "name": "Copernicus DS",
+  "colors": {
+    "primary": "#FF1A6E",
+    "light": "#FF1A6E",
+    "dark": "#FF1A6E"
+  },
+  "favicon": {
+    "light": "/images/mmsport.svg",
+    "dark": "/images/mmsport.svg"
+  },
+  "navigation": {
+    "pages": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Foundations",
+        "pages": [
+          "foundations/design-principles",
+          "foundations/design-tokens",
+          "foundations/tooling"
+        ]
+      },
+      {
+        "group": "Components",
+        "pages": [
+          "components/alert",
+          "components/badge",
+          "components/breadcrumbs",
+          "components/button",
+          "components/card",
+          "components/checkbox",
+          "components/chip",
+          "components/details",
+          "components/dialog",
+          "components/divider",
+          "components/dropdown",
+          "components/fieldset",
+          "components/icon",
+          "components/icon-button",
+          "components/input",
+          "components/link",
+          "components/list",
+          "components/list-card",
+          "components/page-title",
+          "components/pagination",
+          "components/popover",
+          "components/radio-button",
+          "components/radio-button-group",
+          "components/search",
+          "components/skeleton",
+          "components/spinner",
+          "components/switch",
+          "components/table",
+          "components/tabs",
+          "components/textarea",
+          "components/toggle-group"
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://mintlify.com/docs",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://mintlify.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/images/mmsport.svg",
+    "dark": "/images/mmsport.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "href": "mailto:olemarius@mentalmomentum.no",
+        "label": "Call me"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.mintlify.com"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "fonts": {
+    "family": "Nunito"
+  }
+}

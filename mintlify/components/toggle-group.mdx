@@ -1,0 +1,168 @@
+---
+title: "ToggleGroup"
+description: "Segmentert valggruppe der ett alternativ er aktivt, i Copernicus DS"
+icon: "toggle-left"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3203-8" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/ToggleGroup/ToggleGroup.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/ToggleGroup/ToggleGroup.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/ToggleGroup`) og to Figma-noder:
+  parent-frame "Toggle group" (node `3203:8`) og det underliggende komponentsettet
+  "Toggle item" (node `3203:7`).
+</Note>
+
+## Oversikt
+
+Segmentert valggruppe (også kjent som "segmented control") der nøyaktig ett
+alternativ er aktivt om gangen — typisk brukt for visningsbytter (liste/rutenett/kart)
+eller andre gjensidig utelukkende valg med få alternativer. Implementert som
+`role="radiogroup"` med piltast-navigasjon.
+
+Frame **"Toggle group"** (node `3203:8`) i Figma er komponert av **3 instanser**
+av komponentsettet **"Toggle item"** (node `3203:7`) — parent-frame har ingen egne
+component properties. Variant-aksen (valgt/ikke valgt) ligger på "Toggle item".
+
+## Anatomi
+
+```
+Toggle group (DIV, role="radiogroup") — inline-flex, gap: var(--spacing-4),
+                                          padding: var(--spacing-4), radius: var(--radius-999)
+├── Toggle item (BUTTON, role="radio") (INSTANCE) — "is Selected=No"
+├── Toggle item (BUTTON, role="radio") (INSTANCE) — "is Selected=Yes"
+└── Toggle item (BUTTON, role="radio") (INSTANCE) — "is Selected=No"
+```
+
+## Varianter
+
+### Egenskaper (Figma) — "Toggle item" (node 3203:7)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **is Selected** (Variant) | Yes, No | No | Om alternativet er det aktive valget i gruppa. |
+
+1 (is Selected) = 2 varianter på "Toggle item". Parent-frame "Toggle group" har
+ingen egne component properties — antall og innhold i alternativene styres av
+hvor mange "Toggle item"-instanser som legges inn.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding (container) | `--spacing-4` | 4px |
+| Gap (mellom items) | `--spacing-4` | 4px |
+| Padding (per item) | `--spacing-8` `--spacing-16` | 8px / 16px |
+| Border radius (container og item) | `--radius-999` | 999px |
+| Border width (container) | `--border-width-1` | 1px |
+
+### Farge
+
+| Element | Tilstand | Token |
+|---------|----------|-------|
+| Border | Container | `--color-border-default` |
+| Bakgrunn | Item, default | transparent |
+| Bakgrunn | Item, hover | `--color-system-neutral-weak` |
+| Bakgrunn | Item, selected | `--color-background-action` |
+| Tekst | Item, default/hover | `--color-foreground-primary` |
+| Tekst | Item, selected | `--color-foreground-on-action` |
+| Focus-ring | Focus | `--color-border-focus-ring` / `--color-background-canvas` |
+
+### Typografi
+
+| Element | Weight | Size | Line Height |
+|---------|--------|------|-------------|
+| Item-label (default) | Normal (`--typography-weight-normal`) | `--size-16` | `--spacing-20` |
+| Item-label (selected) | Bold (`--typography-weight-bold`) | `--size-16` | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/ToggleGroup/ToggleGroup.tsx` | Komponent + eksporterte typer (`ToggleGroup`, `ToggleGroupOption`) |
+| `src/components/ToggleGroup/ToggleGroup.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/ToggleGroup/ToggleGroup.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { ToggleGroup, type ToggleGroupProps, type ToggleGroupOption } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+className={[styles.item, isSelected && styles.selected].filter(Boolean).join(" ")}
+```
+
+### Komponent-API
+
+**ToggleGroupOption**
+
+| Felt | Type | Description |
+|------|------|-------------|
+| `value` | `string` | Verdien valget representerer. |
+| `label` | `ReactNode` | Synlig etikett (Figma: "Label"). |
+
+**ToggleGroupProps**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `ToggleGroupOption[]` | — | Valgene, i rekkefølge (påkrevd). |
+| `defaultValue` | `string` | første `option.value` | Valgt verdi ved første rendring (ukontrollert). |
+| `value` | `string` | — | Valgt verdi (kontrollert). Brukes sammen med `onChange`. |
+| `onChange` | `(value: string) => void` | — | Kalles når brukeren velger et annet alternativ. |
+| `aria-label` | `string` | — | Tilgjengelig navn for gruppen. |
+| `...rest` | `Omit<HTMLAttributes<HTMLDivElement>, "onChange">` | — | Alle native div-attributter (unntatt `onChange`, som er omdefinert) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Ukontrollert — første valg aktivt
+<ToggleGroup
+  aria-label="Velg visning"
+  options={[
+    { value: "list", label: "Liste" },
+    { value: "grid", label: "Rutenett" },
+    { value: "map", label: "Kart" },
+  ]}
+/>
+
+// Kontrollert
+const [value, setValue] = useState("grid");
+<ToggleGroup
+  aria-label="Velg visning"
+  options={options}
+  value={value}
+  onChange={setValue}
+/>
+```
+
+## Tilgjengelighet
+
+- Implementert som `role="radiogroup"` med hvert alternativ som `role="radio"`
+  og `aria-checked` — samme mønster som en radioknapp-gruppe, men visuelt
+  segmentert.
+- Full piltast-navigasjon (venstre/opp og høyre/ned) flytter fokus og velger
+  alternativet samtidig, med roving tabindex (kun valgt item har `tabIndex={0}`).
+- Krever `aria-label` (eller ekstern `aria-labelledby` via `...rest`) for at
+  gruppens formål skal være tydelig for skjermlesere, siden det ikke finnes
+  noen synlig gruppe-etikett i komponenten selv.
+- Synlig fokusindikator via `:focus-visible` (`box-shadow` med
+  `--color-border-focus-ring`).
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Toggle group (parent frame) | 3× "Toggle item"-instanser, ingen egne properties | `options: ToggleGroupOption[]` (vilkårlig antall) | ✅ Dekket — kode støtter et fleksibelt antall alternativer, ikke fastlåst til 3 |
+| is Selected → valgt tilstand | Yes/No (variant på "Toggle item") | `aria-checked` + `styles.selected` styrt av `value`/`internalValue` | ✅ Samsvarer |
+| Label → `ToggleGroupOption.label` | Text (på "Toggle item") | `ReactNode` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `ToggleGroupOption.value`, `aria-label`, kontrollert/ukontrollert API | ➕ Kode-only, for verdihåndtering og tilgjengelighet |

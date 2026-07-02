@@ -1,0 +1,181 @@
+---
+title: "RadioButton"
+description: "Radio-valg for gjensidig utelukkende alternativer i Copernicus DS"
+icon: "circle-dot"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3094-4649" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/RadioButton/RadioButton.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/RadioButton/RadioButton.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/RadioButton`) og Figma-komponenten
+  "Radio button" (node `3094:4649`, merk mellomrommet i Figma-navnet). I Figma er
+  dette ett enkelt component (ikke et component-set med flere instanser i gruppe)
+  — grupperingslogikken (`name`, valgt verdi) er kode-only og løses av
+  `RadioButtonGroup` via React Context.
+</Note>
+
+## Oversikt
+
+Ett enkelt radio-valg for gjensidig utelukkende alternativer. Brukes helst inni
+en `RadioButtonGroup`, som styrer `name`, valgt verdi og `onChange` via context —
+men fungerer også frittstående med vanlige input-props. Komponenten har
+**4 varianter** i Figma, bygget fra 2 variant-egenskaper (`is Selected` × `State`).
+
+## Anatomi
+
+```
+RadioButton (LABEL) — flex row, gap: var(--spacing-16), min-height: var(--size-40)
+├── input[type="radio"] (visuelt skjult, men fokuserbar)
+├── Control (SPAN, aria-hidden) — 24px sirkel, 4px padding, 1px border, radius 999px
+│   └── Indicator (SPAN) — 16px prikk, scale(0) → scale(1) når valgt
+└── Label (SPAN) — tekstinnhold
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **is Selected** (Variant) | No, Yes | No | Om alternativet er valgt. |
+| **State** (Variant) | Default, Focus | Default | `Focus` er `:focus-visible` i kode, ikke en prop. |
+| **Label** (Text) | string | "This is a choice" | Tekstinnhold — mappes til `children` i kode. |
+
+2 (is Selected) × 2 (State) = 4 varianter. `Label` er en tekstegenskap som ikke
+multipliserer variant-antallet.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (sirkel ↔ etikett) | `--spacing-16` | 16px |
+| Min-høyde (klikkflate) | `--size-40` | 40px |
+| Sirkel-størrelse | `--size-24` | 24px |
+| Sirkel-padding | `--spacing-4` | 4px |
+| Border | `--border-width-1` | 1px |
+| Border radius | `--radius-999` | 999px (full sirkel) |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Border / tekst | `--color-foreground-primary` |
+| Indikator (prikk) | `--color-foreground-primary` |
+
+### Fokus-ring
+
+Samme mønster som `Checkbox` og `Switch` — Figma-effekten "Focus 1" er en
+lilla drop-shadow, gjenskapt i kode som en svak fylling pluss en dobbel
+box-shadow-ring bundet til `--color-border-focus-ring` (`--color-purple-500`).
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Fokus-fyll | `color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent)` | 5 % lilla |
+| Ring, indre (gap) | `--color-background-canvas` | 3px |
+| Ring, ytre | `--color-border-focus-ring` | 6px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/RadioButton/RadioButton.tsx` | Komponent + eksportert type |
+| `src/components/RadioButton/RadioButton.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/RadioButton/RadioButton.stories.tsx` | Storybook stories + argTypes |
+| `src/components/RadioButtonGroup/RadioGroupContext.ts` | Context for gruppert bruk (`name`, valgt verdi, `onChange`, `disabled`) |
+
+### Import
+
+```tsx
+import { RadioButton, type RadioButtonProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record`-basert variant-mapping — `is Selected` og `State` følger av
+native input-tilstand via CSS-selektorer, akkurat som `Checkbox`:
+
+```css
+.input:checked ~ .control .indicator { transform: scale(1); }
+.input:focus-visible ~ .control { box-shadow: 0 0 0 3px var(--color-background-canvas), 0 0 0 6px var(--color-border-focus-ring); }
+```
+
+Når komponenten står inni en `RadioButtonGroup`, hentes `checked`, `name` og
+`disabled` fra `RadioGroupContext` i stedet for fra props direkte:
+
+```tsx
+const group = useContext(RadioGroupContext);
+const isDisabled = disabled ?? group?.disabled;
+const isChecked = group ? group.value === value : checked;
+const resolvedName = group ? group.name : name;
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `value` | `string` | — | Verdien dette valget representerer (påkrevd). |
+| `children` | `ReactNode` | — | Etiketten ved siden av radio-knappen (påkrevd). |
+| `checked` | `boolean` | — | Kun relevant frittstående (uten `RadioButtonGroup`) — gruppa overstyrer via context. |
+| `disabled` | `boolean` | — | Faller tilbake til gruppas `disabled` når brukt inni `RadioButtonGroup`. |
+| `name` | `string` | — | Overstyres av gruppas `name` når brukt inni `RadioButtonGroup`. |
+| `onChange` | `(event: ChangeEvent<HTMLInputElement>) => void` | — | Kalles i tillegg til gruppas `onChange`. |
+| `...rest` | `Omit<InputHTMLAttributes<HTMLInputElement>, "type" \| "value" \| "children">` | — | Alle native input-attributter unntatt `type` (fast `"radio"`), `value` og `children`. |
+
+### Eksempler
+
+```tsx
+// Frittstående
+const [checked, setChecked] = useState(false);
+<RadioButton value="choice" checked={checked} onChange={() => setChecked(true)}>
+  This is a choice
+</RadioButton>
+
+// Valgt
+<RadioButton value="a" checked onChange={() => {}}>Selected</RadioButton>
+
+// Deaktivert
+<RadioButton value="a" disabled>Label</RadioButton>
+
+// Gruppert (name/valgt verdi styres av RadioButtonGroup via context)
+<RadioButtonGroup name="plan" value={plan} onChange={setPlan}>
+  <RadioButton value="free">Free</RadioButton>
+  <RadioButton value="pro">Pro</RadioButton>
+</RadioButtonGroup>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<input type="radio">` pakket i `<label>` — hele
+  label-arealet er klikkbart, og inputen får tastaturfokus, pil-navigasjon
+  og aktivering gratis via nativ radio-gruppe-oppførsel (delt `name`).
+- Den ekte inputen er visuelt skjult (`clip-path: inset(50%)`), ikke
+  `display: none` — forblir i tab-rekkefølgen og leses av skjermlesere.
+- Den visuelle sirkelen (`.control`) er `aria-hidden` siden den kun
+  representerer inputens tilstand visuelt.
+- Synlig fokusindikator via `:focus-visible` (dobbel ring), identisk mønster
+  med `Checkbox` og `Switch` for konsistent gjenkjennelse.
+- `disabled` setter `cursor: not-allowed` og arves fra native `disabled`-attributt,
+  eller fra gruppas `disabled` når brukt inni `RadioButtonGroup`.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| is Selected → `checked` | No/Yes | `boolean` (native input, evt. via gruppe-context) | ✅ Samsvarer |
+| State=Focus | Figma-effekt "Focus 1" (drop-shadow) | `:focus-visible` med `box-shadow` | ✅ Dekket (ikke prop) |
+| Label → `children` | Text, default "This is a choice" | `ReactNode` (påkrevd) | ✅ Samsvarer |
+| — | Ett enkelt component, ingen gruppe-konsept | `RadioButtonGroup` + Context | ➕ Kode-only, for gjensidig utelukkende valg |

@@ -1,0 +1,149 @@
+---
+title: "Fieldset"
+description: "Skjemagruppe som samler relaterte kontroller under en felles tittel"
+icon: "list-checks"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3204-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Fieldset/Fieldset.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Fieldset/Fieldset.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Fieldset`) og Figma-komponenten
+  (node `3204:3`). I Figma finnes komponenten som **ett fast eksempel** (en
+  legend + to Checkbox-instanser), ikke et variant-sett. Kode-komponenten er
+  content-agnostisk — `children` kan være hvilken som helst skjemakontroll,
+  ikke bare `Checkbox`.
+</Note>
+
+## Oversikt
+
+Skjemagruppe som samler relaterte kontroller (avkrysningsbokser, radioknapper
+osv.) under en felles tittel. Bygget på native `<fieldset>`/`<legend>` slik at
+skjermlesere kobler gruppetittelen til hver kontroll automatisk. Figma-eksempelet
+viser gruppen fylt med to `Checkbox`-instanser; kode-komponenten tar imot
+vilkårlig innhold via `children`.
+
+## Anatomi
+
+```
+Fieldset (FIELDSET) — padding: var(--spacing-16), border: 1px solid var(--color-border-default), radius: var(--radius-12)
+├── Legend (TEXT) — "Legend"
+├── Checkbox (INSTANCE) — "This is a choice"
+└── Checkbox (INSTANCE) — "This is a choice"
+```
+
+## Sammensetning
+
+Figma-eksempelet består av en `Legend`-tekst etterfulgt av to `Checkbox`-instanser
+stablet vertikalt inne i rammen. Det finnes ingen egen variant-akse for
+innholdstype eller antall kontroller — eksempelet demonstrerer ett konkret
+oppsett.
+
+Kode-komponenten speiler den strukturelle delen (ramme + legend + innholdsområde)
+som faste elementer, men gjør selve innholdet generisk:
+
+- **Legend → `legend`-prop** — obligatorisk `ReactNode` som rendres i et native
+  `<legend>`-element, tilsvarende Figmas "Legend"-tekstlag.
+- **Checkbox-instansene → `children`** — Figma-eksempelet viser spesifikt to
+  `Checkbox`-instanser, men kode-props aksepterer `ReactNode` uten noen
+  type-begrensning. Storybook-historiene demonstrerer både `Checkbox` og
+  `RadioButton` som gyldig innhold (`WithCheckboxes`, `WithRadioButtons`) — noe
+  det ene Figma-eksempelet ikke fanger opp.
+- **Innholdsavstand** — de to Checkbox-instansene i Figma-eksempelet har en
+  vertikal avstand som i kode er en fast `gap: var(--spacing-8)` i
+  `.content`-wrapperen rundt `children`.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding (fieldset) | `--spacing-16` | 16px |
+| Border width | `--border-width-1` | 1px |
+| Border radius | `--radius-12` | 12px |
+| Legend padding (horisontal) | `--spacing-4` | 4px |
+| Gap mellom kontroller | `--spacing-8` | 8px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Legend | `--typography-family-default` | Bold (`--typography-weight-bold`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Border | `--color-border-default` |
+| Legend-tekst | `--color-foreground-primary` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Fieldset/Fieldset.tsx` | Komponent + eksporterte typer |
+| `src/components/Fieldset/Fieldset.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Fieldset/Fieldset.stories.tsx` | Storybook stories |
+| `src/components/Checkbox`, `src/components/RadioButton` | Brukes som eksempelinnhold i historiene, ikke en avhengighet av selve komponenten |
+
+### Import
+
+```tsx
+import { Fieldset, type FieldsetProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `legend` | `ReactNode` | — | Gruppetittelen (Figma: "Legend"). Påkrevd. |
+| `children` | `ReactNode` | — | Skjemakontrollene i gruppen, f.eks. `Checkbox` eller `RadioButton`. Påkrevd. |
+| `disabled` | `boolean` | — | Arvet fra `FieldsetHTMLAttributes`. Deaktiverer alle native kontroller inni via `<fieldset disabled>`. |
+| `...rest` | `FieldsetHTMLAttributes<HTMLFieldSetElement>` | — | Alle native fieldset-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Med avkrysningsbokser (som i Figma)
+<Fieldset legend="Legend">
+  <Checkbox defaultChecked>This is a choice</Checkbox>
+  <Checkbox>This is a choice</Checkbox>
+</Fieldset>
+
+// Med radioknapper
+<Fieldset legend="Velg ett alternativ">
+  <RadioButton name="demo" value="a" defaultChecked>Alternativ A</RadioButton>
+  <RadioButton name="demo" value="b">Alternativ B</RadioButton>
+</Fieldset>
+
+// Deaktivert gruppe — native `disabled` skrur av alle kontrollene
+<Fieldset legend="Legend" disabled>
+  <Checkbox defaultChecked>This is a choice</Checkbox>
+  <Checkbox>This is a choice</Checkbox>
+</Fieldset>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<fieldset>`/`<legend>` — skjermlesere annonserer gruppetittelen
+  når fokus flyttes til en kontroll inni, uten ekstra ARIA.
+- `disabled` på `<fieldset>` deaktiverer alle native skjemakontroller inni
+  gruppen samtidig (nedtonet med `opacity: 0.5`), uten at hver kontroll må
+  settes individuelt.
+- Innholdet er content-agnostisk i kode — a11y for selve kontrollene
+  (Checkbox, RadioButton osv.) styres av de komponentene, ikke av `Fieldset`.
+
+## Design–kode-paritet
+
+| Aspekt | Figma (ett fast eksempel) | Kode (`FieldsetProps`) | Status |
+|--------|---------------------------|--------------------------|--------|
+| Legend | Fast "Legend"-tekstlag | `legend: ReactNode`, påkrevd | ✅ Samsvarer |
+| Checkbox-instanser | To faste `Checkbox`-instanser | `children: ReactNode` — vilkårlig innhold | ➕ Kode er mer generisk enn det ene eksempelet viser (også testet med `RadioButton`) |
+| Antall kontroller | Fast på 2 i eksempelet | Vilkårlig antall barn | ➕ Kode-props har ingen øvre grense |
+| Disabled-tilstand | Ikke vist som eget eksempel/variant | `disabled` (native `fieldset`-attributt) | ➕ Kode-only i denne dokumentasjonen — ingen tilsvarende Figma-variant |

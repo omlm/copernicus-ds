@@ -1,0 +1,183 @@
+---
+title: "Chip"
+description: "Kompakt merke for tagger, filtre og statuser i Copernicus DS"
+icon: "tag"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3055-13" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Chip/Chip.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Chip/Chip.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Chip`) og Figma-komponentsettet
+  (node `3055:13`, 20 varianter). Fargematrisen er kondensert til de faktiske
+  distinkte verdiene — farge bestemmes av `Tone × Emphasis`, ikke av
+  `is Dismissable`. Egenskapen het tidligere `Type` i Figma — omdøpt til
+  `Emphasis` for å samsvare med samme egenskap på `Badge` (som tidligere het
+  `Style`).
+</Note>
+
+## Oversikt
+
+Kompakt, avvisbar chip for tagger, filtre, statuser eller multi-select-verdier.
+Komponenten har **20 varianter** i Figma, bygget fra 4 egenskaper — men kun 2 av
+dem (`Tone`, `Emphasis`) påvirker fargen. `Size` har i dag bare én verdi (Medium)
+og `is Dismissable` legger kun til/fjerner ikonet, uten å endre farge.
+
+## Anatomi
+
+```
+Chip (SPAN) — inline-flex, gap: 4px, padding: 4px 12px, radius: 999px
+├── Label (TEXT)
+└── Dismiss (BUTTON, Lucide "X") — vises når is Dismissable = Yes
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Tone** (Variant) | Neutral, Info, Success, Danger, Warning | Neutral | Fargefamilie. |
+| **Emphasis** (Variant) | Strong, Weak | Strong | Strong = fylt, Weak = lys bakgrunn med border. |
+| **Size** (Variant) | Medium | Medium | Kun én verdi i dag — ingen `size`-prop i kode. |
+| **is Dismissable** (Boolean) | No, Yes | No | Viser et X-ikon for å fjerne chip-en. |
+| **Label** (Text) | string | "Label" | Tekstinnhold. |
+
+5 (Tone) × 1 (Size) × 2 (Emphasis) × 2 (is Dismissable) = 20 varianter.
+
+### Fargematrise — bestemt av Tone × Emphasis
+
+| Tone | Emphasis | Background | Text | Border |
+|------|------|-----------|------|--------|
+| Neutral | Strong | `#313136` | `#FFFFFF` | — |
+| Neutral | Weak | `#E4E5E7` | `#95979F` | `#CBCBD0` |
+| Info | Strong | `#406ABE` | `#FFFFFF` | — |
+| Info | Weak | `#B3C4E5` | `#274072` | `#8DA6D8` |
+| Success | Strong | `#40BF51` | `#FFFFFF` | — |
+| Success | Weak | `#B3E5B9` | `#267331` | `#8DD897` |
+| Danger | Strong | `#BE4040` | `#FFFFFF` | — |
+| Danger | Weak | `#E5B3B3` | `#722727` | `#D88D8D` |
+| Warning | Strong | `#F2AF13` | `#000000` | — |
+| Warning | Weak | `#FADE9E` | `#302303` | `#F7CE6E` |
+
+<Note>
+  `Warning` er eneste tone der `Strong`-teksten er mørk (`#000000`) i stedet for
+  hvit — oransjebakgrunnen gir ikke nok kontrast mot hvit tekst.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding vertikal | `--spacing-4` | 4px |
+| Padding horisontal | `--spacing-12` | 12px |
+| Gap (label ↔ dismiss-ikon) | `--spacing-4` | 4px |
+| Border radius | `--radius-999` | 999px |
+| Border width (Weak) | `--border-width-1` | 1px |
+
+### Typografi
+
+| Element | Font | Weight | Size |
+|---------|------|--------|------|
+| Label | — (`--typography-family-default`) | Normal (`--typography-weight-normal`) | 14px (`--spacing-14`) |
+
+### Fargetokens
+
+Hver `Tone` peker på et eget `--color-system-<tone>-*`-sett (`strong`,
+`on-strong`, `weak`, `on-weak`, `weak-border`), delt med andre komponenter som
+`Badge` og `Alert`. Ingen chip-spesifikke tokens — kun de globale
+`color-system-*`-tokenene.
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Chip/Chip.tsx` | Komponent + eksporterte typer |
+| `src/components/Chip/Chip.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Chip/Chip.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `X` |
+
+### Import
+
+```tsx
+import { Chip, type ChipProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const toneClass: Record<ChipTone, string> = {
+  neutral: styles.neutral,
+  info: styles.info,
+  success: styles.success,
+  danger: styles.danger,
+  warning: styles.warning,
+};
+
+const emphasisClass: Record<ChipEmphasis, string> = {
+  strong: styles.strong,
+  weak: styles.weak,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tone` | `"neutral" \| "info" \| "success" \| "danger" \| "warning"` | `"neutral"` | Fargefamilie. |
+| `emphasis` | `"strong" \| "weak"` | `"strong"` | Visuell tyngde — strong = fylt, weak = lys m/ border. |
+| `dismissable` | `boolean` | `false` | Viser et X-ikon (Lucide) for å lukke chip-en. |
+| `onDismiss` | `(event: MouseEvent<HTMLButtonElement>) => void` | — | Kalles når X-ikonet trykkes. Når satt blir X-en en interaktiv knapp; ellers er den kun dekorativ. Finnes ikke som Figma-egenskap. |
+| `dismissLabel` | `string` | `"Fjern"` | Tilgjengelig etikett på lukk-knappen. Finnes ikke som Figma-egenskap. |
+| `children` | `ReactNode` | — | Chip-innhold (påkrevd). |
+| `...rest` | `HTMLAttributes<HTMLSpanElement>` | — | Alle native span-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Neutral (default)
+<Chip>Label</Chip>
+
+// Semantiske toner
+<Chip tone="info">Info</Chip>
+<Chip tone="success">Success</Chip>
+<Chip tone="danger">Danger</Chip>
+<Chip tone="warning">Warning</Chip>
+
+// Weak-utgave
+<Chip tone="info" emphasis="weak">Info</Chip>
+
+// Avvisbar, ikke-interaktiv (kun dekorativt ikon)
+<Chip dismissable>Tag</Chip>
+
+// Avvisbar, interaktiv
+<Chip dismissable onDismiss={() => removeTag(id)}>Tag</Chip>
+```
+
+## Tilgjengelighet
+
+- Renderes som `<span>` — ikke fokuserbar eller interaktiv i seg selv.
+- Dismiss-ikonet er **kun** en ekte, tastaturtilgjengelig `<button>` når
+  `onDismiss` er satt (`aria-label` fra `dismissLabel`, default "Fjern").
+  Uten `onDismiss` er ikonet dekorativt (`aria-hidden`), for å unngå
+  fokuserbare elementer uten funksjon.
+- Fargekontrast: `Warning`/`Strong` bruker mørk tekst (`#000000`) på oransje
+  bakgrunn for å opprettholde kontrast — se fargematrisen over.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Tone → `tone` | Neutral/Info/Success/Danger/Warning | `neutral`/`info`/`success`/`danger`/`warning` | ✅ Samsvarer |
+| Emphasis → `emphasis` | Strong/Weak | `strong`/`weak` | ✅ Samsvarer |
+| is Dismissable → `dismissable` | No/Yes | `boolean` | ✅ Samsvarer |
+| Size | Medium (eneste verdi) | Ingen `size`-prop | ⚠️ Ikke eksponert i kode — kun én verdi finnes i Figma i dag |
+| Label → `children` | Text | `ReactNode` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `onDismiss`, `dismissLabel` | ➕ Kode-only, for tilgjengelig interaktivitet |

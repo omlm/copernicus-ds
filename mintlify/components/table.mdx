@@ -1,0 +1,203 @@
+---
+title: "Table"
+description: "Token-stylet tabell for strukturerte data i Copernicus DS"
+icon: "table"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3209-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Table/Table.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Table/Table.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Table`) og Figma-komponenten
+  (node `3209:3`). I Figma finnes komponenten som **ett fast eksempel**
+  (header-rad + tre datarader), ikke et variant-sett. Kode-komponenten er en
+  tynn stylings-wrapper rundt native `<table>` — den er ikke data-drevet og
+  eksponerer ingen rad-/celle-props.
+</Note>
+
+## Oversikt
+
+Tabell for strukturert visning av data, med en fremhevet headerrad og
+hårlinjer mellom radene. Copernicus DS sin `Table`-komponent er **ikke** en
+data-drevet tabell med kolonne-/rad-props — den er en styling-wrapper som
+kler på token-baserte farger og avstand rundt native `thead`/`tbody`/`tr`/`th`/`td`-elementer
+sendt inn som `children`. Figma-eksempelet viser ett konkret oppsett med tre
+kolonner og tre rader.
+
+## Anatomi
+
+```
+Table (FRAME) — border: 1px solid var(--color-border-default), radius: var(--radius-12), overflow hidden
+├── Header row (FRAME) — background: var(--color-system-neutral-weak)
+│   ├── Cell (TEXT) — "Name"
+│   ├── Cell (TEXT) — "Role"
+│   └── Cell (TEXT) — "Status"
+├── Row (FRAME) — strokeTop
+│   └── Cell × 3
+├── Row (FRAME) — strokeTop
+│   └── Cell × 3
+└── Row (FRAME) — strokeTop
+    └── Cell × 3
+```
+
+## Sammensetning
+
+Figma-eksempelet viser én konkret tabell: en `Header row` med tre celler,
+etterfulgt av tre `Row`-instanser med tre celler hver. Det er ingen
+variant-egenskap for antall kolonner, antall rader, eller om headeren finnes —
+eksempelet demonstrerer ett fast tilfelle.
+
+Kode-komponenten gjør ingen antagelser om antall rader/kolonner i det hele
+tatt. `Table.tsx` eksporterer kun **én** komponent (`Table`) — ikke `TableHead`,
+`TableRow`, `TableCell` osv. — som rendrer en `<div className={styles.wrapper}>`
+med et `<table>` inni, og lar konsumenten sende inn vanlige native
+`<thead>`/`<tbody>`/`<tr>`/`<th>`/`<td>`-elementer som `children`. Stylingen i
+`Table.module.css` treffer disse native elementene via tag-selektorer
+(`.table thead th`, `.table td`, `.table tbody tr`), ikke via egne
+sub-komponenter:
+
+- **Header row → `<thead><tr><th>…</th></tr></thead>`** — `th`-elementer får
+  automatisk `background: var(--color-system-neutral-weak)` og fet skrift fra
+  CSS-en, uten noen egen `TableHeaderRow`-komponent.
+- **Row → `<tbody><tr>…</tr></tbody>`** — hver `tr` i `tbody` får
+  `border-top` (hårlinjen) automatisk, tilsvarende `strokeTop` i Figma.
+- **Cell → `<th>`/`<td>`** — padding, skriftstørrelse og vekt er bundet til
+  tag-selektorene, ikke til en `Cell`-komponent.
+
+Fordi Figma-eksempelet er fast på tre kolonner og tre rader, dekker det ikke at
+kode-tabellen kan ha et vilkårlig antall av begge deler — det vises i
+Storybook-historien `WithBadges`, der en av cellene inneholder en `Badge` i
+stedet for ren tekst.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Border width | `--border-width-1` | 1px |
+| Border radius (wrapper) | `--radius-12` | 12px |
+| Celle-padding vertikal | `--spacing-12` | 12px |
+| Celle-padding horisontal | `--spacing-16` | 16px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Header-celle (`th`) | `--typography-family-default` | Bold (`--typography-weight-bold`) | 14px (`--spacing-14`) | — |
+| Data-celle (`td`) | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Wrapper-bakgrunn | `--color-background-primary` |
+| Wrapper-/rad-border | `--color-border-default` |
+| Header-rad bakgrunn | `--color-system-neutral-weak` |
+| Tekst | `--color-foreground-primary` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Table/Table.tsx` | Komponent (kun `Table`, ingen sub-komponenter) + eksportert type |
+| `src/components/Table/Table.module.css` | CSS Modules — treffer native `thead`/`th`/`td`/`tr` via tag-selektorer |
+| `src/components/Table/Table.stories.tsx` | Storybook stories |
+| `src/components/Badge` | Brukt som eksempelinnhold i en celle i `WithBadges`-historien, ikke en avhengighet av `Table` |
+
+### Import
+
+```tsx
+import { Table, type TableProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Vanlige `thead`/`tbody`-elementer — stylingen treffer `th`/`td` inni. Påkrevd. |
+| `...rest` | `TableHTMLAttributes<HTMLTableElement>` | — | Alle native `table`-attributter spres på `<table>`-elementet (ikke wrapperen). |
+
+### Eksempler
+
+```tsx
+// Standard — headerrad + tre rader (som i Figma)
+<Table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ada Lovelace</td>
+      <td>Engineer</td>
+      <td>Active</td>
+    </tr>
+    <tr>
+      <td>Grace Hopper</td>
+      <td>Admiral</td>
+      <td>Active</td>
+    </tr>
+    <tr>
+      <td>Alan Turing</td>
+      <td>Researcher</td>
+      <td>Inactive</td>
+    </tr>
+  </tbody>
+</Table>
+
+// Med andre komponenter i cellene, f.eks. Badge for status
+<Table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ada Lovelace</td>
+      <td>Engineer</td>
+      <td>
+        <Badge tone="success" emphasis="weak">Active</Badge>
+      </td>
+    </tr>
+    <tr>
+      <td>Alan Turing</td>
+      <td>Researcher</td>
+      <td>
+        <Badge tone="neutral" emphasis="weak">Inactive</Badge>
+      </td>
+    </tr>
+  </tbody>
+</Table>
+```
+
+## Tilgjengelighet
+
+- Rendres som native `<table>`/`<thead>`/`<tbody>` — skjermlesere får riktig
+  tabell-semantikk (rad/kolonne-navigasjon) helt gratis, uten ARIA.
+- `th`-elementer i headeren gir kolonneoverskrifter som skjermlesere kan
+  koble til tilhørende celler automatisk (native `scope`-oppførsel avhenger av
+  markupen konsumenten sender inn — komponenten legger ikke til `scope` selv).
+- Siden `Table` kun styler markup konsumenten kontrollerer, er det opp til
+  bruksstedet å sette `scope="col"`/`caption` der det trengs for mer komplekse
+  tabeller.
+
+## Design–kode-paritet
+
+| Aspekt | Figma (ett fast eksempel) | Kode (`TableProps`) | Status |
+|--------|----------------------------|------------------------|--------|
+| Header row | Fast rad med 3 celler | `<thead><tr><th>` via `children`, vilkårlig antall celler | ✅ Samsvarer strukturelt |
+| Row | 3 faste rader | `<tbody><tr><td>` via `children`, vilkårlig antall rader | ➕ Kode er mer fleksibel enn det ene Figma-eksempelet |
+| Cell | Tekstceller | `th`/`td` kan inneholde vilkårlig `ReactNode` (f.eks. `Badge`) | ➕ Kode-only — Figma-eksempelet viser bare ren tekst |
+| Sub-komponenter (Head/Row/Cell) | Ingen egne Figma-komponenter — kun frames i eksempelet | Ingen egne kode-komponenter heller — native HTML-tagger brukes direkte | ✅ Samsvarer (begge er "ett stykke", ikke sammensatt av navngitte deler) |

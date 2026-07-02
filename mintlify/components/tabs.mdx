@@ -1,0 +1,176 @@
+---
+title: "Tabs"
+description: "Fanenavigasjon for å bytte mellom innholdspaneler i Copernicus DS"
+icon: "gallery-horizontal"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3202-12" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Tabs/Tabs.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Tabs/Tabs.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Tabs`) og to Figma-noder: parent-frame
+  "Tabs" (node `3202:12`) og det underliggende komponentsettet "Tab" (node `3202:11`).
+  Figma sin `State=Active` tilsvarer *ikke* CSS-pseudoklassen `:active` i kode —
+  se avklaring under.
+</Note>
+
+## Oversikt
+
+Fanenavigasjon for å bytte mellom flere innholdspaneler uten å forlate siden.
+Implementert som `role="tablist"` med full piltast-navigasjon (venstre/høyre,
+Home/End). Kan brukes kontrollert (`activeId` + `onChange`) eller ukontrollert
+(`defaultActiveId`).
+
+Frame **"Tabs"** (node `3202:12`) i Figma er komponert av **3 instanser** av
+komponentsettet **"Tab"** (node `3202:11`) — selve parent-frame har ingen egne
+component properties. Alle variant-egenskaper (state) ligger på "Tab".
+
+## Anatomi
+
+```
+Tabs (DIV)
+├── Tablist (DIV, role="tablist") — flex-row, gap: var(--spacing-8), border-bottom
+│   ├── Tab (BUTTON, role="tab") (INSTANCE) — "State=Default/Hover/Focus"
+│   ├── Tab (BUTTON, role="tab") (INSTANCE) — "State=Active" (valgt fane)
+│   └── Tab (BUTTON, role="tab") (INSTANCE)
+└── Panel (DIV, role="tabpanel") — innholdet for aktiv fane
+```
+
+## Varianter
+
+### Egenskaper (Figma) — "Tab" (node 3202:11)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Active, Default, Hover, Focus | Default | Se avklaring under — "Active" er ikke en CSS-pseudoklasse. |
+| **Label** (Text) | string | "Tab label" | Tekstinnhold. |
+
+<Note>
+  **Viktig avklaring:** Figma sin `State=Active` representerer **den valgte
+  fanen** (den som for øyeblikket vises), ikke `:active`-pseudoklassen
+  (museklikk/trykk). I kode styres dette av applikasjonstilstand
+  (`activeId`/`internalActive`) og reflekteres via `aria-selected` og
+  `styles.active`-klassen — se `.active` i `Tabs.module.css`. De øvrige
+  Figma-tilstandene mappes derimot til ekte CSS-pseudoklasser:
+  `Hover` → `:hover`, `Focus` → `:focus-visible`.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (mellom faner) | `--spacing-8` | 8px |
+| Padding (per fane) | `--spacing-12` `--spacing-16` | 12px / 16px |
+| Padding (panel, vertikal) | `--spacing-16` | 16px |
+| Border-bottom (tablist) | `--border-width-1` | 1px |
+| Border-bottom (aktiv fane) | `--border-width-2` | 2px |
+
+### Farge
+
+| Element | Tilstand | Token |
+|---------|----------|-------|
+| Tekst | Default | `--color-foreground-secondary` |
+| Tekst | Hover | `--color-foreground-primary` |
+| Tekst | Active (valgt) | `--color-foreground-action` |
+| Border-bottom | Tablist | `--color-system-neutral-weak-border` |
+| Border-bottom | Hover | `--color-border-default` |
+| Border-bottom | Active (valgt) | `--color-border-action` |
+| Focus-ring | Focus | `--color-border-focus-ring` / `--color-background-canvas` |
+
+### Typografi
+
+| Element | Weight | Size | Line Height |
+|---------|--------|------|-------------|
+| Tab-label (default/hover) | Normal (`--typography-weight-normal`) | `--size-16` | `--spacing-20` |
+| Tab-label (active) | Bold (`--typography-weight-bold`) | `--size-16` | `--spacing-20` |
+| Panel-innhold | Normal (`--typography-weight-normal`) | `--size-16` | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Tabs/Tabs.tsx` | Komponent + eksporterte typer (`Tabs`, `TabItem`) |
+| `src/components/Tabs/Tabs.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Tabs/Tabs.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Tabs, type TabsProps, type TabItem } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+className={[styles.tab, isActive && styles.active].filter(Boolean).join(" ")}
+```
+
+### Komponent-API
+
+**TabItem**
+
+| Felt | Type | Description |
+|------|------|-------------|
+| `id` | `string` | Unik nøkkel for fanen. |
+| `label` | `ReactNode` | Fanens etikett (Figma: "Label"). |
+| `content` | `ReactNode` | Innholdet i panelet under fanen. |
+
+**TabsProps**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `TabItem[]` | — | Fanene, i rekkefølge (påkrevd). |
+| `defaultActiveId` | `string` | første `item.id` | Aktiv fane ved første rendring (ukontrollert). |
+| `activeId` | `string` | — | Aktiv fane (kontrollert). Brukes sammen med `onChange`. |
+| `onChange` | `(id: string) => void` | — | Kalles når brukeren bytter fane. |
+| `...rest` | `Omit<HTMLAttributes<HTMLDivElement>, "onChange">` | — | Alle native div-attributter (unntatt `onChange`, som er omdefinert) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Ukontrollert — første fane aktiv
+<Tabs
+  items={[
+    { id: "overview", label: "Oversikt", content: "Nøkkeltall og status." },
+    { id: "details", label: "Detaljer", content: "Full gjennomgang av dataene." },
+    { id: "settings", label: "Innstillinger", content: "Konfigurasjon for visningen." },
+  ]}
+/>
+
+// Ukontrollert — start på en annen fane
+<Tabs items={items} defaultActiveId="details" />
+
+// Kontrollert
+const [activeId, setActiveId] = useState("overview");
+<Tabs items={items} activeId={activeId} onChange={setActiveId} />
+```
+
+## Tilgjengelighet
+
+- Følger WAI-ARIA-mønsteret for faner: `role="tablist"` på containeren,
+  `role="tab"` med `aria-selected` på hver knapp, og `role="tabpanel"` med
+  `aria-labelledby` som peker tilbake på aktiv fane.
+- Full piltast-navigasjon (venstre/høyre, Home/End) flytter fokus og aktiverer
+  fanen samtidig, med `tabIndex` styrt via roving tabindex (kun aktiv fane har
+  `tabIndex={0}`).
+- Synlig fokusindikator via `:focus-visible` (`box-shadow` med
+  `--color-border-focus-ring`), uavhengig av `aria-selected`-tilstanden.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Tabs (parent frame) | 3× "Tab"-instanser, ingen egne properties | `items: TabItem[]` (vilkårlig antall) | ✅ Dekket — kode støtter et fleksibelt antall faner, ikke fastlåst til 3 |
+| Tab State=Active | Valgt fane (applikasjonstilstand, ikke `:active`) | `aria-selected` + `styles.active` styrt av `activeId`/`internalActive` | ✅ Dekket (ikke en CSS-pseudoklasse) |
+| Tab State=Hover | `:hover` | `:hover` | ✅ Samsvarer |
+| Tab State=Focus | `:focus-visible` (tastatur) | `:focus-visible` | ✅ Samsvarer |
+| Tab State=Default | Default | Default (ingen ekstra klasse) | ✅ Samsvarer |
+| Label → `TabItem.label` | Text | `ReactNode` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `TabItem.content`, `activeId`/`onChange` | ➕ Kode-only, for panelinnhold og kontrollert bruk |

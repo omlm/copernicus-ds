@@ -1,0 +1,178 @@
+---
+title: "Search"
+description: "Søkefelt med innebygd søkeknapp i Copernicus DS"
+icon: "search"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3200-13" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Search/Search.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Search/Search.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Search`) og Figma-komponentsettet
+  "Search" (node `3200:13`). Figma sitt Default-utseende (`color/background/canvas`
+  fyll + `color/foreground/primary` stroke + `color/foreground/secondary` tekst)
+  er identisk med `Input`-feltets styling — Search er i praksis et `Input`-felt
+  koblet til en `Button` inni et `form`.
+</Note>
+
+## Oversikt
+
+Søkefelt med innebygd søkeknapp, rendret som et `<form role="search">`.
+Innsending (Enter i feltet eller klikk på knappen) kaller `onSearch` med
+feltets verdi. Komponenten har **2 varianter** i Figma, bygget fra 1
+variant-egenskap (`State`).
+
+## Anatomi
+
+```
+Search (FORM, role="search") — flex column, gap: var(--spacing-8)
+├── Label (LABEL) — vises kun når `label`-prop er satt
+└── Row (DIV) — flex row, gap: var(--spacing-8)
+    ├── Search input (INPUT type="search")
+    └── Search button (Button, variant="primary" size="large")
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Default, Focus | Default | `Focus` er `:focus-visible` på feltet i kode, ikke en prop. |
+
+1 egenskap × 2 verdier = 2 varianter. Default bruker `color/background/canvas`
+fyll, `color/foreground/primary` stroke og `color/foreground/secondary` tekst
+(placeholder); Focus bytter til en 2px focus-ring bakgrunn/border.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (label ↔ rad) | `--spacing-8` | 8px |
+| Gap (felt ↔ knapp) | `--spacing-8` | 8px |
+| Felt-høyde | `--size-48` | 48px |
+| Felt-padding, horisontal | `--spacing-16` | 16px |
+| Border | `--border-width-1` | 1px |
+| Border radius | `--radius-12` | 12px |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Felt-bakgrunn | `--color-background-canvas` |
+| Felt-border / tekst | `--color-foreground-primary` |
+| Placeholder-tekst | `--color-foreground-secondary` |
+| Label-tekst | `--color-foreground-primary` |
+
+### Fokus-ring
+
+Samme mønster som `Input` — 2px farget border pluss en dobbel box-shadow-ring
+bundet til `--color-border-focus-ring` (`--color-purple-500`).
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Border, fokus | `--color-border-focus-ring` | 1px (arvet bredde) |
+| Fokus-fyll | `color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent)` | 5 % lilla |
+| Ring, indre (gap) | `--color-background-canvas` | 3px |
+| Ring, ytre | `--color-border-focus-ring` | 6px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Bold (`--typography-weight-bold`) | 16px (`--size-16`) | `--spacing-20` |
+| Feltverdi / placeholder | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Search/Search.tsx` | Komponent + eksportert type |
+| `src/components/Search/Search.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Search/Search.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Button/Button.tsx` | Gjenbrukt for søkeknappen (`variant="primary"`, `size="large"`) |
+
+### Import
+
+```tsx
+import { Search, type SearchProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record`-basert variant-mapping — `State` følger av nativ fokus-tilstand
+på feltet via `:focus-visible`:
+
+```css
+.field:focus-visible {
+  outline: none;
+  border-color: var(--color-border-focus-ring);
+  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  box-shadow: 0 0 0 3px var(--color-background-canvas), 0 0 0 6px var(--color-border-focus-ring);
+}
+```
+
+Innsending håndteres av selve `<form>`-elementet, ikke av knappen direkte:
+
+```tsx
+const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const input = event.currentTarget.elements.namedItem(inputId) as HTMLInputElement | null;
+  onSearch?.(input?.value ?? "");
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `label` | `ReactNode` | — | Valgfri etikett over feltet. Uten etikett brukes `aria-label="Søk"` i stedet. |
+| `buttonLabel` | `ReactNode` | `"Search"` | Teksten på søkeknappen (Figma: "Search button"). |
+| `onSearch` | `(value: string) => void` | — | Kalles med søketeksten når skjemaet sendes inn (Enter eller klikk). |
+| `...rest` | `Omit<InputHTMLAttributes<HTMLInputElement>, "type" \| "onSubmit">` | — | Alle native input-attributter unntatt `type` (fast `"search"`) og `onSubmit`, spres på selve feltet (f.eks. `placeholder`, `defaultValue`). |
+
+### Eksempler
+
+```tsx
+// Standard
+<Search placeholder="Search…" />
+
+// Med etikett over feltet
+<Search label="Søk i biblioteket" placeholder="Search…" />
+
+// Egen knappetekst
+<Search buttonLabel="Søk" />
+
+// Håndter innsending
+<Search onSearch={(value) => runSearch(value)} />
+```
+
+## Tilgjengelighet
+
+- Rendres som `<form role="search">` — gir skjermlesere en tydelig landemerke-
+  rolle for søkefunksjonalitet på siden.
+- Feltet får `aria-label="Søk"` automatisk når `label`-prop ikke er satt, slik
+  at det alltid har et tilgjengelig navn.
+- Native `<input type="search">` og `<button type="submit">` gir tastaturfokus,
+  Enter-innsending og riktig semantikk gratis.
+- Synlig fokusindikator via `:focus-visible` (border + dobbel ring), samme
+  mønster som `Input`.
+- Søkeknappen er en fullverdig `Button`-instans og arver dens a11y-egenskaper
+  (kontrast, klikkflate, fokusstil).
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State=Default | `color/background/canvas` fyll, `color/foreground/primary` stroke, `color/foreground/secondary` tekst | `--color-background-canvas`, `--color-foreground-primary`, `--color-foreground-secondary` | ✅ Samsvarer |
+| State=Focus | 2px focus-ring bakgrunn/border | `:focus-visible` med `border-color` + `box-shadow`-ring | ✅ Dekket (ikke prop) |
+| Search button | Instance-swap/komponentreferanse | Faktisk `Button`-komponent (`variant="primary"`, `size="large"`) | ✅ Samsvarer |
+| Label | Valgfri tekst over feltet | `label`-prop (`ReactNode`) | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `onSearch`, `buttonLabel` | ➕ Kode-only, for interaktivitet og tilpasning |

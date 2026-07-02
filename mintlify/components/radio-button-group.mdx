@@ -1,0 +1,202 @@
+---
+title: "RadioButtonGroup"
+description: "Gruppe av radio-valg der kun ett kan være valgt, i Copernicus DS"
+icon: "circle-dot"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3101-136" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/RadioButtonGroup/RadioButtonGroup.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/RadioButtonGroup/RadioButtonGroup.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/RadioButtonGroup`) og to separate
+  Figma-frames — én per orientering (se under). Begge er komponert av instanser
+  av det frittstående komponentsettet **Radio button** (node `3094:4649`),
+  dokumentert på egen side: [`radio-button`](/components/radio-button).
+</Note>
+
+## Oversikt
+
+Gruppe av radio-valg der nøyaktig ett alternativ kan være valgt om gangen.
+Bruker en native `fieldset`/`legend` for tilgjengelighet og deler valgt verdi
+med barna (`RadioButton`-instanser) via React context, slik at kun ett valg
+kan være aktivt samtidig.
+
+I Figma finnes komponenten som **to separate frames** — én per layout-retning —
+i stedet for én komponentsett med en `orientation`-akse:
+
+- **"Radio button group"** (vertikal), node `3101:136`
+- **"Radio button group (Horizontal)"**, node `3110:117`
+
+Dette speiles direkte i kode: `RadioButtonGroupProps.orientation` er
+`"vertical" | "horizontal"`, med kildekodekommentaren *"Tilsvarer de to
+Figma-komponentene (vertikal vs. horisontal)"* — altså én prop som representerer
+valget mellom de to Figma-frames, fremfor to helt separate komponenter.
+
+## Anatomi
+
+```
+RadioButtonGroup (FIELDSET) — flex-column, gap: var(--spacing-16)
+├── Legend (LEGEND) — "Group label", vises når show Group label = Yes
+└── Options (DIV)
+    ├── Radio button (INSTANCE) × N — se egen side for anatomi
+    ├── Radio button (INSTANCE)
+    └── Radio button (INSTANCE) — show #3/#4/#5 styrer hvor mange som vises
+```
+
+## Varianter
+
+### Egenskaper (Figma) — "Radio button group" (vertikal, node 3101:136)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Selected** (Variant) | 1–5 | 1 | Eksempel-selektor for hvilket alternativ som er valgt — ingen ekte prop i kode. |
+| **show #3** (Boolean) | No, Yes | Yes | Viser/skjuler tredje alternativ. |
+| **show #4** (Boolean) | No, Yes | Yes | Viser/skjuler fjerde alternativ. |
+| **show #5** (Boolean) | No, Yes | Yes | Viser/skjuler femte alternativ. |
+| **Group label** (Text) | string | "Group label" | Tekstinnhold i `legend`. |
+| **show Group label** (Boolean) | No, Yes | Yes | Viser/skjuler `legend`. |
+
+### Egenskaper (Figma) — "Radio button group (Horizontal)" (node 3110:117)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Selected** (Variant) | 1–3 | 1 | Eksempel-selektor, ingen ekte prop i kode. |
+| **Group label** (Text) | string | "Group label" | Tekstinnhold i `legend`. |
+| **show #3** (Boolean) | No, Yes | Yes | Viser/skjuler tredje alternativ. |
+| **show Group label** (Boolean) | No, Yes | Yes | Viser/skjuler `legend`. |
+
+<Note>
+  `Selected` er en eksempel-variant i Figma for å vise hvordan gruppen ser ut
+  med ulike valg markert — den tilsvarer ikke en egen prop i kode. I React
+  styres valgt alternativ av `value`/`defaultValue` på `RadioButtonGroup`
+  kombinert med `value` på hver `RadioButton`. Antall synlige alternativer
+  (`show #3`/`#4`/`#5`) tilsvarer i kode ganske enkelt hvor mange
+  `RadioButton`-barn som rendres — se `HorizontalOptionalThird`-story.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (legend ↔ options) | `--spacing-16` | 16px |
+| Gap mellom valg (vertikal) | `--spacing-0` | 0px |
+| Gap mellom valg (horisontal) | `--spacing-24` | 24px |
+
+### Typografi
+
+| Element | Weight | Size | Line Height |
+|---------|--------|------|-------------|
+| Legend (`Group label`) | Bold (`--typography-weight-bold`) | `--spacing-20` | `--spacing-20` |
+
+Selve radio-valgene (sirkel, indikator, label) er styrt av `RadioButton` —
+se dens egen tokens-tabell.
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/RadioButtonGroup/RadioButtonGroup.tsx` | Komponent + eksporterte typer |
+| `src/components/RadioButtonGroup/RadioButtonGroup.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/RadioButtonGroup/RadioGroupContext.ts` | React context som deler `name`/`value`/`disabled`/`onChange` med barna |
+| `src/components/RadioButtonGroup/RadioButtonGroup.stories.tsx` | Storybook stories + argTypes |
+| `src/components/RadioButton/RadioButton.tsx` | Barnekomponenten (`radio button`-instansene i Figma) |
+
+### Import
+
+```tsx
+import { RadioButtonGroup, type RadioButtonGroupProps } from "src/components";
+import { RadioButton } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const classes = [
+  styles.group,
+  orientation === "horizontal" ? styles.horizontal : styles.vertical,
+].join(" ");
+```
+
+### Komponent-API
+
+**RadioButtonGroup**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | — | Gruppe-etikett (Figma: "Group label"). |
+| `name` | `string` | auto-generert (`useId`) | Delt `name` for radio-inputene. |
+| `value` | `string` | — | Valgt verdi (kontrollert — Figma: "Selected"). |
+| `defaultValue` | `string` | — | Startverdi (ukontrollert). |
+| `onChange` | `(value: string) => void` | — | Kalles med den nye valgte verdien. |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Tilsvarer de to Figma-komponentene (vertikal vs. horisontal). |
+| `disabled` | `boolean` | `false` | Deaktiverer alle valg i gruppa. |
+| `children` | `ReactNode` | — | `RadioButton`-elementer (påkrevd). |
+
+**RadioButton** (barnekomponent — se [`radio-button`](/components/radio-button) for full API)
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` | `string` | Verdien dette valget representerer (påkrevd). |
+| `children` | `ReactNode` | Etiketten ved siden av radio-knappen (påkrevd). |
+| `disabled` | `boolean` | Kan overstyres per valg; arver ellers fra gruppa. |
+
+### Eksempler
+
+```tsx
+// Vertikal (default), kontrollert
+const [value, setValue] = useState("1");
+
+<RadioButtonGroup label="Group label" value={value} onChange={setValue}>
+  <RadioButton value="1">This is a choice</RadioButton>
+  <RadioButton value="2">This is a choice</RadioButton>
+  <RadioButton value="3">This is a choice</RadioButton>
+  <RadioButton value="4">This is a choice</RadioButton>
+  <RadioButton value="5">This is a choice</RadioButton>
+</RadioButtonGroup>
+
+// Horisontal, maks 3 valg
+<RadioButtonGroup label="Group label" orientation="horizontal" value={value} onChange={setValue}>
+  <RadioButton value="1">This is a choice</RadioButton>
+  <RadioButton value="2">This is a choice</RadioButton>
+  <RadioButton value="3">This is a choice</RadioButton>
+</RadioButtonGroup>
+
+// Valgfritt tredje alternativ (tilsvarer "show #3"-boolean i Figma)
+{showThird && <RadioButton value="3">This is a choice</RadioButton>}
+
+// Hele gruppa deaktivert
+<RadioButtonGroup label="Group label" disabled defaultValue="1">
+  <RadioButton value="1">This is a choice</RadioButton>
+  <RadioButton value="2">This is a choice</RadioButton>
+</RadioButtonGroup>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<fieldset>`/`<legend>` — gruppen får riktig semantikk og
+  `legend` leses opp som gruppens navn av skjermlesere.
+- Hvert valg er en ekte `<input type="radio">` (via `RadioButton`), som gir
+  piltast-navigasjon mellom valg og korrekt `checked`-tilstand gratis fra
+  nettleseren når de deler `name`.
+- `disabled` på gruppen propagerer til hvert `RadioButton` via context, med
+  mindre et enkelt valg eksplisitt overstyrer det.
+- Genererer automatisk et unikt `name` (`useId`) når det ikke er satt
+  eksplisitt, slik at flere grupper på samme side ikke kolliderer.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| To frames (vertikal/horisontal) → `orientation` | "Radio button group" / "Radio button group (Horizontal)" | `"vertical"` \| `"horizontal"` | ✅ Samsvarer — én prop dekker begge Figma-frames |
+| Selected | Variant 1–5 / 1–3 (eksempel) | `value`/`defaultValue` (kontrollert/ukontrollert) | ✅ Dekket (ikke en direkte variant-mapping, men samme funksjon) |
+| show #3/#4/#5 → antall barn | Boolean per alternativ | Antall `RadioButton`-barn som rendres | ✅ Dekket (styres av forbruker, ikke en prop på gruppen) |
+| Group label → `label` | Text | `ReactNode` | ✅ Samsvarer |
+| show Group label → `label` | Boolean | `label` er valgfri (`undefined` = skjult) | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `name`, `disabled`, `onChange` | ➕ Kode-only, for skjemafunksjon og tilgjengelighet |

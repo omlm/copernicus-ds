@@ -1,0 +1,58 @@
+---
+title: "Designprinsipper"
+description: "Rettesnoren for designvalg i Copernicus DS"
+icon: "compass"
+---
+
+<Note>
+  **Utkast.** Disse prinsippene er et forslag forankret i hvordan Copernicus DS
+  faktisk ser ut og oppfører seg i dag. Skriv dem om så de matcher din egen
+  intensjon med MentalMomentum. Speiler [Designprinsipper.mdx](https://github.com/omlm/copernicus-ds/blob/main/src/foundations/Designprinsipper.mdx) i Storybook.
+</Note>
+
+Prinsippene under er rettesnoren når vi tar designvalg. Når noe er uklart —
+en ny komponent, en variant, en farge — går vi tilbake hit.
+
+## 1. Varme framfor kulde
+
+Paletten bygger på **sand og rosa**, ikke kald grå. Grensesnittet skal kjennes
+menneskelig og imøtekommende, ikke klinisk. Velg den varme nøytralen (`sand`)
+framfor ren grå når du er i tvil.
+
+## 2. Ro og fokus
+
+MentalMomentum handler om mental ro. Det skal grensesnittet speile: **generøs
+luft**, sentrert innhold, og få elementer om gangen. Tomrom er et virkemiddel,
+ikke noe som skal fylles.
+
+## 3. Tilgjengelig som standard
+
+Tilgjengelighet er ikke et sluttsjekkpunkt — det er en forutsetning. Tekst skal
+ha tilstrekkelig **kontrast**, interaktive flater skal være store nok, og hver
+komponent kjøres mot a11y-tillegget i Storybook. Hvis det ikke er tilgjengelig,
+er det ikke ferdig.
+
+## 4. Tokens er sannheten
+
+Farger, avstander, radius og typografi kommer fra **design tokens** som speiler
+Copernicus DS i Figma. Ingen hardkodede verdier i komponenter — bruk alltid
+`var(--...)`. Da holder kode og design seg synkronisert, og endringer skjer ett
+sted. Se den fulle token-referansen på [Design Tokens](/foundations/design-tokens)-siden.
+
+## 5. Mykt og innbydende
+
+Former er **avrundede** — kort, knapper og flater har myk radius. Det
+understøtter den rolige, vennlige tonen og skiller oss fra skarpe, "tekniske"
+grensesnitt.
+
+## 6. Lekent, men ryddig
+
+Det er rom for personlighet — tydelige ikoner, en signatur som banan-ikonet —
+men aldri på bekostning av lesbarhet. Typografi og struktur holdes stramt; det
+lekne ligger i detaljene.
+
+## 7. Konsistens gjennom gjenbruk
+
+Bygg med eksisterende komponenter og tokens framfor engangsløsninger. Et nytt
+mønster skal løse et reelt, gjentakende behov — ellers utvider vi noe vi
+allerede har.

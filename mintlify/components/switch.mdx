@@ -1,0 +1,186 @@
+---
+title: "Switch"
+description: "Bryter for på/av-innstillinger i Copernicus DS"
+icon: "toggle-right"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3192-19" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Switch/Switch.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Switch/Switch.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Switch`) og Figma-komponentsettet
+  "Switch" (node `3192:19`). Fyll-tokenene i Figma (`components/switch/color/track-on`,
+  `track-off`, m.fl.) er speilet 1:1 som `--switch-*`-komponent-tokens i
+  `src/tokens/tokens.css` — ingen kondensering nødvendig, siden Switch kun har
+  fargeverdier på track/thumb (ingen semantiske toner).
+</Note>
+
+## Oversikt
+
+På/av-bryter for innstillinger som får effekt umiddelbart (i motsetning til
+`Checkbox`, som ofte samler valg før innsending). Komponenten har **4 varianter**
+i Figma, bygget fra 2 variant-egenskaper (`is On` × `State`).
+
+## Anatomi
+
+```
+Switch (LABEL) — flex row, gap: var(--spacing-8), min-height: var(--size-40)
+├── input[type="checkbox"] role="switch" (visuelt skjult, men fokuserbar)
+├── Track (SPAN, aria-hidden) — 44×24px pille, 4px padding, 1px border
+│   └── Thumb (SPAN) — 16px sirkel, glir 18px til høyre når på
+└── Label (SPAN) — tekstinnhold
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **is On** (Variant) | No, Yes | No | Om bryteren er slått på. |
+| **State** (Variant) | Default, Focus | Default | `Focus` er `:focus-visible` i kode, ikke en prop. |
+
+2 (is On) × 2 (State) = 4 varianter.
+
+<Note>
+  Figma-komponenten har ingen `Label`-tekstegenskap — etiketten er en del av
+  layouten rundt bryteren og styres i kode via `children`.
+</Note>
+
+## Tokens
+
+Switch har egne komponent-scopede tokens for track og thumb, synket fra Figma-
+variablene `components/switch/color/track-on` og `track-off`:
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Track, på | `--switch-color-track-on` | `var(--color-background-action)` |
+| Track, av | `--switch-color-track-off` | `var(--color-background-secondary)` |
+| Track, border | `--switch-color-track-border` | `var(--color-border-default)` |
+| Thumb-farge | `--switch-color-thumb` | `var(--color-background-primary)` |
+| Track-bredde | `--switch-size-track-width` | 44px |
+| Track-høyde | `--switch-size-track-height` | `var(--size-24)` (24px) |
+| Thumb-størrelse | `--switch-size-thumb` | `var(--size-16)` (16px) |
+
+### Øvrig spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (bryter ↔ etikett) | `--spacing-8` | 8px |
+| Min-høyde (klikkflate) | `--size-40` | 40px |
+| Track-padding | `--spacing-4` | 4px |
+| Border | `--border-width-1` | 1px |
+| Border radius (track + thumb) | `--radius-999` | 999px |
+| Thumb-forskyvning når på | — | `translateX(18px)` |
+
+### Fokus-ring
+
+Samme mønster som `Checkbox` og `RadioButton` — en dobbel box-shadow-ring
+bundet til `--color-border-focus-ring` (`--color-purple-500`), uten den
+ekstra 5 %-fyllingen (Switch sitt track har allerede en fargefylling).
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Ring, indre (gap) | `--color-background-canvas` | 3px |
+| Ring, ytre | `--color-border-focus-ring` | 6px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | `--spacing-20` |
+
+### Redusert bevegelse
+
+`prefers-reduced-motion: reduce` fjerner overgangene på `track` og `thumb`
+(ingen glidende animasjon ved toggling).
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Switch/Switch.tsx` | Komponent + eksportert type |
+| `src/components/Switch/Switch.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Switch/Switch.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Switch, type SwitchProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record`-basert variant-mapping — `is On` og `State` følger av native
+input-tilstand via CSS-selektorer på et `input[type="checkbox"] role="switch"`:
+
+```css
+.input:checked ~ .track {
+  border-color: var(--switch-color-track-on);
+  background: var(--switch-color-track-on);
+}
+.input:checked ~ .track .thumb { transform: translateX(18px); }
+.input:focus-visible ~ .track {
+  box-shadow: 0 0 0 3px var(--color-background-canvas), 0 0 0 6px var(--color-border-focus-ring);
+}
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `children` | `ReactNode` | — | Etiketten ved siden av bryteren (påkrevd). |
+| `disabled` | `boolean` | `false` | Ikke-interaktiv, `opacity: 0.5` og `cursor: not-allowed`. |
+| `checked` / `defaultChecked` | `boolean` | — | Arvet fra native input — styrt eller ustyrt bruk støttes begge. |
+| `...rest` | `Omit<InputHTMLAttributes<HTMLInputElement>, "type" \| "children">` | — | Alle native input-attributter unntatt `type` (fast `"checkbox"`) og `children`, spres på selve inputen. `role="switch"` settes internt. |
+
+### Eksempler
+
+```tsx
+// Av (default)
+<Switch>Varslinger</Switch>
+
+// På
+<Switch defaultChecked>Varslinger</Switch>
+
+// Deaktivert
+<Switch disabled>Label</Switch>
+
+// Innstillingsliste
+<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+  <Switch defaultChecked>Varslinger</Switch>
+  <Switch>Nyhetsbrev</Switch>
+  <Switch defaultChecked>Mørk modus følger systemet</Switch>
+</div>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<input type="checkbox" role="switch">` pakket i `<label>` —
+  hele label-arealet er klikkbart, og inputen får tastaturfokus og aktivering
+  (Space) gratis. `role="switch"` gjør at skjermlesere annonserer "på/av"
+  fremfor "avkrysset/ikke avkrysset".
+- Den ekte inputen er visuelt skjult (`clip-path: inset(50%)`), ikke
+  `display: none` — forblir i tab-rekkefølgen og leses av skjermlesere.
+- Den visuelle pillen (`.track`) er `aria-hidden` siden den kun representerer
+  inputens tilstand visuelt.
+- Synlig fokusindikator via `:focus-visible` (dobbel ring), samme mønster
+  som `Checkbox`/`RadioButton`.
+- `prefers-reduced-motion: reduce` fjerner glidende overgang på thumb/track,
+  for brukere som er sensitive for bevegelse.
+- `disabled` setter `cursor: not-allowed` og arves fra native `disabled`-attributt.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| is On → `checked` | No/Yes | `boolean` (native input) | ✅ Samsvarer |
+| State=Focus | Figma-effekt (drop-shadow) | `:focus-visible` med `box-shadow` | ✅ Dekket (ikke prop) |
+| `components/switch/color/track-on` | Figma-variabel | `--switch-color-track-on` | ✅ Samsvarer |
+| `components/switch/color/track-off` | Figma-variabel | `--switch-color-track-off` | ✅ Samsvarer |
+| Label | Ingen tekstegenskap i Figma | `children` (påkrevd prop) | ➕ Kode-only, styrt av forbruker |

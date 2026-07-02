@@ -1,0 +1,114 @@
+---
+title: "Divider"
+description: "Skillelinje for visuell separasjon av innhold i Copernicus DS"
+icon: "ruler"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3188-5" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Divider/Divider.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Divider/Divider.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Divider`) og Figma-komponentsettet
+  (node `3188:5`). Komponenten har kun én variant-egenskap og ingen egne tokens
+  utover global border-farge og -tykkelse.
+</Note>
+
+## Oversikt
+
+Skillelinje for visuell separasjon av innhold — horisontalt mellom seksjoner, eller
+vertikalt mellom elementer i en rad. Bygges på native `hr` for korrekt semantikk.
+
+## Anatomi
+
+```
+Divider (COMPONENT) — hr, farge: var(--color-border-default)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Orientation** (Variant) | Horizontal, Vertical | Horizontal | Horizontal = full bredde, 1px høyde. Vertical = fyller foreldrehøyden, 1px bredde. |
+
+2 varianter totalt — ingen boolske eller tekst-egenskaper.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Tykkelse (begge retninger) | `--border-width-1` | 1px |
+| Min-høyde (Vertical) | `--size-24` | 24px |
+
+### Farge
+
+| Element | Token | Notes |
+|---------|-------|-------|
+| Linje | `--color-border-default` | Samme token uavhengig av retning. |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Divider/Divider.tsx` | Komponent + eksporterte typer |
+| `src/components/Divider/Divider.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Divider/Divider.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Divider, type DividerProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const classes = [
+  styles.divider,
+  orientation === "vertical" ? styles.vertical : styles.horizontal,
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Retning på skillelinjen. |
+| `...rest` | `HTMLAttributes<HTMLHRElement>` | — | Alle native `hr`-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Horisontal (default)
+<Divider />
+
+// Vertikal — i en horisontal rad
+<div style={{ display: "flex", gap: 16, alignItems: "center", height: 48 }}>
+  <span>Venstre</span>
+  <Divider orientation="vertical" />
+  <span>Høyre</span>
+</div>
+```
+
+## Tilgjengelighet
+
+- Renderes som native `<hr>` — får implisitt `role="separator"` fra skjermlesere.
+- `aria-orientation` settes eksplisitt ut fra `orientation`-propen.
+- Rent visuelt element uten interaksjon — ingen tastaturhensyn.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Orientation → `orientation` | Horizontal, Vertical | `horizontal`, `vertical` | ✅ Samsvarer |

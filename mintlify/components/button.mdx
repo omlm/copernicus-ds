@@ -1,0 +1,224 @@
+---
+title: "Button"
+description: "Primær handlingsknapp (call-to-action) i Copernicus DS"
+icon: "hand-pointer"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3003-1196" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Button/Button.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Button/Button.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Generert med `figma_generate_component_doc` (figma-console MCP) og reconciled mot React-kilden.
+  De tre per-variant-tabellene fra verktøyet (Variant Matrix / Icon Mapping / Color Tokens, 90 rader hver)
+  er kondensert til de faktiske distinkte verdiene — farge bestemmes av `Type × State`, ikke av størrelse
+  eller ikon-flagg. Parity-seksjonen er korrigert manuelt.
+</Note>
+
+## Oversikt
+
+Primær handlingskontroll. Brukes for handlinger brukeren utfører (send inn, fortsett, avvis).
+For navigasjon som endrer URL, bruk `Link` i stedet. Komponenten har **90 varianter** i Figma,
+bygget fra 4 variant-egenskaper (Type × Size × State × Tone), pluss to uavhengige
+boolske ikon-egenskaper som ikke multipliserer variant-antallet.
+
+## Anatomi
+
+```
+Button (COMPONENT) — horizontal auto-layout, gap: var(--button-gap)=4px [fixed-height]
+├── Left Icon (INSTANCE) — vises når Show Left Icon = Yes
+│   └── Icon / <navn> (INSTANCE)
+│       └── Vector (VECTOR)
+├── Label (TEXT)
+└── Right Icon (INSTANCE) — vises når Show Right Icon = Yes
+    └── Icon / <navn> (INSTANCE)
+        └── Vector (VECTOR)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Type** (Variant) | Primary, Secondary, Tertiary | Primary | Endrer visuell behandling |
+| **Size** (Variant) | Large, Medium, Small | Large | Large=48px, Medium=32px, Small=24px |
+| **State** (Variant) | Default, Hover, Active, Focus, Disabled | Default | Interaksjonstilstand (ikke en prop i kode) |
+| **Tone** (Variant) | Neutral, Danger | Neutral | Overstyrer Type-fargen for destruktive handlinger, uavhengig av Type |
+| **Show Left Icon** (Boolean) | No, Yes | No | Ikon før etiketten |
+| **Show Right Icon** (Boolean) | No, Yes | No | Ikon etter etiketten |
+| **Label** (Text) | string | "Label" | Tekstinnhold |
+
+3 (Type) × 3 (Size) × 5 (State) × 2 (Tone) = 90 varianter. Show Left/Right Icon er
+uavhengige boolske egenskaper på hver variant (kan begge være `true` samtidig) — de er
+ikke en egen variant-akse, og påvirker derfor ikke variant-antallet.
+
+### Fargematrise — bestemt av Type × State × Tone
+
+Bakgrunns- og tekstfarge avhenger **kun** av `Type`, `State` og `Tone` (identisk på tvers
+av størrelse og ikon-flagg).
+
+#### Tone = Neutral
+
+| Type | State | Background | Text/Icon |
+|------|-------|-----------|-----------|
+| Primary | Default / Focus | `#FF1A6E` | `#FFFFFF` |
+| Primary | Hover | `#BB0045` | `#FFFFFF` |
+| Primary | Active | `#990038` | `#FFFFFF` |
+| Primary | Disabled | `#FFB4D0` | `#FF81AF` |
+| Secondary | Default / Focus | `#FFFFFF03` (transparent) | `#000000` |
+| Secondary | Hover | `#CBCBD0` | `#000000` |
+| Secondary | Active | `#AFB0B7` | `#000000` |
+| Secondary | Disabled | `#E4E5E7` | `#AFB0B7` |
+| Tertiary | Default / Focus | `rgba(255,255,255,0.01)` (transparent), border `#000000` | `#000000` |
+| Tertiary | Hover | `rgba(0,0,0,0.1)` | `#000000` |
+| Tertiary | Active | `rgba(0,0,0,0.2)` | `#000000` |
+| Tertiary | Disabled | `rgba(255,255,255,0.01)`, border `#7A7C87` | `#7A7C87` |
+
+#### Tone = Danger
+
+| Type | State | Background | Text/Icon |
+|------|-------|-----------|-----------|
+| Primary | Default / Focus | `#BE4040` | `#FFFFFF` |
+| Primary | Hover / Active | `#993333` | `#FFFFFF` |
+| Primary | Disabled | `#FFB4D0` (faller tilbake til nøytral disabled-token) | `#FF81AF` |
+| Secondary | Default / Focus | `#E5B3B3` | `#722727` |
+| Secondary | Hover / Active | `#D88D8D` | `#722727` |
+| Secondary | Disabled | `#E4E5E7` (faller tilbake til nøytral disabled-token) | `#AFB0B7` |
+| Tertiary | Default / Focus / Hover / Active | transparent (som Neutral) | `#722727`, border `#722727` |
+| Tertiary | Disabled | transparent (som Neutral) | `#7A7C87`, border `#7A7C87` |
+
+<Note>
+  Focus deler bakgrunn med Default; tilstanden vises via en focus-ring (se kode: `outline` på `:focus-visible`).
+  For `Tone=Danger` er Disabled bevisst identisk med `Tone=Neutral` sin disabled-farge (samme
+  disabled-tokens brukes uansett tone) — se `.danger.primary:disabled` / `.danger.secondary:disabled`
+  i `Button.module.css`.
+</Note>
+
+## Tokens
+
+### Spacing / geometri (Figma-variabler)
+
+| Property | Figma Variable | Value |
+|----------|---------------|-------|
+| Padding top/bottom | `VariableID:3003:5660` | 16px |
+| Padding left/right | `VariableID:3003:5662` | 24px |
+| Gap (label ↔ ikon) | `button/gap` → `spacing/4` (`VariableID:3264:2`) | 4px |
+| Border radius | — | 999px |
+| Border width | — | 1px |
+
+<Note>
+  Gap er bundet til den komponent-scopede variabelen `button/gap` (alias til `spacing/4` = 4px) på alle 90 varianter, speilet i kode som `--button-gap: var(--spacing-4)`.
+</Note>
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height | Letter Spacing |
+|---------|------|--------|------|-------------|----------------|
+| Label | Outfit | SemiBold (600) | 16px | 16px | 0.32px |
+
+<Note>
+  Size=Small bruker 14px etikett (`--spacing-14`) i kode — se `Button.module.css`.
+</Note>
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role | Variants |
+|------|------|----------|
+| `src/components/Button/Button.tsx` | Komponent + eksporterte typer | 3 |
+| `src/components/Button/Button.module.css` | CSS Modules (token-bundet via `var()`) | — |
+| `src/components/Button/Button.stories.tsx` | Storybook stories + argTypes | — |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `ArrowRight`, `DynamicIcon`, `IconName` | — |
+
+### Import
+
+```tsx
+import { Button, type ButtonProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const variantClass: Record<ButtonVariant, string> = {
+  primary: styles.primary,
+  secondary: styles.secondary,
+  tertiary: styles.tertiary,
+};
+
+const sizeClass: Record<ButtonSize, string> = {
+  small: styles.sizeSmall,
+  medium: styles.sizeMedium,
+  large: styles.sizeLarge,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"primary" \| "secondary" \| "tertiary"` | `"primary"` | Visuell stil. Bruk kun én primary-handling per visning. |
+| `size` | `"small" \| "medium" \| "large"` | `"large"` | Knappestørrelse (large=48px, medium=32px, small=24px). |
+| `tone` | `"neutral" \| "danger"` | `"neutral"` | `"danger"` farger knappen rødt for destruktive handlinger, uavhengig av `variant`. |
+| `trailingIcon` | `boolean \| ReactNode` | `false` | Vis trailing-ikon. `true` = standard pil (`ArrowRight`), eller send et eget element. |
+| `trailingIconName` | `IconName` | — | Velg trailing-ikon fra hele Lucide-settet via navn (overstyrer pilen). |
+| `leadingIcon` | `boolean \| ReactNode` | `false` | Vis leading-ikon (før etiketten). `true` = standard pil, eller send et eget element. |
+| `leadingIconName` | `IconName` | — | Velg leading-ikon fra hele Lucide-settet via navn. |
+| `disabled` | `boolean` | `false` | Ikke-interaktiv (arvet fra native button). |
+| `children` | `ReactNode` | — | Knappe-etikett (påkrevd). |
+| `...rest` | `ButtonHTMLAttributes<HTMLButtonElement>` | — | Alle native button-attributter (`onClick`, `type`, `name`, `aria-*`, osv.) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Primary (default)
+<Button>Label</Button>
+
+// Secondary
+<Button variant="secondary">Label</Button>
+
+// Tertiary
+<Button variant="tertiary">Label</Button>
+
+// Destruktiv handling (tone overstyrer variant-fargen)
+<Button tone="danger">Slett</Button>
+
+// Med trailing-pil
+<Button trailingIcon>Neste</Button>
+
+// Med leading-pil
+<Button leadingIcon>Tilbake</Button>
+
+// Bytt ut ikonet (Lucide)
+<Button trailingIconName="heart">Lik</Button>
+
+// Størrelser
+<Button size="large">Large</Button>
+<Button size="medium">Medium</Button>
+<Button size="small">Small</Button>
+
+// Disabled
+<Button disabled>Label</Button>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<button>` — får tastaturfokus og aktivering (Enter/Space) gratis.
+- Synlig fokusindikator via `:focus-visible` (`outline: 2px solid var(--color-foreground-action)`).
+- `disabled` setter `cursor: not-allowed` og fjerner interaksjon.
+- Ingen a11y-annotasjoner funnet i Figma — vurder å legge til kontrast-/aria-notater i Dev Mode.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Type → `variant` | Primary, Secondary, Tertiary | `primary`, `secondary`, `tertiary` | ✅ Samsvarer |
+| Size → `size` | Large, Medium, Small | `large`, `medium`, `small` | ✅ Samsvarer |
+| State | Default/Hover/Active/Focus/Disabled | CSS-pseudoklasser (`:hover`, `:active`, `:focus-visible`, `:disabled`) | ✅ Dekket (ikke prop) |
+| Tone → `tone` | Neutral, Danger | `neutral`, `danger` | ✅ Samsvarer |
+| Show Right Icon → `trailingIcon` | No/Yes | `boolean \| ReactNode` | ✅ Samsvarer |
+| Show Left Icon → `leadingIcon` | No/Yes | `boolean \| ReactNode` | ✅ Samsvarer |
+| Gap | `button/gap` → `spacing/4` = 4px | `--button-gap` → `--spacing-4` = 4px | ✅ Samsvarer (4px begge, navngitt variabel) |

@@ -1,0 +1,102 @@
+---
+title: "Spinner"
+description: "Indeterminert lasteindikator i Copernicus DS"
+icon: "loader"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3159-2" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Spinner/Spinner.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Spinner/Spinner.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Spinner`) og Figma-komponentsettet
+  (node `3159:2`, 5 varianter).
+</Note>
+
+## Oversikt
+
+En 270°-bue over et subtilt spor som roterer kontinuerlig — indikerer at noe
+laster, uten å vise fremdrift. Geometrien matcher Figma-komponenten: ringtykkelsen
+er 20 % av radius i alle størrelser.
+
+## Anatomi
+
+```
+Spinner (SPAN, role="status", aria-label) — animation: spin 1s linear infinite
+└── svg (viewBox 0 0 40 40)
+    ├── Track (CIRCLE) — statisk bakgrunnsring
+    └── Indicator (CIRCLE) — roterende bue (strokeDasharray, rotert -90°)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Size** (Variant) | X-Small, Small, Medium, Large, X-Large | Medium | Figma har 5 faste størrelser — samsvarer 1:1 med kodens `SpinnerSize`. |
+
+Ingen andre komponent-egenskaper — Spinneren er indeterminert (ingen progress-verdi).
+
+## Tokens
+
+Egne `--spinner-*`-tokens, definert i `tokens.css`:
+
+| Token | Peker på / Value |
+|-------|-------------------|
+| `--spinner-size-x-small` | `--size-12` (12px) |
+| `--spinner-size-small` | `--size-16` (16px) |
+| `--spinner-size-medium` | `--size-24` (24px) |
+| `--spinner-size-large` | `--size-40` (40px) |
+| `--spinner-size-x-large` | `--size-64` (64px) |
+| `--spinner-color-track` | `--color-system-neutral-weak` |
+| `--spinner-color-indicator` | `--color-foreground-action` |
+| `--spinner-animation-duration` | `--duration-1000` (1000ms) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Spinner/Spinner.tsx` | Komponent + eksportert type |
+| `src/components/Spinner/Spinner.module.css` | CSS Modules + `@keyframes spin` |
+| `src/components/Spinner/Spinner.stories.tsx` | Storybook stories |
+
+### Import
+
+```tsx
+import { Spinner, type SpinnerProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"x-small" \| "small" \| "medium" \| "large" \| "x-large"` | `"medium"` | Størrelsen (Figma: "Size"). |
+| `label` | `string` | `"Loading…"` | Tilgjengelig etikett som leses opp av skjermlesere. |
+| `...rest` | `HTMLAttributes<HTMLSpanElement>` | — | Native span-attributter spres på rot-elementet. |
+
+### Eksempler
+
+```tsx
+<Spinner />
+<Spinner size="small" />
+<Spinner size="x-large" label="Laster resultater" />
+```
+
+## Tilgjengelighet
+
+- `role="status"` + `aria-label` (default `"Loading…"`, overstyrbar via `label`) — annonseres av skjermlesere uten å avbryte.
+- SVG-en er `aria-hidden` og `focusable="false"` — det tilgjengelige navnet kommer kun fra `aria-label` på rot-elementet.
+- `prefers-reduced-motion: reduce` gjør rotasjonen 3× langsommere i stedet for å stoppe helt — bevegelsen formidler fortsatt at noe pågår, uten kraftig animasjon.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Size → `size` | X-Small/Small/Medium/Large/X-Large | `x-small`/`small`/`medium`/`large`/`x-large` | ✅ Samsvarer |
+| Animasjon | 1 s per omdreining (Smart Animate-prototype) | `--spinner-animation-duration: 1000ms`, CSS `@keyframes` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `label` | ➕ Kode-only, for skjermleser-tilgjengelighet |

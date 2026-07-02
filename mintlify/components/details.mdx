@@ -1,0 +1,162 @@
+---
+title: "Details"
+description: "Ekspanderbart panel for å vise/skjule innhold i Copernicus DS"
+icon: "chevron-down"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3197-14" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Details/Details.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Details/Details.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Details`) og Figma-komponentsettet
+  "Details" (node `3197:14`). Variant-aksen `State` (Closed/Open) styres ikke av
+  en prop, men av det native `<details>`-elementets `open`-attributt, speilet i
+  kode via `[open]`-selektoren.
+</Note>
+
+## Oversikt
+
+Ekspanderbart panel for å vise eller skjule innhold — typisk brukt for FAQ-er,
+detaljseksjoner eller annen informasjon som ikke trenger å være synlig hele
+tiden. Bygget direkte på native `<details>`/`<summary>`, som gir åpne/lukke-logikk
+og tastaturstøtte gratis fra nettleseren. Komponenten har **2 varianter** i Figma
+(Closed, Open) på én egenskap (`State`) — det finnes ingen boolske eller
+tekst-egenskaper.
+
+## Anatomi
+
+```
+Details (DETAILS) — padding: var(--spacing-16), border, radius: var(--radius-12)
+├── Summary (SUMMARY) — flex, justify-content: space-between
+│   ├── Summary label (TEXT)
+│   └── Chevron (ICON, Lucide "chevron-down") — roterer 180° når åpen
+└── Content (DIV) — vises kun når State=Open
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Closed, Open | Closed | Styres av `<details open>` i kode, ikke en komponent-prop. |
+
+1 (State) = 2 varianter. Ingen boolske eller tekst-egenskaper i Figma-komponentsettet.
+
+<Note>
+  I kode finnes ikke `State` som prop — den native `open`-attributten (og
+  brukerens klikk på `<summary>`) avgjør tilstanden. `open` kan likevel settes
+  eksplisitt eller kontrolleres via `...rest` siden `DetailsProps` utvider
+  `DetailsHTMLAttributes<HTMLDetailsElement>`.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding (container) | `--spacing-16` | 16px |
+| Gap (summary-rad) | `--spacing-8` | 8px |
+| Margin-top (content) | `--spacing-8` | 8px |
+| Border radius (container) | `--radius-12` | 12px |
+| Border radius (summary, focus) | `--radius-4` | 4px |
+| Border width | `--border-width-1` | 1px |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Border | `--color-border-default` |
+| Bakgrunn | `--color-background-primary` |
+| Tekst (summary) | `--color-foreground-primary` |
+| Tekst (content) | `--color-foreground-secondary` |
+| Focus-ring | `--color-border-focus-ring` / `--color-background-canvas` |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Summary label | `--typography-family-default` | Bold (`--typography-weight-bold`) | `--size-16` | `--spacing-20` |
+| Content | `--typography-family-default` | Normal (`--typography-weight-normal`) | `--size-16` | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Details/Details.tsx` | Komponent + eksportert type |
+| `src/components/Details/Details.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Details/Details.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `ChevronDown` |
+
+### Import
+
+```tsx
+import { Details, type DetailsProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record<...>`-mapping er nødvendig — komponenten har kun én visuell
+tilstand som styres av CSS-attributtselektoren:
+
+```css
+.details[open] .chevron {
+  transform: rotate(180deg);
+}
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `summary` | `ReactNode` | — | Den alltid synlige overskriften (påkrevd). |
+| `children` | `ReactNode` | — | Innholdet som vises når panelet er åpent (påkrevd). |
+| `...rest` | `DetailsHTMLAttributes<HTMLDetailsElement>` | — | Alle native `details`-attributter (`open`, `onToggle`, `className`, osv.) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Lukket (default)
+<Details summary="Summary title">
+  Dette er innholdet som vises når panelet åpnes.
+</Details>
+
+// Åpen fra start
+<Details summary="Summary title" open>
+  Dette er innholdet som vises når panelet åpnes.
+</Details>
+
+// Flere paneler etter hverandre (enkel "accordion")
+<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+  <Details summary="Første panel">Innhold 1</Details>
+  <Details summary="Andre panel">Innhold 2</Details>
+  <Details summary="Tredje panel">Innhold 3</Details>
+</div>
+```
+
+## Tilgjengelighet
+
+- Bruker native `<details>`/`<summary>` — tastaturfokus, aktivering (Enter/Space)
+  og skjermleser-semantikk (implisitt ekspander-rolle) kommer gratis fra nettleseren.
+- Nettleserens egen markør (`::-webkit-details-marker`) er skjult og erstattet
+  med en Lucide-chevron som er dekorativ (`aria-hidden="true"`) — tilstanden
+  formidles allerede av `<details>` sin native semantikk.
+- Synlig fokusindikator på `<summary>` via `:focus-visible`
+  (`box-shadow` med `--color-border-focus-ring`).
+- Chevron-rotasjonen respekterer `prefers-reduced-motion: reduce`
+  (overgangen fjernes helt).
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State → åpen/lukket | Closed, Open | Native `open`-attributt / `[open]`-selektor | ✅ Dekket (ikke prop) |
+| Summary label → `summary` | Text | `ReactNode` | ✅ Samsvarer |
+| Content → `children` | Frame/innhold | `ReactNode` | ✅ Samsvarer |
+| Chevron-ikon | chevron-down/chevron-up (statisk per state) | Ett `ChevronDown`-ikon, rotert 180° via CSS | ✅ Samsvarer (implementert som animasjon i stedet for ikonbytte) |

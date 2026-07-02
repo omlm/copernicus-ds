@@ -1,0 +1,195 @@
+---
+title: "Input"
+description: "Tekstfelt med etikett, hjelpetekst og feiltilstand i Copernicus DS"
+icon: "text-cursor-input"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3126-2" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Input/Input.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Input/Input.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Input`) og Figma-komponentsettet
+  "Input" (node `3126:2`). Figma sine fem `State`-verdier (Default, Focus,
+  Filled, Error, Disabled) er **ikke fem separate props** i kode — kun `Error`
+  er en eksplisitt prop (`error`). De fire andre følger av inputens faktiske
+  atferd: Focus→`:focus-visible`, Filled→har verdi, Disabled→`:disabled`.
+  Parity-seksjonen er korrigert manuelt for å reflektere dette.
+</Note>
+
+## Oversikt
+
+Tekstfelt med valgfri etikett, hjelpetekst og feilmelding. Komponenten har
+**5 varianter** i Figma, bygget fra 1 variant-egenskap (`State`), pluss
+tekstegenskaper for label, verdi/placeholder og beskrivelse.
+
+## Anatomi
+
+```
+Input (DIV) — flex column, gap: var(--spacing-8)
+├── Label (LABEL) — vises kun når `label`-prop er satt
+├── Text input (INPUT) — height: var(--size-48), radius: var(--radius-12)
+└── Message (P) — vises kun når `description` eller `error` er satt
+    (rendres som `.errorText` når `error` er satt, ellers `.description`)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Default, Focus, Filled, Error, Disabled | Default | Kun `Error` er en eksplisitt prop i kode — se mapping under. |
+| **Label** (Text) | string | — | Mappes til `label`-prop. |
+| **Value** / placeholder (Text) | string | — | Mappes til `placeholder`-prop (native attributt, spres via `...rest`). |
+| **Input description** (Text) | string | — | Mappes til `description`-prop. |
+
+1 egenskap × 5 verdier = 5 varianter i Figma. `Label`, `Value` og `Input
+description` er tekstegenskaper som ikke multipliserer variant-antallet.
+
+### State → kode-mapping
+
+| Figma State | Kode | Trigger |
+|-------------|------|---------|
+| Default | — | Ingen verdi, ikke fokusert, ikke feil, ikke disabled. |
+| Focus | `:focus-visible` (CSS) | Nativt tastaturfokus på feltet — ikke en prop. |
+| Filled | Nativ `value`/`defaultValue` | Feltet har innhold — ingen egen `.has-value`-klasse i dagens kode, kun visuelt identisk med Default siden utseendet ikke endres ved utfylling. |
+| Error | `error`-prop → `aria-invalid="true"` → `[aria-invalid="true"]` (CSS) | Eksplisitt prop, viser rød border og feilmelding. |
+| Disabled | `disabled`-prop → `:disabled` (CSS) | Eksplisitt prop, `opacity: 0.5` og `cursor: not-allowed`. |
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (label/felt/melding) | `--spacing-8` | 8px |
+| Felt-høyde | `--size-48` | 48px |
+| Felt-padding, horisontal | `--spacing-16` | 16px |
+| Border | `--border-width-1` | 1px |
+| Border radius | `--radius-12` | 12px |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Felt-bakgrunn | `--color-background-canvas` |
+| Felt-border / tekst (default) | `--color-foreground-primary` |
+| Placeholder-tekst | `--color-foreground-secondary` |
+| Label-tekst | `--color-foreground-primary` |
+| Hjelpetekst (description) | `--color-foreground-secondary` |
+| Border, Error | `--color-system-danger-strong` |
+| Tekst, Error-melding | `--color-system-danger-strong` |
+
+### Fokus-ring
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Border, fokus | `--color-border-focus-ring` | 1px (arvet bredde) |
+| Fokus-fyll | `color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent)` | 5 % lilla |
+| Ring, indre (gap) | `--color-background-canvas` | 3px |
+| Ring, ytre | `--color-border-focus-ring` | 6px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Bold (`--typography-weight-bold`) | 16px (`--size-16`) | `--spacing-20` |
+| Feltverdi / placeholder | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | `--spacing-20` |
+| Hjelpetekst / feilmelding | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | `--spacing-20` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Input/Input.tsx` | Komponent + eksportert type |
+| `src/components/Input/Input.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Input/Input.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Input, type InputProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record`-basert variant-mapping — `State` følger enten av CSS-selektorer
+på den native inputen, eller av `error`-propen i selve komponenten:
+
+```css
+.field:focus-visible { border-color: var(--color-border-focus-ring); /* ... */ }
+.field[aria-invalid="true"] { border-color: var(--color-system-danger-strong); }
+.field:disabled { opacity: 0.5; cursor: not-allowed; }
+```
+
+```tsx
+const hasError = error != null && error !== false;
+const message = hasError ? error : description;
+// ...
+<input aria-invalid={hasError || undefined} aria-describedby={message != null ? messageId : undefined} />
+{message != null && (
+  <p className={hasError ? styles.errorText : styles.description}>{message}</p>
+)}
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `label` | `ReactNode` | — | Etikett over feltet (Figma: "Label"). |
+| `description` | `ReactNode` | — | Hjelpetekst under feltet (Figma: "Input description"). |
+| `error` | `ReactNode` | — | Feilmelding. Når satt går feltet i error-tilstand (rød border) og meldingen vises i stedet for `description` (Figma: "State=Error"). |
+| `disabled` | `boolean` | `false` | Ikke-interaktiv, `opacity: 0.5` og `cursor: not-allowed`. |
+| `...rest` | `Omit<InputHTMLAttributes<HTMLInputElement>, "size">` | — | Alle native input-attributter unntatt `size` (reservert av HTML for tegnbredde), spres på selve feltet (f.eks. `placeholder`, `value`, `defaultValue`, `type`). |
+
+### Eksempler
+
+```tsx
+// Tom (Default)
+<Input label="Label" placeholder="Placeholder" description="Input description" />
+
+// Utfylt (Filled)
+<Input label="Label" defaultValue="Value" />
+
+// Feiltilstand
+<Input label="Label" defaultValue="Value" error="Noe er galt med verdien" />
+
+// Deaktivert
+<Input label="Label" disabled />
+
+// Uten etikett og beskrivelse
+<Input placeholder="Placeholder" />
+```
+
+## Tilgjengelighet
+
+- Native `<input>` koblet til `<label>` via `htmlFor`/`id` (auto-generert med
+  `useId()` når `id` ikke er satt) — sikrer at klikk på label fokuserer feltet.
+- `aria-invalid="true"` settes automatisk når `error` er satt, slik at
+  skjermlesere annonserer feiltilstanden.
+- `aria-describedby` peker til hjelpeteksten/feilmeldingen når en av dem
+  finnes, slik at innholdet leses opp sammen med feltet.
+- Synlig fokusindikator via `:focus-visible` (border + dobbel ring), ikke
+  avhengig av farge alene.
+- `disabled` setter `cursor: not-allowed` og arves fra native
+  `disabled`-attributt.
+- Feilmeldingens tekstfarge (`--color-system-danger-strong`) er valgt for
+  tilstrekkelig kontrast mot `--color-background-canvas`.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State=Default | Tomt felt | Ingen verdi/prop | ✅ Samsvarer |
+| State=Focus | Fokus-ring-effekt | `:focus-visible` med `border-color` + `box-shadow`-ring | ✅ Dekket (ikke prop) |
+| State=Filled | Felt med innhold | Nativ `value`/`defaultValue` — visuelt identisk med Default | ✅ Dekket (ikke prop, ingen egen styling) |
+| State=Error → `error` | Rød border (`color/system/danger/strong-border`) | `error`-prop → `aria-invalid` → `--color-system-danger-strong` | ✅ Samsvarer |
+| State=Disabled → `disabled` | Nedtonet felt | `boolean` → `:disabled` (`opacity: 0.5`) | ✅ Samsvarer |
+| Label → `label` | Text | `ReactNode` | ✅ Samsvarer |
+| Input description → `description` | Text | `ReactNode` | ✅ Samsvarer |
+| Value/placeholder → `placeholder` | Text | Nativt `placeholder`-attributt via `...rest` | ✅ Samsvarer |

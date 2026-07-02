@@ -1,0 +1,141 @@
+---
+title: "Skeleton"
+description: "Pulserende lasteplassholder i Copernicus DS"
+icon: "loader"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3191-6" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Skeleton/Skeleton.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Skeleton/Skeleton.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Skeleton`) og Figma-komponentsettet
+  (node `3191:6`). Bakgrunnsfargen bruker samme `--color-system-neutral-weak`-token
+  som deles med `Chip`/`Badge`/`Alert`, men Skeleton har egne geometri-tokens per variant.
+</Note>
+
+## Oversikt
+
+Pulserende flate som holder plassen til innhold som lastes (tekstlinjer, avatarer,
+bilder/kort). Skjult for skjermlesere — kombiner med synlig lastetekst eller
+`aria-busy` på containeren rundt.
+
+## Anatomi
+
+```
+Skeleton (COMPONENT) — div, bakgrunn: var(--color-system-neutral-weak), animasjon: pulse
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Variant** (Variant) | Text, Circle, Rectangle | Text | Styrer default bredde/høyde/radius. Kan overstyres med `width`/`height`. |
+
+3 varianter totalt — ingen boolske eller tekst-egenskaper.
+
+## Tokens
+
+### Spacing / geometri
+
+| Variant | Bredde | Høyde | Radius |
+|---------|--------|-------|--------|
+| Text | 100% | `--size-16` (16px) | `--radius-4` (4px) |
+| Circle | `--size-48` (48px) | `--size-48` (48px) | `--radius-999` (999px) |
+| Rectangle | 100% | `--size-64` (64px) | `--radius-12` (12px) |
+
+### Animasjon
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Varighet | `--duration-1000` | 1000ms |
+| Kurve | — | `ease-in-out infinite alternate` |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Bakgrunn | `--color-system-neutral-weak` |
+
+<Note>
+  `width`/`height`-props overstyrer default-verdiene per variant via inline `style`
+  — nyttig for f.eks. en 60%-bred tekstlinje i en flerlinjers lasteplassholder.
+</Note>
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Skeleton/Skeleton.tsx` | Komponent + eksporterte typer |
+| `src/components/Skeleton/Skeleton.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Skeleton/Skeleton.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Skeleton, type SkeletonProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const variantClass: Record<SkeletonVariant, string> = {
+  text: styles.text,
+  circle: styles.circle,
+  rectangle: styles.rectangle,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"text" \| "circle" \| "rectangle"` | `"text"` | Form på lasteplassholderen. |
+| `width` | `CSSProperties["width"]` | — | Bredde, f.eks. `240` eller `"100%"`. Overstyrer variant-default. |
+| `height` | `CSSProperties["height"]` | — | Høyde. Text og Circle har fornuftige standarder fra tokens. |
+| `...rest` | `HTMLAttributes<HTMLDivElement>` | — | Alle native div-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Tekstlinje (default)
+<Skeleton />
+
+// Sirkel (avatar)
+<Skeleton variant="circle" />
+
+// Rektangel (bilde/kort)
+<Skeleton variant="rectangle" />
+
+// Sammensatt eksempel — kort som laster
+<div style={{ display: "flex", gap: 16, alignItems: "flex-start" }} aria-busy="true">
+  <Skeleton variant="circle" />
+  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+    <Skeleton width="60%" />
+    <Skeleton />
+    <Skeleton variant="rectangle" />
+  </div>
+</div>
+```
+
+## Tilgjengelighet
+
+- `aria-hidden="true"` settes alltid på root-elementet — skeletonen er kun et
+  visuelt lastesignal og skal ikke annonseres av skjermlesere.
+- Sett `aria-busy="true"` på den *omsluttende* containeren (se eksempel over) og/eller
+  synlig lastetekst, slik at hjelpeteknologi får et lastesignal.
+- Respekterer `prefers-reduced-motion: reduce` — animasjonen slås av og flaten vises
+  statisk.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Variant → `variant` | Text, Circle, Rectangle | `text`, `circle`, `rectangle` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `width`, `height` | ➕ Kode-only, for å overstyre default-dimensjoner |

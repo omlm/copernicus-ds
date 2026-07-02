@@ -1,0 +1,164 @@
+---
+title: "Pagination"
+description: "Sidenavigasjon for lange lister og tabeller i Copernicus DS"
+icon: "ellipsis"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3205-3" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Pagination/Pagination.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Pagination/Pagination.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Pagination`) og Figma-komponenten
+  (node `3205:3`). I Figma finnes komponenten som **ett fast eksempel** (side 2
+  av et lite antall synlige sidetall, med ellipse), ikke et variant-sett.
+  Kode-komponenten beregner selv hvilke sidetall og ellipser som skal vises,
+  basert på `page`/`count`.
+</Note>
+
+## Oversikt
+
+Sidenavigasjon for lange lister og tabeller, med forrige/neste-piler og
+klikkbare sidetall. Gjeldende side er fremhevet i aksjonsfargen. Figma-eksempelet
+viser ett konkret tilfelle av layouten; kode-komponenten er fullt prop-drevet
+og regner ut riktig vindu av synlige sider (inkludert ellipser) for et
+vilkårlig antall sider.
+
+## Anatomi
+
+```
+Pagination (NAV) — horizontal, gap: var(--spacing-8)
+├── Previous (INSTANCE, arrow-icon rotert 180°)
+├── Page (FRAME) — "1"
+├── Page current (FRAME) — "2", background: var(--color-background-action)
+├── Page (FRAME) — "3"
+├── Ellipsis (TEXT) — "…"
+├── Page (FRAME) — siste side
+└── Next (INSTANCE, arrow-icon)
+```
+
+## Sammensetning
+
+Figma-eksempelet viser en fast rekke: `Previous` → tre `Page`-lag (der det
+midterste er `Page current`) → `Ellipsis` → et siste `Page`-lag → `Next`. Det
+finnes ingen variant-egenskap for antall synlige sidetall, hvilken side som er
+aktiv, eller om ellipsen vises — dette er ett konkret oppsett.
+
+Kode-komponenten gjenskaper akkurat denne strukturen, men beregner den
+dynamisk fra to tall i stedet for å ha den hardkodet:
+
+- **Previous/Next → interne knapper styrt av `page`/`count`** — det finnes
+  ingen egne props for disse; de deaktiveres automatisk når `page <= 1`
+  (Previous) eller `page >= count` (Next). Ikonet er samme `ArrowRight` speilet
+  180° for Previous.
+- **Page / Page current → `getVisiblePages(page, count)`** — en intern
+  hjelpefunksjon regner ut hvilke sidetall som skal vises: alle sider hvis
+  `count <= 7`, ellers et vindu rundt `page` pluss første og siste side. Det
+  gjeldende sidetallet får `styles.current` og `aria-current="page"`,
+  tilsvarende Figmas "Page current".
+- **Ellipsis → automatisk hull i sekvensen** — samme funksjon setter inn en
+  `"ellipsis"`-markør der det er et gap mellom synlige sidetall, rendret som
+  `…` med `aria-hidden="true"`. Det er ikke en prop, kun en avledet konsekvens
+  av `page`/`count`.
+- **Klikk-håndtering → `onPageChange`** — hverken Previous, Next eller
+  sidetallene har en tilsvarende "klikk"-egenskap i Figma (det er et statisk
+  bilde); i kode kalles `onPageChange(nyPage)` for alle tre.
+
+Fordi Figma-eksempelet er fast på side 2 av et lite sidetall, dekker det ikke
+tilfeller uten ellipse (Storybook: `FewPages`, `count <= 7`) eller en fullt
+interaktiv, tilstandsstyrt versjon (Storybook: `Interactive`).
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap mellom elementer | `--spacing-8` | 8px |
+| Bredde/høyde (Page, Previous, Next) | `--size-32` | 32px |
+| Border radius | `--radius-999` | 999px (rund) |
+
+### Typografi
+
+| Element | Font | Weight | Size |
+|---------|------|--------|------|
+| Page | `--typography-family-default` | Normal (`--typography-weight-normal`) | 14px (`--spacing-14`) |
+| Page current | `--typography-family-default` | Bold (`--typography-weight-bold`) | 14px (`--spacing-14`) |
+| Ellipsis | — | — | 14px (`--spacing-14`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Page (default) tekst | `--color-foreground-primary` |
+| Page hover-bakgrunn | `--color-system-neutral-weak` |
+| Page current bakgrunn | `--color-background-action` |
+| Page current tekst | `--color-foreground-on-action` |
+| Ellipsis tekst | `--color-foreground-secondary` |
+| Fokus-ring | `--color-border-focus-ring` (via boks-skygge) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Pagination/Pagination.tsx` | Komponent + eksportert type + `getVisiblePages`-logikk |
+| `src/components/Pagination/Pagination.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Pagination/Pagination.stories.tsx` | Storybook stories |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `ArrowRight` (gjenbrukt, rotert, for Previous) |
+
+### Import
+
+```tsx
+import { Pagination, type PaginationProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `page` | `number` | — | Gjeldende side (1-basert). Påkrevd. |
+| `count` | `number` | — | Totalt antall sider. Påkrevd. |
+| `onPageChange` | `(page: number) => void` | — | Kalles med ny side når brukeren navigerer (Previous, Next eller et sidetall). |
+| `...rest` | `Omit<HTMLAttributes<HTMLElement>, "onChange">` | — | Alle native `nav`-attributter (unntatt `onChange`, reservert internt) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Standard — som i Figma (side 2 av 10, med ellipse)
+<Pagination page={2} count={10} />
+
+// Få sider — ingen ellipse
+<Pagination page={1} count={5} />
+
+// Interaktiv — styrer egen tilstand
+function Example() {
+  const [page, setPage] = useState(1);
+  return <Pagination page={page} count={10} onPageChange={setPage} />;
+}
+```
+
+## Tilgjengelighet
+
+- Rendres som `<nav aria-label="Paginering">` — semantisk navigasjonslandemerke.
+- Gjeldende side har `aria-current="page"` på sidetallet.
+- Hvert sidetall har `aria-label={"Side " + n}`; Previous/Next har egne
+  `aria-label` ("Forrige side"/"Neste side") siden de kun viser et ikon.
+- Ellipsen er `aria-hidden="true"` — den er kun et visuelt hull, ikke et
+  navigerbart element.
+- Previous/Next deaktiveres (`disabled`) ved henholdsvis første og siste side,
+  med redusert opacity og `cursor: not-allowed`.
+- Synlig fokusindikator via `:focus-visible` (boks-skygge) på alle knapper.
+
+## Design–kode-paritet
+
+| Aspekt | Figma (ett fast eksempel) | Kode (`PaginationProps`) | Status |
+|--------|----------------------------|------------------------------|--------|
+| Previous/Next | Faste ikon-instanser | Interne knapper, deaktivert via `page`/`count` | ✅ Samsvarer |
+| Page / Page current | 3 faste sidetall, midten aktiv | `getVisiblePages(page, count)`, `page` styrer hvilken som er aktiv | ✅ Samsvarer strukturelt — kode generaliserer det faste eksempelet |
+| Ellipsis | Ett fast "…"-lag | Avledet automatisk når det er gap i sidetall-vinduet | ✅ Samsvarer |
+| Antall synlige sider | Fast i eksempelet (7 elementer inkl. piler) | Beregnes dynamisk, vindu på ±1 rundt `page` + ender | ➕ Kode håndterer tilfeller (få sider, andre `page`-verdier) som ikke finnes som egne Figma-eksempler |
+| Klikk-interaksjon | Ikke representert (statisk bilde) | `onPageChange` | ➕ Kode-only |

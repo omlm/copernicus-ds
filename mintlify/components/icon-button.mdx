@@ -1,0 +1,167 @@
+---
+title: "IconButton"
+description: "Kompakt, sirkulær ikon-only knapp i Copernicus DS"
+icon: "circle-dot"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3042-2" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/IconButton/IconButton.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/IconButton/IconButton.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/IconButton`) og Figma-komponentsettet
+  (node `3042:2`, 45 varianter). Se ⚠️ i Design–kode-paritet-tabellen: kodens
+  `variant`-union inkluderer `"ghost"`, så Figmas tredje `Type`-verdi er dekket —
+  ingen gap å rapportere for denne aksen.
+</Note>
+
+## Oversikt
+
+Kompakt, sirkulær knapp med kun ikon — ingen synlig tekstetikett. Brukes for
+tette handlingsflater (verktøylinjer, kort-actions, tabellrader) der en full
+`Button` ville tatt for mye plass. Komponenten har **45 varianter** i Figma,
+bygget fra 3 variant-egenskaper (Type × State × Size), pluss én
+instance-swap-egenskap for ikonet som ikke multipliserer variant-antallet.
+
+## Anatomi
+
+```
+IconButton (BUTTON) — inline-flex, centered, radius: var(--radius-999) [square box]
+└── Icon (INSTANCE-SWAP) — Icon / <navn> (INSTANCE)
+    └── Vector (VECTOR)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Type** (Variant) | Secondary, Primary, Ghost | Primary | Endrer visuell behandling |
+| **State** (Variant) | Default, Hover, Active, Focus, Disabled | Default | Interaksjonstilstand (ikke en prop i kode) |
+| **Size** (Variant) | Large, Small, Medium | Large | Large=48px, Medium=32px, Small=24px |
+| **Icon** (Instance-swap) | Instance | — | Bytt ut ikonet med en hvilken som helst `Icon`-instans |
+
+3 (Type) × 5 (State) × 3 (Size) = 45 varianter. Icon er en uavhengig
+instance-swap-egenskap på hver variant — den er ikke en egen variant-akse, og
+påvirker derfor ikke variant-antallet.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Størrelse Large | `--button-size-large` (`--size-48`) | 48px |
+| Størrelse Medium | `--button-size-medium` (`--size-32`) | 32px |
+| Størrelse Small | `--button-size-small` (`--size-24`) | 24px |
+| Ikonstørrelse (Large) | `--size-24` | 24px |
+| Ikonstørrelse (Medium/Small) | `--size-16` | 16px |
+| Border radius | `--radius-999` | 999px |
+| Border width | `--border-width-1` | 1px |
+| Padding | — | 0 |
+
+### Fargetokens
+
+| Type | Token-gruppe | Kilde |
+|------|-------------|-------|
+| Primary | `--color-background-action*`, `--color-foreground-on-action*` | Delt med `Button` |
+| Secondary | `--button-color-secondary-*` | Delt med `Button` |
+| Ghost | `--button-color-ghost-*` | Delt med `Button` |
+
+<Note>
+  IconButton bruker de samme komponent-scopede token-settene som `Button` for
+  Secondary og Ghost — ingen egne `--icon-button-*`-tokens for farge. Kun
+  størrelsestokens (`--button-size-*`) er delt eksplisitt.
+</Note>
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/IconButton/IconButton.tsx` | Komponent + eksporterte typer |
+| `src/components/IconButton/IconButton.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/IconButton/IconButton.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react): `ArrowRight`, `DynamicIcon`, `IconName` |
+
+### Import
+
+```tsx
+import { IconButton, type IconButtonProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const variantClass: Record<IconButtonVariant, string> = {
+  primary: styles.primary,
+  secondary: styles.secondary,
+  ghost: styles.ghost,
+};
+
+const sizeClass: Record<IconButtonSize, string> = {
+  small: styles.sizeSmall,
+  medium: styles.sizeMedium,
+  large: styles.sizeLarge,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"primary" \| "secondary" \| "ghost"` | `"primary"` | Visuell stil. |
+| `size` | `"small" \| "medium" \| "large"` | `"large"` | Knappestørrelse (large=48px, medium=32px, small=24px). |
+| `iconName` | `IconName` | — | Velg ikon fra hele Lucide-settet via navn. Prioriteres over `icon`. |
+| `icon` | `ReactNode` | — | Send et eget ikon-element direkte. Ignoreres hvis `iconName` er satt. Faller tilbake til standard pil (`ArrowRight`) hvis verken `iconName` eller `icon` er satt. |
+| `aria-label` | `string` | — | **Påkrevd.** Tilgjengelig navn for skjermlesere — knappen har ingen synlig tekst. |
+| `disabled` | `boolean` | `false` | Ikke-interaktiv (arvet fra native button). |
+| `...rest` | `Omit<ButtonHTMLAttributes<HTMLButtonElement>, "aria-label">` | — | Alle native button-attributter (`onClick`, `type`, `name`, osv.) spres på root-elementet. `type` default er `"button"`. |
+
+### Eksempler
+
+```tsx
+// Primary (default), standard pil-ikon
+<IconButton aria-label="Neste" />
+
+// Secondary
+<IconButton variant="secondary" aria-label="Neste" />
+
+// Ghost
+<IconButton variant="ghost" aria-label="Lukk" iconName="x" />
+
+// Bytt ut ikonet (Lucide)
+<IconButton iconName="heart" aria-label="Lik" />
+
+// Størrelser
+<IconButton size="large" aria-label="Stor" />
+<IconButton size="medium" aria-label="Medium" />
+<IconButton size="small" aria-label="Liten" />
+
+// Disabled
+<IconButton disabled aria-label="Neste" />
+```
+
+## Tilgjengelighet
+
+- Bruker native `<button>` — får tastaturfokus og aktivering (Enter/Space) gratis.
+- `aria-label` er **påkrevd** i typen (`Omit<..., "aria-label">` + påkrevd
+  redeklarasjon) — hindrer at en ikon-only knapp havner uten tilgjengelig navn.
+- Synlig fokusindikator via `:focus-visible` (`outline: 2px solid var(--color-foreground-action)`).
+- `disabled` setter `cursor: not-allowed` og fjerner interaksjon.
+- Ingen a11y-annotasjoner funnet i Figma — vurder å legge til kontrast-/aria-notater
+  i Dev Mode.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Type → `variant` | Secondary, Primary, Ghost | `"primary" \| "secondary" \| "ghost"` | ✅ Samsvarer (alle tre verdier dekket) |
+| Size → `size` | Large, Small, Medium | `large`/`small`/`medium` | ✅ Samsvarer |
+| State | Default/Hover/Active/Focus/Disabled | CSS-pseudoklasser (`:hover`, `:active`, `:focus-visible`, `:disabled`) | ✅ Dekket (ikke prop) |
+| Icon (Instance-swap) → `iconName` / `icon` | Instance | `IconName \| ReactNode` | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `aria-label` (påkrevd) | ➕ Kode-only, for tilgjengelighet |

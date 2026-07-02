@@ -1,0 +1,242 @@
+---
+title: "Design Tokens"
+description: "Full referanse over primitiver, semantiske tokens og komponent-tokens i Copernicus DS"
+icon: "palette"
+---
+
+<CardGroup cols={2}>
+  <Card title="Kilde" icon="github" href="https://github.com/omlm/copernicus-ds/blob/main/src/tokens/tokens.css">
+    `src/tokens/tokens.css`
+  </Card>
+  <Card title="Interaktiv versjon" icon="book-open" href="https://omlm.github.io/copernicus-ds/?path=/story/foundations-design-tokens--primitiver">
+    Storybook (Foundations/Design Tokens)
+  </Card>
+</CardGroup>
+
+<Note>
+  Denne siden er en statisk speiling av `tokens.css`, som igjen er en
+  auto-generert speiling av variablene i Copernicus DS (Figma). Verdiene her
+  kan bli utdatert etter en Figma-sync — Storybook-versjonen leser CSS-variablene
+  live og er alltid korrekt.
+</Note>
+
+Tre lag, som i Figma:
+
+1. **Primitives** — råverdier (fargeskalaer, px, typografi)
+2. **Semantic** — peker på primitivene via `var()`. Light i `:root`, dark overstyres via `[data-theme="dark"]` eller `prefers-color-scheme`
+3. **Component** — komponent-spesifikke tokens, peker på semantic/primitives
+
+## 1. Primitives
+
+### Farger
+
+| Steg | pink | sand | neutral | red | orange | green | blue |
+|------|------|------|---------|-----|--------|-------|------|
+| 50 | — | — | `#ffffff` | — | — | — | — |
+| 100 | `#ffe8f0` | `#f9f2f1` | `#e4e5e7` | `#f2d9d9` | `#fcefcf` | `#d9f2dc` | `#d9e1f2` |
+| 200 | `#ffb4d0` | `#f3e6e3` | `#cbcbd0` | `#e5b3b3` | `#fade9e` | `#b3e5b9` | `#b3c4e5` |
+| 300 | `#ff81af` | `#ebd5d2` | `#afb0b7` | `#d88d8d` | `#f7ce6e` | `#8dd897` | `#8da6d8` |
+| 400 | `#ff4d8e` | `#e0c4bf` | `#95979f` | `#cc6666` | `#f4be3e` | `#66cc74` | `#6688cc` |
+| 500 | `#ff1a6e` | `#c3a09a` | `#7a7c87` | `#be4040` | `#f2af13` | `#40bf51` | `#406abe` |
+| 600 | `#bb0045` | `#996e66` | `#62636c` | `#993333` | `#c18b0b` | `#339941` | `#335599` |
+| 700 | `#990038` | `#564643` | `#494a50` | `#722727` | `#916808` | `#267331` | `#274072` |
+| 800 | `#77002c` | `#2c2726` | `#313136` | `#4c1a1a` | `#614505` | `#194d20` | `#1a2b4c` |
+| 900 | `#55001f` | `#140007` | `#000000` | `#260d0d` | `#302303` | `#0d2610` | `#0d1526` |
+
+`color/purple` har kun ett steg: `--color-purple-500: #8a38f5` (brukt til fokus-ring).
+
+**Alpha:**
+
+| Token | Value |
+|---|---|
+| `--color-alpha-white-01` | `rgba(255, 255, 255, 0.01)` |
+| `--color-alpha-black-10` | `rgba(0, 0, 0, 0.1)` |
+| `--color-alpha-black-20` | `rgba(0, 0, 0, 0.2)` |
+
+<Note>
+  `pink` er merkevarefargen (primary action). `sand` er den varme nøytralen
+  (se [Designprinsipper #1](/foundations/design-principles)). `red`/`orange`/`green`/`blue`
+  driver system-fargene (danger/warning/success/info).
+</Note>
+
+### Spacing
+
+| Token | Value | | Token | Value |
+|---|---|---|---|---|
+| `--spacing-0` | 0px | | `--spacing-24` | 24px |
+| `--spacing-4` | 4px | | `--spacing-32` | 32px |
+| `--spacing-8` | 8px | | `--spacing-40` | 40px |
+| `--spacing-12` | 12px | | `--spacing-48` | 48px |
+| `--spacing-14` | 14px | | `--spacing-64` | 64px |
+| `--spacing-16` | 16px | | `--spacing-80` | 80px |
+| `--spacing-20` | 20px | | `--spacing-96` | 96px |
+| | | | `--spacing-128` | 128px |
+
+### Størrelser (size)
+
+| Token | Value |
+|---|---|
+| `--size-12` | 12px |
+| `--size-16` | 16px |
+| `--size-24` | 24px |
+| `--size-32` | 32px |
+| `--size-40` | 40px |
+| `--size-48` | 48px |
+| `--size-64` | 64px |
+
+### Border-bredde
+
+| Token | Value |
+|---|---|
+| `--border-width-1` | 1px |
+| `--border-width-1-5` | 1.5px |
+| `--border-width-1-75` | 1.75px |
+| `--border-width-2` | 2px |
+| `--border-width-3` | 3px |
+
+### Radius
+
+<Note>
+  Figma-samlingen heter "raduis" (skrivefeil i kilden) — normalisert til `--radius-*` i kode.
+</Note>
+
+| Token | Value |
+|---|---|
+| `--radius-0` | 0px |
+| `--radius-4` | 4px |
+| `--radius-12` | 12px |
+| `--radius-24` | 24px |
+| `--radius-999` | 999px (pille/sirkel) |
+
+### Duration
+
+| Token | Value |
+|---|---|
+| `--duration-1000` | 1000ms |
+
+### Typografi
+
+| Token | Value |
+|---|---|
+| `--typography-family-default` | `"Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` |
+| `--typography-family-headers` | Samme som default |
+| `--typography-weight-light` | 300 |
+| `--typography-weight-normal` | 350 |
+| `--typography-weight-bold` | 550 |
+| `--typography-weight-semibold` | 600 |
+| `--typography-line-height` | 120% |
+
+## 2. Semantic
+
+Peker på primitivene over. Verdiene under gjelder light mode (`:root`) —
+se [Dark mode](#3-dark-mode-overstyringer) for det som overstyres.
+
+### Foreground / Background / Border
+
+| Token | Peker på |
+|---|---|
+| `--color-foreground-primary` | `color-neutral-900` |
+| `--color-foreground-secondary` | `color-neutral-700` |
+| `--color-foreground-disabled` | `color-neutral-500` |
+| `--color-foreground-action` | `color-pink-500` |
+| `--color-foreground-on-action` | `color-neutral-50` |
+| `--color-foreground-on-action-disabled` | `color-pink-300` |
+| `--color-background-canvas` | `color-neutral-50` |
+| `--color-background-primary` | `color-sand-200` |
+| `--color-background-secondary` | `color-neutral-500` |
+| `--color-background-action` | `color-pink-500` |
+| `--color-background-action-hover` | `color-pink-600` |
+| `--color-background-action-active` | `color-pink-600` |
+| `--color-background-action-disabled` | `color-pink-200` |
+| `--color-background-accent-weak` | `color-pink-200` |
+| `--color-border-default` | `color-neutral-900` |
+| `--color-border-action` | `color-foreground-action` |
+| `--color-border-disabled` | `color-neutral-500` |
+| `--color-border-focus-ring` | `color-purple-500` |
+| `--color-border-transparent` | `transparent` |
+
+### System-farger (danger / info / success / warning)
+
+Alle fire følger samme struktur: `strong`, `strong-hover`, `on-strong`, `weak`, `weak-hover`, `on-weak`, `weak-border` (+ `strong-border`, alltid transparent).
+
+| Egenskap | Danger (red) | Info (blue) | Success (green) | Warning (orange) |
+|---|---|---|---|---|
+| strong | `red-500` | `blue-500` | `green-500` | `orange-500` |
+| strong-hover | `red-600` | `blue-600` | `green-600` | `orange-600` |
+| on-strong | `neutral-50` | `neutral-50` | `neutral-50` | `neutral-900` |
+| weak | `red-200` | `blue-200` | `green-200` | `orange-200` |
+| weak-hover | `red-300` | `blue-300` | `green-300` | `orange-300` |
+| on-weak | `red-700` | `blue-700` | `green-700` | `orange-900` |
+| weak-border | `red-300` | `blue-300` | `green-300` | `orange-300` |
+
+<Note>
+  `Warning` sitt `on-strong` bruker `neutral-900` (mørk tekst) mens de andre tre
+  bruker `neutral-50` (hvit) — oransje bakgrunn gir ikke nok kontrast mot hvit tekst.
+  Samme mønster gjentas i `Chip`/`Badge` sine fargematriser.
+</Note>
+
+### Neutral-system (brukt av bl.a. Spinner-track)
+
+| Egenskap | Value |
+|---|---|
+| strong | `neutral-800` |
+| strong-hover | `neutral-900` |
+| on-strong | `neutral-50` |
+| weak | `neutral-100` |
+| weak-hover | `neutral-300` |
+| on-weak | `neutral-400` |
+| weak-border | `neutral-200` |
+
+## 3. Dark mode-overstyringer
+
+Aktiveres via `[data-theme="dark"]` på `<html>`, eller `prefers-color-scheme: dark`
+(med mindre `data-theme="light"` er satt eksplisitt). Kun tokens som faktisk endres
+er listet — alt annet arves fra light-verdiene over.
+
+| Token | Dark-verdi |
+|---|---|
+| `--color-foreground-primary` | `neutral-50` |
+| `--color-foreground-secondary` | `neutral-300` |
+| `--color-foreground-disabled` | `neutral-200` |
+| `--color-foreground-action` | `pink-400` |
+| `--color-foreground-on-action-disabled` | `neutral-500` |
+| `--color-background-canvas` | `neutral-900` |
+| `--color-background-primary` | `neutral-800` |
+| `--color-background-secondary` | `neutral-700` |
+| `--color-background-action-hover` | `pink-400` |
+| `--color-background-action-active` | `pink-400` |
+| `--color-background-action-disabled` | `neutral-800` |
+| `--color-background-accent-weak` | `pink-900` |
+| `--color-border-default` | `neutral-700` |
+| `--color-border-disabled` | `neutral-200` |
+| `--color-system-neutral-strong` | `neutral-100` |
+| `--color-system-neutral-strong-hover` | `neutral-50` |
+| `--color-system-neutral-on-strong` | `neutral-700` |
+| `--color-system-neutral-weak` | `neutral-800` |
+| `--color-system-neutral-weak-hover` | `neutral-900` |
+| `--color-system-neutral-on-weak` | `neutral-50` |
+| `--color-system-neutral-weak-border` | `neutral-700` |
+| `--color-system-{danger,info,success,warning}-on-strong` | `{red,blue}-100` (kun danger/info definerer denne i dark) |
+| `--color-system-{danger,info,success,warning}-weak` | `*-800` |
+| `--color-system-{danger,info,success,warning}-weak-hover` | `*-700` |
+| `--color-system-{danger,info,success,warning}-on-weak` | `*-300` |
+| `--color-system-{danger,info,success,warning}-weak-border` | `*-700` |
+
+## 4. Component tokens
+
+Komponent-spesifikke tokens legges til når en komponent trenger egne verdier
+(synket fra Figma-komponentvariabler), og peker videre på semantic/primitives.
+Se [CLAUDE.md](https://github.com/omlm/copernicus-ds/blob/main/CLAUDE.md) i kildekoderepoet for konvensjonen.
+
+| Prefiks | Komponent | Eksempel |
+|---|---|---|
+| `--button-*` | Button | `--button-gap: var(--spacing-4)` |
+| `--card-*` | Card | `--card-radius-default: var(--radius-24)` |
+| `--spinner-*` | Spinner | `--spinner-color-indicator: var(--color-foreground-action)` |
+| `--switch-*` | Switch | `--switch-size-track-width: 44px` |
+
+<Note>
+  Full liste over komponent-tokens ligger i kildefila — denne tabellen viser kun
+  ett representativt eksempel per komponent for å holde siden lesbar. Se
+  [tokens.css](https://github.com/omlm/copernicus-ds/blob/main/src/tokens/tokens.css) for alt.
+</Note>

@@ -1,0 +1,168 @@
+---
+title: "ListCard"
+description: "Horisontalt listekort med ikon, tittel og beskrivelse i Copernicus DS"
+icon: "list"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3151-5464" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/ListCard/ListCard.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/ListCard/ListCard.stories.tsx" />
+</CardGroup>
+
+<Note>
+  **Navngivings-fallgruve:** Figma-kilden for denne komponenten er
+  komponentsettet som literally heter **"Card"** (node `3151:5464`) — men i
+  kode heter komponenten `ListCard`. Det generisk navngitte "Card"-settet i
+  Figma er *ikke* kilden for kode-komponenten `Card`; den henter i stedet fra
+  et Figma-component kalt **"MM Card"** (node `3006:4949`, se
+  [`card.mdx`](/components/card)). Kort sagt: Figmas "Card" → kodens
+  `ListCard`, og Figmas "MM Card" → kodens `Card`. Dette er verifisert direkte
+  mot Figma-filen, og er også dokumentert i JSDoc-kommentaren på toppen av
+  `ListCard.tsx`.
+</Note>
+
+## Oversikt
+
+Horisontalt listekort med et ledende ikon, tittel + beskrivelse og et
+etterfølgende (trailing) ikon. Brukes typisk i innstillingslister eller andre
+rad-baserte oppsett (se `Stacked`-story). Komponenten har 2 varianter i Figma
+via egenskapen `Type`, men disse er i dag visuelt identiske — `type`-propen
+finnes i kode kun for API-paritet med Figma.
+
+## Anatomi
+
+```
+ListCard (DIV) — horizontal flex, align-items: center, gap: var(--spacing-8)
+├── Icon (leading, INSTANCE_SWAP: "Icon")
+├── Content — vertical flex
+│   ├── Title (TEXT)
+│   └── Description (TEXT)
+└── Icon (trailing, INSTANCE_SWAP: "Utility icon")
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Type** (Variant) | List card, Feature | List card | Visuelt identiske i dag — ingen kjent styleforskjell. |
+| **Title** (Text) | string | "Lyst modus" | Tekstinnhold. |
+| **Description** (Text) | string | — | Tekstinnhold. |
+| **Icon** (Instance-swap) | ikon-instans | — | Ledende ikon (venstre). |
+| **Utility icon** (Instance-swap) | ikon-instans | — | Etterfølgende ikon (høyre). |
+
+2 (Type) varianter totalt — `Icon` og `Utility icon` er instance-swap-slots,
+ikke variant-akser, og påvirker derfor ikke variant-antallet.
+
+<Note>
+  Figma bruker verdien `"List card"` (med mellomrom) på `Type`-egenskapen,
+  mens kodens `ListCardType` forkorter denne til `"list"` (og `"Feature"` til
+  `"feature"`) — se Design–kode-paritet under.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (ikon ↔ innhold) | `--spacing-8` | 8px |
+| Padding | `--spacing-16` | 16px |
+| Border radius | `--card-radius-default` → `--radius-24` | 24px |
+| Bakgrunn | `--card-color-background` → `--color-background-primary` | — |
+| Tekstfarge (base) | `--card-color-foreground` → `--color-foreground-primary` | — |
+
+<Note>
+  ListCard deler de komponent-scopede `--card-*`-tokenene med `Card`
+  (bakgrunn, foreground, radius) selv om de to kommer fra ulike Figma-kilder.
+</Note>
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Title | `--typography-family-default` | Bold (`--typography-weight-bold`) | 20px (`--spacing-20`) | 24px (`--spacing-24`) |
+| Description | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/ListCard/ListCard.tsx` | Komponent + eksporterte typer |
+| `src/components/ListCard/ListCard.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/ListCard/ListCard.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react) — leading `size="large"`, trailing `size="medium"` |
+
+### Import
+
+```tsx
+import { ListCard, type ListCardProps, type ListCardType } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+export type ListCardType = "list" | "feature";
+```
+
+`type` tas imot som prop, men brukes foreløpig ikke til å velge CSS-klasse —
+begge verdiene rendres likt siden Figma-variantene er visuelt identiske i dag.
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `title` | `ReactNode` | — | Overskrift (påkrevd). |
+| `description` | `ReactNode` | — | Beskrivelse under tittelen. |
+| `type` | `"list" \| "feature"` | `"list"` | Figma: `Type = List card \| Feature`. Ingen visuell forskjell i dag — finnes for API-paritet. |
+| `iconName` | `IconName` | `"cloud-sun"` | Ledende ikon (Lucide). Figma-eksempelet bruker `cloud-sun`. |
+| `trailingIconName` | `IconName` | `"pencil"` | Etterfølgende ikon til høyre. Figma-eksempelet bruker `pencil`. |
+| `...rest` | `Omit<HTMLAttributes<HTMLDivElement>, "title">` | — | Alle native div-attributter (unntatt `title`, som er omdefinert) spres på root-elementet. |
+
+`ListCard` er implementert med `forwardRef<HTMLDivElement, ListCardProps>`.
+
+### Eksempler
+
+```tsx
+// Standard
+<ListCard title="Lyst modus" description="Copy goes here" />
+
+// Egendefinerte ikoner
+<ListCard
+  title="Varslinger"
+  description="Styr hvordan du blir varslet"
+  iconName="bell"
+  trailingIconName="chevron-right"
+/>
+
+// Flere kort i en liste
+<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+  <ListCard title="Lyst modus" />
+  <ListCard title="Mørkt modus" iconName="moon" />
+  <ListCard title="Følg systemet" iconName="monitor" />
+</div>
+```
+
+## Tilgjengelighet
+
+- Renderes som `<div>` — ikke fokuserbar eller interaktiv i seg selv; wrap i
+  en `<button>` eller `<a>` dersom kortet skal være klikkbart som helhet.
+- Tittel og beskrivelse er ren tekst i `<p>`-elementer — vurder semantisk
+  overskrift dersom ListCard brukes som primær innholdsstruktur i en liste.
+- Ikonene er dekorative; ikke avhengig av dem for å forstå innholdet, siden
+  tittel og beskrivelse dekker meningen.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Komponent-kilde | "Card" (node `3151:5464`) | `ListCard` | ✅ Bekreftet — se navngivingsnote øverst |
+| Type → `type` | "List card", "Feature" | `"list"`, `"feature"` | ✅ Samsvarer (forkortet verdi) |
+| Title → `title` | TEXT, default "Lyst modus" | `ReactNode` | ✅ Samsvarer |
+| Description → `description` | TEXT | `ReactNode` | ✅ Samsvarer |
+| Icon (instance-swap) → `iconName` | Leading ikon-slot | `IconName` (default `"cloud-sun"`) | ✅ Samsvarer |
+| Utility icon (instance-swap) → `trailingIconName` | Trailing ikon-slot | `IconName` (default `"pencil"`) | ✅ Samsvarer |

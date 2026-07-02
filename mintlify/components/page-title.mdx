@@ -1,0 +1,92 @@
+---
+title: "PageTitle"
+description: "Semantisk h1-overskrift for sidetopp i Copernicus DS"
+icon: "heading"
+---
+
+<CardGroup cols={2}>
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/PageTitle/PageTitle.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/PageTitle/PageTitle.stories.tsx" />
+</CardGroup>
+
+<Note>
+  **Ingen dedikert Figma-komponent.** Det finnes ikke noe Figma-component for
+  `PageTitle`. Det eneste navnetreffet i Figma-filen, **"MM Page title"**
+  (node `3006:4967`), er et enkeltstående component med kun ett tekstlag
+  ("Hi there") — en MentalMomentum-spesifikk dashboard-hilsen, og ikke
+  relatert til den generiske `PageTitle`-komponenten i kode. Dette ble
+  bekreftet ved å søke gjennom alle sider i Figma-filen etter noe som matcher
+  "page title" (uavhengig av store/små bokstaver) — kun det ene
+  hilsen-komponentet finnes. `PageTitle` er derfor implementert direkte som en
+  semantisk `<h1>`-typografibehandling (bygget på
+  `--typography-family-headers`-tokens fra `tokens.css`), ikke som en
+  komponentert Figma-node.
+</Note>
+
+## Oversikt
+
+Semantisk `<h1>`-wrapper for sidetopper. Har ingen visuelle varianter eller
+egne props utover `children` og native heading-attributter — den brukes til å
+sikre konsistent typografi og riktig dokumentstruktur (én `<h1>` per side).
+
+## Anatomi
+
+```
+PageTitle (H1) — padding-top: var(--spacing-32)
+└── children (tekstinnhold)
+```
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding topp | `--spacing-32` | 32px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Tittel | `--typography-family-headers` | Bold (`--typography-weight-bold`) | 40px (`--spacing-40`) | 1 |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/PageTitle/PageTitle.tsx` | Komponent + eksportert type |
+| `src/components/PageTitle/PageTitle.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/PageTitle/PageTitle.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { PageTitle, type PageTitleProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `children` | `ReactNode` | — | Overskriftsinnhold (påkrevd). |
+| `...rest` | `HTMLAttributes<HTMLHeadingElement>` | — | Alle native heading-attributter (`className`, `id`, `aria-*`, osv.) spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Standard
+<PageTitle>Hi there</PageTitle>
+
+// Med egen klasse
+<PageTitle className="my-custom-class">Dashboard</PageTitle>
+```
+
+## Tilgjengelighet
+
+- Renderes som ekte `<h1>` — bidrar til korrekt dokumentstruktur og
+  skjermleser-navigasjon via overskrifter.
+- Bruk kun én `PageTitle` per side/visning for å unngå duplikate `<h1>`-noder.
+- Alle native heading-attributter (`aria-*`, `id`, osv.) kan settes via
+  rest-props ved behov.

@@ -1,0 +1,155 @@
+---
+title: "Card"
+description: "Vertikalt hero-kort med ikon, tittel, beskrivelse og CTA-knapp i Copernicus DS"
+icon: "square"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3006-4949" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Card/Card.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Card/Card.stories.tsx" />
+</CardGroup>
+
+<Note>
+  **Navngivings-fallgruve:** Figma-kilden for denne komponenten er **"MM Card"**
+  (node `3006:4949`) — *ikke* komponentsettet som i Figma faktisk heter "Card".
+  Det generisk navngitte "Card"-settet i Figma (node `3151:5464`) er derimot
+  kilden for kode-komponenten [`ListCard`](/components/list-card). Med andre
+  ord: Figmas "Card" → kodens `ListCard`, og Figmas "MM Card" → kodens `Card`.
+  Dette er verifisert direkte mot Figma-filen — se `Design–kode-paritet` under
+  og note i `list-card.mdx` for samme forklaring fra den andre siden.
+</Note>
+
+## Oversikt
+
+Vertikalt "hero"-kort med ikon, tittel, beskrivelse og en valgfri CTA-knapp.
+Brukes for fremhevede handlinger eller dagens fokus (f.eks. "Dagens trening").
+I Figma er dette et enkelt komponent (ikke et variant-sett) med to boolske
+egenskaper som slår ikon og knapp av/på.
+
+## Anatomi
+
+```
+Card (COMPONENT) — vertical auto-layout, centered, gap: var(--spacing-16)
+├── Icon (INSTANCE) — vises når show Icon = true
+├── Title (TEXT)
+├── Description (TEXT)
+└── Button (INSTANCE) — vises når show Button = true
+```
+
+## Sammensetning
+
+Card er ikke bygget som et Figma-variant-sett med akser, men som ett component
+med to uavhengige boolske egenskaper (`show Icon`, `show Button`) og to
+tekst-egenskaper (`Title`, `Description`). Ikonet og knappen er egne
+Figma-instanser (henholdsvis en frittstående ikon-instans og en `Button`-
+instans), og i kode gjenspeiles dette ved at `Card` komponerer `Icon` og
+`Button` internt fremfor å style dem selv.
+
+Standardoppsettet i Figma har `Title` = "Dagens trening", ikon synlig og knapp
+synlig med teksten "Kom igang" (speilet i kodens default-props).
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (mellom elementer) | `--spacing-16` | 16px |
+| Padding topp | `--spacing-32` | 32px |
+| Padding sider/bunn | `--spacing-20` | 20px |
+| Border radius | `--spacing-20` | 20px |
+| Bakgrunn | `--color-background-primary` | — |
+
+<Note>
+  `Card.module.css` bruker `--spacing-20` også for border-radius (ikke et
+  `--radius-*`-token) — verdt å merke seg som et lite avvik fra konvensjonen
+  ellers i biblioteket, der radius normalt hentes fra `--radius-*`.
+</Note>
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Title | `--typography-family-headers` | Bold (`--typography-weight-bold`) | 24px (`--spacing-24`) | 24px (`--size-24`) |
+| Description | `--typography-family-default` | Normal (`--typography-weight-default`) | 16px (`--spacing-16`) | 20px (`--spacing-20`) |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Card/Card.tsx` | Komponent + eksportert type |
+| `src/components/Card/Card.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Card/Card.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/index.ts` | Ikon-wrapper (lucide-react) — brukes med `size="huge"` |
+| `src/components/Button/Button.tsx` | CTA-knapp — brukes med `variant="primary" size="large" trailingIcon` |
+
+### Import
+
+```tsx
+import { Card, type CardProps } from "src/components";
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|--------------|
+| `title` | `string` | — | Overskrift (påkrevd). |
+| `description` | `string` | — | Brødtekst under tittelen (påkrevd). |
+| `showIcon` | `boolean` | `true` | Vis ikonet øverst. |
+| `iconName` | `IconName` | `"banana"` | Lucide-ikon, velges fritt fra hele settet. |
+| `showButton` | `boolean` | `true` | Vis CTA-knappen nederst. |
+| `buttonLabel` | `string` | `"Kom igang"` | Tekst på CTA-knappen. |
+| `onButtonClick` | `() => void` | — | Kalles når CTA-knappen trykkes. |
+| `...rest` | `HTMLAttributes<HTMLDivElement>` | — | Alle native div-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Standard
+<Card title="Dagens trening" description="I dag skal du trene på konsentrasjon." />
+
+// Annet ikon
+<Card
+  title="Styrke"
+  description="Tid for litt motstandstrening."
+  iconName="dumbbell"
+/>
+
+// Uten ikon
+<Card title="Dagens trening" description="..." showIcon={false} />
+
+// Uten knapp
+<Card title="Dagens trening" description="..." showButton={false} />
+
+// Med klikk-handler
+<Card
+  title="Dagens trening"
+  description="..."
+  buttonLabel="Start"
+  onButtonClick={() => startTraining()}
+/>
+```
+
+## Tilgjengelighet
+
+- Tittel rendres som `<h3>` — sørg for at Card ikke bryter dokumentets
+  overskriftshierarki der den brukes.
+- CTA-knappen er en ekte `Button`/`<button>` og arver dens tastaturstøtte og
+  fokusindikator.
+- Ikonet er dekorativt (ingen alternativ tekst) — informasjonen skal ikke
+  være avhengig av ikonet alene siden tittel og beskrivelse dekker innholdet.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Komponent-kilde | "MM Card" (node `3006:4949`) | `Card` | ✅ Bekreftet — se navngivingsnote øverst |
+| Title → `title` | TEXT, default "Dagens trening" | `string` | ✅ Samsvarer |
+| Description → `description` | TEXT | `string` | ✅ Samsvarer |
+| show Icon → `showIcon` | BOOLEAN | `boolean` (default `true`) | ✅ Samsvarer |
+| show Button → `showButton` | BOOLEAN | `boolean` (default `true`) | ✅ Samsvarer |
+| Icon (INSTANCE) → `iconName` | Fast ikon-instans i Figma | Fritt valgbar `IconName` (default `"banana"`) | ⚠️ Kode er mer fleksibel enn Figma-instansen |
+| Button (INSTANCE) → `buttonLabel`/`onButtonClick` | Fast `Button`-instans | Propagerte props til intern `Button` | ✅ Samsvarer i struktur |

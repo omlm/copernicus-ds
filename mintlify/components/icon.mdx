@@ -1,0 +1,133 @@
+---
+title: "Icon"
+description: "Størrelsesstyrt ikon-wrapper rundt Lucide i Copernicus DS"
+icon: "shapes"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3003-5685" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Icon/Icon.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Icon/Icon.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Icon`) og Figma-komponentsettet
+  (node `3003:5685`). `Choose icon` (Instance-swap) tilsvarer `name`-propen i kode,
+  som velger fritt fra hele Lucide-katalogen via `lucide-react/dynamic` — ikke bare
+  det kuraterte DS-settet fra "Icons"-siden i Figma.
+</Note>
+
+## Oversikt
+
+Intern ikon-wrapper som styrer størrelse og farge rundt Lucide-ikoner. Brukes internt
+av andre komponenter (`Button`, `Chip`, `Badge` m.fl.) for konsistent ikon-sizing, men
+kan også brukes direkte når man trenger et frittstående ikon.
+
+## Anatomi
+
+```
+Icon (INSTANCE) — span, inline-flex, farge: var(--color-foreground-primary)
+└── Choose icon (INSTANCE SWAP) — default: Compass
+    └── Vector (VECTOR)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Size** (Variant) | Small, Medium, Large, Huge | Medium | Small=16px, Medium=24px, Large=32px, Huge=64px. |
+| **Choose icon** (Instance-swap) | Hele Lucide-katalogen | Compass | Tilsvarer `name`-propen i kode. |
+
+4 størrelser × valgfritt ikon. Instance-swap-egenskapen multipliserer ikke et fast
+variant-antall — den er et fritt slot, speilet i kode som `lucide-react/dynamic`.
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Size = Small | `--size-16` | 16px |
+| Size = Medium | `--size-24` | 24px |
+| Size = Large | `--size-32` | 32px |
+| Size = Huge | `--size-64` | 64px |
+
+### Farge
+
+| Element | Token |
+|---------|-------|
+| Ikon (fill/stroke, arvet via `currentColor`) | `--color-foreground-primary` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Icon/Icon.tsx` | Komponent + eksporterte typer |
+| `src/components/Icon/Icon.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Icon/Icon.stories.tsx` | Storybook stories + argTypes |
+| `src/components/Icon/icons.tsx` | Statiske Lucide-reeksporter + kuratert `featuredIconNames`-sett |
+| `src/components/Icon/index.ts` | Offentlig API (re-eksporterer `Icon`, ikon-navn og typer) |
+
+### Import
+
+```tsx
+import { Icon, type IconProps, type IconSize } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const sizeClass: Record<IconSize, string> = {
+  small: styles.sizeSmall,
+  medium: styles.sizeMedium,
+  large: styles.sizeLarge,
+  huge: styles.sizeHuge,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"small" \| "medium" \| "large" \| "huge"` | `"medium"` | Ikonstørrelse (small=16px, medium=24px, large=32px, huge=64px). |
+| `name` | `IconName` | — | Lucide-ikon valgt via navn (hele katalogen, lastes dynamisk). Brukes for fritt valg fra hele Lucide-settet. |
+| `children` | `ReactNode` | — | Alternativt: send ikon-innholdet direkte som element (f.eks. `<Icon><ArrowRight /></Icon>`). Ignoreres hvis `name` er satt. |
+| `...rest` | `HTMLAttributes<HTMLSpanElement>` | — | Alle native span-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Via navn (dynamisk, hele Lucide-katalogen)
+<Icon name="compass" />
+
+// Størrelser
+<Icon size="small" name="compass" />
+<Icon size="medium" name="compass" />
+<Icon size="large" name="compass" />
+<Icon size="huge" name="compass" />
+
+// Statisk import (tree-shaket, for ikoner brukt i kode)
+import { ArrowRight } from "src/components";
+<Icon><ArrowRight /></Icon>
+```
+
+## Tilgjengelighet
+
+- Renderes som `<span>` uten implisitt rolle — ikonet er dekorativt med mindre
+  forbrukeren selv legger til `aria-label`/`role="img"` via `...rest`.
+- Farge hentes fra `currentColor`/`--color-foreground-primary`, så ikonet arver
+  kontrast fra konteksten det står i.
+- Ved bruk som eneste innhold i en interaktiv kontroll (f.eks. en ikon-knapp): sørg
+  for at *den omsluttende* kontrollen (ikke `Icon` selv) har `aria-label`.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Size → `size` | Small/Medium/Large/Huge | `small`/`medium`/`large`/`huge` | ✅ Samsvarer |
+| Choose icon → `name` | Instance-swap (default: Compass) | `IconName` via `lucide-react/dynamic` (default: `"compass"` i Storybook) | ✅ Samsvarer |
+| — | Ingen tilsvarende egenskap | `children` (ReactNode) | ➕ Kode-only, for statisk/tree-shaket ikonbruk |

@@ -1,0 +1,166 @@
+---
+title: "Textarea"
+description: "Flerlinjet tekstfelt i Copernicus DS"
+icon: "align-left"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3201-28" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Textarea/Textarea.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Textarea/Textarea.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Textarea`) og Figma-komponentsettet
+  (node `3201:28`, 5 varianter). Følger samme mønster som `Input` —
+  CSS-avledede tilstander, ikke egne props for hver `State`.
+</Note>
+
+## Oversikt
+
+Flerlinjet tekstfelt med etikett og hjelpetekst — et native `textarea` med
+samme mønster og tilstander som `Input` (Default/Filled/Focus/Error/Disabled).
+Komponenten har **5 varianter** i Figma, én per `State`.
+
+## Anatomi
+
+```
+Textarea (DIV) — vertical layout, gap: var(--spacing-8)
+├── Label (LABEL) — vises når label er satt
+├── Textarea (TEXTAREA) — padding: var(--spacing-16), radius: var(--radius-12), rows=4
+└── Description/Error (P) — vises når description eller error er satt
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **State** (Variant) | Default, Focus, Filled, Error, Disabled | Default | Avledet av CSS/DOM-tilstand i kode, ikke en egen prop |
+
+5 varianter totalt (én per `State`). Ingen componentProps (Label/Description
+tekstegenskaper) er eksponert på dette Figma-komponentsettet, i motsetning til
+`Input` — i kode styres begge via vanlige React-props (`label`, `description`).
+
+### Tilstandsmapping (Figma State → kode)
+
+| Figma State | Kode-mekanisme |
+|-------------|----------------|
+| Default | Ingen spesialklasse — grunnstilen |
+| Focus | `:focus-visible` |
+| Filled | Naturlig DOM-tilstand (verdi satt via `value`/`defaultValue`) — ingen egen visuell klasse |
+| Error | `[aria-invalid="true"]`, styrt av `error`-propen |
+| Disabled | `:disabled`, styrt av `disabled`-propen |
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Gap (label/felt/hjelpetekst) | `--spacing-8` | 8px |
+| Padding (felt) | `--spacing-16` | 16px |
+| Border radius | `--radius-12` | 12px |
+| Border width | `--border-width-1` | 1px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Bold (`--typography-weight-bold`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+| Felt-tekst | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+| Hjelpetekst/feilmelding | `--typography-family-default` | Normal (`--typography-weight-normal`) | 16px (`--size-16`) | 20px (`--spacing-20`) |
+
+### Fargetokens
+
+| Element | Token |
+|---------|-------|
+| Label-tekst | `--color-foreground-primary` |
+| Felt-border (default) | `--color-foreground-primary` |
+| Felt-bakgrunn | `--color-background-canvas` |
+| Placeholder-tekst | `--color-foreground-secondary` |
+| Focus-ring | `--color-border-focus-ring` |
+| Error-border/-tekst | `--color-system-danger-strong` |
+| Hjelpetekst | `--color-foreground-secondary` |
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Textarea/Textarea.tsx` | Komponent + eksportert type |
+| `src/components/Textarea/Textarea.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Textarea/Textarea.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Textarea, type TextareaProps } from "src/components";
+```
+
+### Variant-definisjon
+
+Ingen `Record<...>`-variant-mapping — tilstandene er rene CSS-selektorer
+(`:focus-visible`, `[aria-invalid="true"]`, `:disabled`) på `.field`-klassen
+i `Textarea.module.css`, samme mønster som `Input`.
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `ReactNode` | — | Etikett over feltet. Rendres kun når satt. |
+| `description` | `ReactNode` | — | Hjelpetekst under feltet. Skjules når `error` er satt. |
+| `error` | `ReactNode` | — | Feilmelding. Når satt: rød border (`aria-invalid="true"`) og meldingen vises i stedet for `description`. |
+| `rows` | `number` | `4` | Antall synlige tekstlinjer (native `textarea`-attributt). |
+| `disabled` | `boolean` | `false` | Ikke-interaktiv, halv opasitet, `resize` slås av. |
+| `id` | `string` | auto-generert (`useId`) | Kobles til `label` via `htmlFor`. |
+| `...rest` | `TextareaHTMLAttributes<HTMLTextAreaElement>` | — | Alle native textarea-attributter (`placeholder`, `value`, `onChange`, osv.) spres på feltet. |
+
+### Eksempler
+
+```tsx
+// Tom (default)
+<Textarea label="Label" placeholder="Placeholder" description="Textarea description" />
+
+// Utfylt
+<Textarea
+  label="Label"
+  defaultValue="This is the text the user has written."
+/>
+
+// Feiltilstand
+<Textarea
+  label="Label"
+  defaultValue="This is the text the user has written."
+  error="This is an error message"
+/>
+
+// Deaktivert
+<Textarea label="Label" disabled />
+```
+
+## Tilgjengelighet
+
+- Bruker native `<textarea>` — får tastaturinteraksjon og skjermleserstøtte gratis.
+- `label` kobles til feltet via `htmlFor`/`id` (auto-generert med `useId` hvis
+  `id` ikke er satt).
+- `aria-invalid="true"` settes automatisk når `error` er satt.
+- `aria-describedby` peker på hjelpeteksten/feilmeldingen slik at skjermlesere
+  leser den sammen med feltet.
+- Synlig fokusring via `:focus-visible` (border + box-shadow), ikke kun
+  fargeendring.
+- Ingen a11y-annotasjoner funnet i Figma — vurder å legge til kontrast-/aria-notater
+  i Dev Mode.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| State=Default | Default | Grunnstil (ingen klasse) | ✅ Samsvarer |
+| State=Focus | Focus | `:focus-visible` | ✅ Dekket (ikke prop) |
+| State=Filled | Filled | Naturlig DOM-tilstand, ingen egen visuell klasse | ✅ Dekket (ikke prop) |
+| State=Error | Error | `[aria-invalid="true"]`, styrt av `error`-prop | ✅ Samsvarer |
+| State=Disabled | Disabled | `:disabled`, styrt av `disabled`-prop | ✅ Samsvarer |
+| Label/Description | Ingen Figma-tekstegenskaper på dette settet | `label`, `description` (React-props) | ➕ Kode-only, følger `Input`-mønsteret |

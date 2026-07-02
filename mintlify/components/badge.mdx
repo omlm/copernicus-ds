@@ -1,0 +1,167 @@
+---
+title: "Badge"
+description: "Kompakt statusmerke for kategorisering i Copernicus DS"
+icon: "certificate"
+---
+
+<CardGroup cols={3}>
+  <Card title="Åpne i Figma" icon="figma" href="https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3189-23" />
+  <Card title="Kildekode" icon="react" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Badge/Badge.tsx" />
+  <Card title="Storybook" icon="book-open" href="https://github.com/omlm/copernicus-ds/blob/main/src/components/Badge/Badge.stories.tsx" />
+</CardGroup>
+
+<Note>
+  Reconciled mot React-kilden (`src/components/Badge`) og Figma-komponentsettet
+  (node `3189:23`, 10 varianter). Egenskapen het tidligere `Style` i Figma —
+  omdøpt til `Emphasis` for å samsvare med samme egenskap på `Chip` (som fikk
+  tilsvarende omdøping fra `Type`).
+</Note>
+
+## Oversikt
+
+Liten pille for status og kategorisering. Komponenten har **10 varianter** i
+Figma, bygget fra 2 variant-egenskaper (`Tone` × `Emphasis`).
+
+## Anatomi
+
+```
+Badge (SPAN) — inline-flex, gap: var(--spacing-4), padding: var(--spacing-4) var(--spacing-8), radius: var(--radius-999)
+└── Label (TEXT)
+```
+
+## Varianter
+
+### Egenskaper (Figma)
+
+| Property | Values | Default | Notes |
+|----------|--------|---------|-------|
+| **Tone** (Variant) | Neutral, Info, Success, Warning, Danger | Neutral | Fargefamilie |
+| **Emphasis** (Variant) | Strong, Weak | Strong | Strong = fylt bakgrunn, Weak = lys bakgrunn med border |
+| **Label** (Text) | string | "Badge" | Tekstinnhold |
+
+5 (Tone) × 2 (Emphasis) = 10 varianter.
+
+### Fargematrise — bestemt av Tone × Emphasis
+
+| Tone | Emphasis | Background | Text | Border |
+|------|------|-----------|------|--------|
+| Neutral | Strong | `#313136` | `#FFFFFF` | — |
+| Neutral | Weak | `#E4E5E7` | `#95979F` | `#CBCBD0` |
+| Info | Strong | `#406ABE` | `#FFFFFF` | — |
+| Info | Weak | `#B3C4E5` | `#274072` | `#8DA6D8` |
+| Success | Strong | `#40BF51` | `#FFFFFF` | — |
+| Success | Weak | `#B3E5B9` | `#267331` | `#8DD897` |
+| Danger | Strong | `#BE4040` | `#FFFFFF` | — |
+| Danger | Weak | `#E5B3B3` | `#722727` | `#D88D8D` |
+| Warning | Strong | `#F2AF13` | `#000000` | — |
+| Warning | Weak | `#FADE9E` | `#302303` | `#F7CE6E` |
+
+<Note>
+  `Warning` er eneste tone der `Strong`-teksten er mørk (`#000000`) i stedet for
+  hvit — oransjebakgrunnen gir ikke nok kontrast mot hvit tekst. Identisk mønster
+  som på `Chip`, siden begge deler samme `--color-system-*`-tokens.
+</Note>
+
+## Tokens
+
+### Spacing / geometri
+
+| Property | Token | Value |
+|----------|-------|-------|
+| Padding vertikal | `--spacing-4` | 4px |
+| Padding horisontal | `--spacing-8` | 8px |
+| Gap | `--spacing-4` | 4px |
+| Border radius | `--radius-999` | 999px |
+| Border width | `--border-width-1` | 1px |
+
+### Typografi
+
+| Element | Font | Weight | Size | Line Height |
+|---------|------|--------|------|-------------|
+| Label | `--typography-family-default` | Bold (`--typography-weight-bold`) | 12px (`--size-12`) | `--typography-line-height` (120%) |
+
+### Fargetokens
+
+Hver `Tone` peker på et eget `--color-system-<tone>-*`-sett (`strong`,
+`on-strong`, `weak`, `on-weak`, `weak-border`), delt med `Chip` og `Alert`.
+Ingen badge-spesifikke tokens — kun de globale `color-system-*`-tokenene,
+komponert til lokale CSS-variabler (`--badge-background`, `--badge-foreground`,
+`--badge-border`) i `Badge.module.css`.
+
+## Implementasjon
+
+### Kildefiler
+
+| File | Role |
+|------|------|
+| `src/components/Badge/Badge.tsx` | Komponent + eksporterte typer |
+| `src/components/Badge/Badge.module.css` | CSS Modules (token-bundet via `var()`) |
+| `src/components/Badge/Badge.stories.tsx` | Storybook stories + argTypes |
+
+### Import
+
+```tsx
+import { Badge, type BadgeProps } from "src/components";
+```
+
+### Variant-definisjon
+
+```tsx
+const toneClass: Record<BadgeTone, string> = {
+  neutral: styles.neutral,
+  info: styles.info,
+  success: styles.success,
+  warning: styles.warning,
+  danger: styles.danger,
+};
+```
+
+### Komponent-API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger"` | `"neutral"` | Fargefamilie. |
+| `emphasis` | `"strong" \| "weak"` | `"strong"` | Visuell tyngde — strong = fylt, weak = lys m/ border. |
+| `children` | `ReactNode` | — | Badge-innhold (påkrevd). |
+| `...rest` | `HTMLAttributes<HTMLSpanElement>` | — | Alle native span-attributter spres på root-elementet. |
+
+### Eksempler
+
+```tsx
+// Neutral, Strong (default)
+<Badge>Badge</Badge>
+
+// Semantiske toner
+<Badge tone="info">Info</Badge>
+<Badge tone="success">Success</Badge>
+<Badge tone="warning">Warning</Badge>
+<Badge tone="danger">Danger</Badge>
+
+// Weak-utgave
+<Badge tone="success" emphasis="weak">Success</Badge>
+
+// Alle toner i begge utgaver
+{(["strong", "weak"] as const).map((emphasis) =>
+  tones.map((tone) => (
+    <Badge key={tone} tone={tone} emphasis={emphasis}>
+      {tone}
+    </Badge>
+  )),
+)}
+```
+
+## Tilgjengelighet
+
+- Renderes som `<span>` — ikke fokuserbar eller interaktiv, ren informasjonsvisning.
+- Fargekontrast: `Warning`/`Strong` bruker mørk tekst (`#000000`) på oransje
+  bakgrunn for å opprettholde kontrast — se fargematrisen over.
+- Bruk badgen som supplement til, ikke erstatning for, tekstlig statusinformasjon
+  når fargen alene formidler betydning.
+
+## Design–kode-paritet
+
+| Aspekt | Figma | Kode | Status |
+|--------|-------|------|--------|
+| Tone → `tone` | Neutral/Info/Success/Warning/Danger | `neutral`/`info`/`success`/`warning`/`danger` | ✅ Samsvarer |
+| Emphasis → `emphasis` | Strong/Weak | `strong`/`weak` | ✅ Samsvarer (omdøpt fra `Style` denne sesjonen) |
+| Label → `children` | Text | `ReactNode` | ✅ Samsvarer |
