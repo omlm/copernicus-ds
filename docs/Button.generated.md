@@ -5,7 +5,7 @@ status: stable
 version: 1.0.0
 category: components
 tags: [button, variants, configurable]
-figma: https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3003-1196
+figma: https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3276-1120
 source: src/components/Button/Button.tsx
 package: copernicus-ds
 canonical: reconciled
@@ -14,7 +14,7 @@ lastUpdated: 2026-06-26
 
 # Button
 
-**[Open in Figma](https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3003-1196)** | **[View Source](../src/components/Button/Button.tsx)** | **[Storybook](../src/components/Button/Button.stories.tsx)**
+**[Open in Figma](https://www.figma.com/design/lCkSw1KEHW8ydpHNejKx2u/Copernicus-DS?node-id=3276-1120)** | **[View Source](../src/components/Button/Button.tsx)** | **[Storybook](../src/components/Button/Button.stories.tsx)**
 
 > Generert med `figma_generate_component_doc` (figma-console MCP) og reconciled mot React-kilden.
 > De tre per-variant-tabellene fra verktøyet (Variant Matrix / Icon Mapping / Color Tokens, 90 rader hver)
@@ -76,13 +76,24 @@ Bakgrunns- og tekstfarge avhenger **kun** av `Type` og `State` (identisk på tve
 
 | Property | Figma Variable | Value |
 |----------|---------------|-------|
-| Padding top/bottom | `VariableID:3003:5660` | 16px |
-| Padding left/right | `VariableID:3003:5662` | 24px |
+| Padding left/right (Large) | `button/padding/large` | 20px |
+| Padding left/right (Medium) | `button/padding/medium` | 16px |
+| Padding left/right (Small) | `button/padding/small` | 12px |
+| Padding på ikon-side (Large) | `button/padding/large-alt` | 16px — kun i kode, se note |
+| Padding på ikon-side (Medium) | `button/padding/medium-alt` | 12px — kun i kode, se note |
+| Padding på ikon-side (Small) | `button/padding/small-alt` | 8px — kun i kode, se note |
 | Gap (label ↔ ikon) | `button/gap` → `spacing/4` (`VariableID:3264:2`) | 4px |
 | Border radius | — | 999px |
 | Border width | — | 1px |
 
 > Gap er bundet til den komponent-scopede variabelen `button/gap` (alias til `spacing/4` = 4px) på alle 90 varianter, speilet i kode som `--button-gap: var(--spacing-4)`.
+
+> **Ikon-side padding — bevisst Figma ↔ kode-forskjell:** Når et ikon vises, bytter koden
+> padding på siden som vender mot ikonet fra `--button-padding-{size}` til
+> `--button-padding-{size}-alt` (4px strammere) via `hasLeadingIcon`/`hasTrailingIcon`-klassene
+> i `Button.module.css`. Figma viser ikke dette — ikonene styres av Boolean-egenskaper, og
+> padding kan ikke reagere på en Boolean, så alle varianter beholder basis-padding på begge
+> sider. Koden er fasit; 4px-differansen mot canvas på knapper med ikon er forventet.
 
 ## Typography
 
@@ -183,3 +194,4 @@ Ingen design-annotasjoner (animasjon, easing, interaksjon) funnet på noden i Fi
 | has Trailing Icon → `trailingIcon` | No/Yes | `boolean \| ReactNode` | ✅ Samsvarer |
 | has Leading Icon → `leadingIcon` | No/Yes | `boolean \| ReactNode` | ✅ Samsvarer |
 | Gap | `button/gap` → `spacing/4` = 4px | `--button-gap` → `--spacing-4` = 4px | ✅ Samsvarer (4px begge, navngitt variabel) |
+| Padding | `button/padding/{size}` på begge sider (20/16/12) | `--button-padding-{size}`, men `-alt` (16/12/8) på ikon-siden når ikon vises | ⚠️ Bevisst avvik — Boolean kan ikke styre padding i Figma; koden er fasit |

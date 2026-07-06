@@ -64,14 +64,13 @@ export function Button({
     leading = leadingIcon;
   }
 
-  const hasIcon = !!(leading || trailing);
-
   const classes = [
     styles.button,
     variantClass[variant],
     sizeClass[size],
     tone === "danger" && styles.danger,
-    hasIcon && styles.hasIcon,
+    leading && styles.hasLeadingIcon,
+    trailing && styles.hasTrailingIcon,
     className,
   ]
     .filter(Boolean)

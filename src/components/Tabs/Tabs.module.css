@@ -6,16 +6,16 @@
 .tablist {
   display: flex;
   gap: var(--spacing-8);
-  border-bottom: var(--border-width-1) solid var(--color-system-neutral-weak-border);
+  border-bottom: var(--border-width-100) solid var(--color-system-neutral-weak-border);
 }
 
 /* Én fane (Figma: "Tab"). */
 .tab {
   box-sizing: border-box;
   padding: var(--spacing-12) var(--spacing-16);
-  margin-bottom: calc(-1 * var(--border-width-1));
+  margin-bottom: calc(-1 * var(--border-width-100));
   border: none;
-  border-bottom: var(--border-width-2) solid transparent;
+  border-bottom: var(--border-width-200) solid transparent;
   background: transparent;
   color: var(--color-foreground-secondary);
   font-family: inherit;

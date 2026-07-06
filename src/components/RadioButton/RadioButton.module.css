@@ -10,8 +10,8 @@
 /* Den ekte radio-inputen — visuelt skjult, men fokuserbar og tilgjengelig. */
 .input {
   position: absolute;
-  width: var(--border-width-1);
-  height: var(--border-width-1);
+  width: var(--border-width-100);
+  height: var(--border-width-100);
   margin: 0;
   padding: 0;
   opacity: 0;
@@ -31,7 +31,7 @@
   width: var(--size-24);
   height: var(--size-24);
   padding: var(--spacing-4);
-  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border: var(--border-width-100) solid var(--color-foreground-primary);
   border-radius: var(--radius-999);
 }
 

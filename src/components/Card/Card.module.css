@@ -22,8 +22,8 @@
 .description {
   margin: 0;
   font-family: var(--typography-family-default);
-  font-weight: var(--typography-weight-default);
-  font-size: var(--spacing-16);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   letter-spacing: 0;
   color: var(--color-foreground-secondary);

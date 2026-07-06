@@ -10,8 +10,8 @@
 /* Den ekte inputen — visuelt skjult, men fokuserbar og tilgjengelig. */
 .input {
   position: absolute;
-  width: var(--border-width-1);
-  height: var(--border-width-1);
+  width: var(--border-width-100);
+  height: var(--border-width-100);
   margin: 0;
   padding: 0;
   opacity: 0;
@@ -30,7 +30,7 @@
   width: var(--switch-size-track-width);
   height: var(--switch-size-track-height);
   padding: var(--spacing-4);
-  border: var(--border-width-1) solid var(--switch-color-track-border);
+  border: var(--border-width-100) solid var(--switch-color-track-border);
   border-radius: var(--radius-999);
   background: var(--switch-color-track-off);
   transition: background 120ms ease;

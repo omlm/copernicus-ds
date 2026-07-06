@@ -3,7 +3,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--button-gap);
-  border: var(--border-width-1) solid transparent;
+  padding: 0 var(--button-padding);
+  border: var(--border-width-100) solid transparent;
   border-radius: var(--radius-999);
   font-family: var(--typography-family-default);
   font-weight: 600;
@@ -28,27 +29,33 @@
   cursor: not-allowed;
 }
 
-/* Sizes */
+/* Sizes — padding kommer fra button/padding/*-tokens; *-alt brukes på siden som har ikon */
 .sizeLarge {
+  --button-padding: var(--button-padding-large);
+  --button-padding-alt: var(--button-padding-large-alt);
   height: var(--button-size-large);
-  padding: 0 var(--spacing-24);
-}
-
-.sizeLarge.hasIcon {
-  padding-left: var(--spacing-24);
-  padding-right: var(--spacing-20);
 }
 
 .sizeMedium {
+  --button-padding: var(--button-padding-medium);
+  --button-padding-alt: var(--button-padding-medium-alt);
   height: var(--button-size-medium);
-  padding: 0 var(--spacing-16);
 }
 
 .sizeSmall {
+  --button-padding: var(--button-padding-small);
+  --button-padding-alt: var(--button-padding-small-alt);
   height: var(--button-size-small);
-  padding: 0 var(--spacing-12);
   /* Figma: Size=Small bruker 14px etikett (typography/size/14). */
   font-size: var(--spacing-14);
+}
+
+.hasLeadingIcon {
+  padding-left: var(--button-padding-alt);
+}
+
+.hasTrailingIcon {
+  padding-right: var(--button-padding-alt);
 }
 
 /* Primary */
@@ -91,23 +98,23 @@
 
 /* Tertiary */
 .tertiary {
-  background: var(--button-color-ghost-background);
-  color: var(--button-color-ghost-foreground);
-  border-color: var(--button-color-ghost-foreground);
+  background: var(--button-color-tertiary-background);
+  color: var(--button-color-tertiary-foreground);
+  border-color: var(--button-color-tertiary-foreground);
 }
 
 .tertiary:hover:not(:disabled) {
-  background: var(--button-color-ghost-background-hover);
+  background: var(--button-color-tertiary-background-hover);
 }
 
 .tertiary:active:not(:disabled) {
-  background: var(--button-color-ghost-background-active);
+  background: var(--button-color-tertiary-background-active);
 }
 
 .tertiary:disabled {
-  background: var(--button-color-ghost-background);
-  color: var(--button-color-ghost-foreground-disabled);
-  border-color: var(--button-color-ghost-foreground-disabled);
+  background: var(--button-color-tertiary-background);
+  color: var(--button-color-tertiary-foreground-disabled);
+  border-color: var(--button-color-tertiary-foreground-disabled);
 }
 
 /* Tone=Danger — overstyrer variant-fargen for destruktive handlinger */
@@ -153,8 +160,8 @@
 }
 
 .danger.tertiary:disabled {
-  color: var(--button-color-ghost-foreground-disabled);
-  border-color: var(--button-color-ghost-foreground-disabled);
+  color: var(--button-color-tertiary-foreground-disabled);
+  border-color: var(--button-color-tertiary-foreground-disabled);
 }
 
 /* Trailing icon — størrelse per knappestørrelse */

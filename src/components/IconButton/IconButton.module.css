@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: var(--border-width-1) solid transparent;
+  border: var(--border-width-100) solid transparent;
   border-radius: var(--radius-999);
   cursor: pointer;
   flex-shrink: 0;
@@ -80,21 +80,21 @@
 
 /* Ghost (Figma: "Type=Ghost") — gjennomsiktig, mørkner på hover/active */
 .ghost {
-  background: var(--button-color-ghost-background);
-  color: var(--button-color-ghost-foreground);
+  background: var(--button-color-tertiary-background);
+  color: var(--button-color-tertiary-foreground);
 }
 
 .ghost:hover:not(:disabled) {
-  background: var(--button-color-ghost-background-hover);
+  background: var(--button-color-tertiary-background-hover);
 }
 
 .ghost:active:not(:disabled) {
-  background: var(--button-color-ghost-background-active);
+  background: var(--button-color-tertiary-background-active);
 }
 
 .ghost:disabled {
-  background: var(--button-color-ghost-background);
-  color: var(--button-color-ghost-foreground-disabled);
+  background: var(--button-color-tertiary-background);
+  color: var(--button-color-tertiary-foreground-disabled);
 }
 
 /* Icon */

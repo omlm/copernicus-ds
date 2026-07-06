@@ -31,6 +31,21 @@ Leading and trailing icons are independent booleans and can both be `true` at on
 properties instead of a single "Icon position" variant, so both icons can be toggled
 on simultaneously in Figma too.
 
+#### Icon-side padding (deliberate Figma ↔ code difference)
+
+When an icon is shown, the padding on the side facing the icon switches from
+`--button-padding-{size}` to `--button-padding-{size}-alt` (4px tighter, e.g.
+20px → 16px on `large`). This is implemented in code via the `hasLeadingIcon` /
+`hasTrailingIcon` classes in `Button.module.css`.
+
+**Figma does not reflect this.** The icons are toggled with Boolean properties,
+and Figma cannot change a frame's padding in response to a Boolean — so every
+Figma variant keeps the base padding on both sides. The alternative (promoting
+icons to variant dimensions) would grow the set from 90 to 360 variants, which
+we decided against. The `button/padding/*-alt` variables exist in Figma to
+capture the intent; **code is the source of truth** for this behavior, and a
+4px difference against the canvas on icon buttons is expected, not a bug.
+
 ### Text properties — content (string prop / Figma Text)
 
 | Property | Role | Required |

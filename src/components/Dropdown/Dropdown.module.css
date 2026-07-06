@@ -15,7 +15,7 @@
   width: 100%;
   height: var(--size-48);
   padding-inline: var(--spacing-16);
-  border: var(--border-width-1) solid var(--color-foreground-primary);
+  border: var(--border-width-100) solid var(--color-foreground-primary);
   border-radius: var(--radius-12);
   background: var(--color-background-canvas);
   color: var(--color-foreground-primary);
@@ -60,7 +60,7 @@
   margin: 0;
   padding: var(--spacing-8) 0;
   list-style: none;
-  border: var(--border-width-1) solid var(--color-border-default);
+  border: var(--border-width-100) solid var(--color-border-default);
   border-radius: var(--radius-12);
   background: var(--color-background-canvas);
   box-shadow: 0 var(--spacing-4) var(--spacing-12) color-mix(in srgb, var(--color-neutral-900) 10%, transparent);

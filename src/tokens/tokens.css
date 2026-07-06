@@ -100,14 +100,22 @@
   --color-purple-500: #8a38f5;
 
   /* ---------- color/alpha ---------- */
+  --color-alpha-white-00: rgba(255, 255, 255, 0);
   --color-alpha-white-01: rgba(255, 255, 255, 0.01);
+  --color-alpha-white-05: rgba(255, 255, 255, 0.05);
+  --color-alpha-white-10: rgba(255, 255, 255, 0.1);
+  --color-alpha-black-00: rgba(0, 0, 0, 0);
+  --color-alpha-black-01: rgba(0, 0, 0, 0.01);
+  --color-alpha-black-05: rgba(0, 0, 0, 0.05);
   --color-alpha-black-10: rgba(0, 0, 0, 0.1);
   --color-alpha-black-20: rgba(0, 0, 0, 0.2);
+  --color-alpha-purple-05: rgba(138, 56, 245, 0.05);
 
   /* ---------- spacing ---------- */
   --spacing-0: 0px;
   --spacing-4: 4px;
   --spacing-8: 8px;
+  --spacing-10: 10px;
   --spacing-12: 12px;
   --spacing-14: 14px;
   --spacing-16: 16px;
@@ -122,20 +130,24 @@
   --spacing-128: 128px;
 
   /* ---------- size ---------- */
+  --size-4: 4px;
+  --size-8: 8px;
   --size-12: 12px;
   --size-16: 16px;
+  --size-20: 20px;
   --size-24: 24px;
   --size-32: 32px;
   --size-40: 40px;
   --size-48: 48px;
   --size-64: 64px;
 
-  /* ---------- border/width ---------- */
-  --border-width-1: 1px;
-  --border-width-1-5: 1.5px;
-  --border-width-1-75: 1.75px;
-  --border-width-2: 2px;
-  --border-width-3: 3px;
+  /* ---------- border/width (Figma-skala: 100 = 1px) ---------- */
+  --border-width-100: 1px;
+  --border-width-125: 1.25px;
+  --border-width-150: 1.5px;
+  --border-width-175: 1.75px;
+  --border-width-200: 2px;
+  --border-width-300: 3px;
 
   /* ---------- radius (Figma-samling heter "raduis" — skrivefeil) ---------- */
   --radius-0: 0px;
@@ -148,6 +160,11 @@
   --duration-1000: 1000ms;
 
   /* ---------- typography ---------- */
+  --typography-size-12: 12px;
+  --typography-size-14: 14px;
+  --typography-size-16: 16px;
+  --typography-size-20: 20px;
+  --typography-size-24: 24px;
   --typography-weight-light: 300;
   --typography-weight-normal: 350;
   --typography-line-height: 120%;
@@ -201,6 +218,18 @@
   --color-border-action: var(--color-foreground-action);
   --color-border-focus-ring: var(--color-purple-500);
   --color-border-transparent: transparent;
+  --color-background-focus-ring-bg: var(--color-alpha-purple-05);
+  --color-background-transparent: var(--color-alpha-white-01);
+  --color-background-overlay-hover: var(--color-alpha-black-10);
+  --color-background-overlay-active: var(--color-alpha-black-20);
+  --color-background-neutral-action: var(--color-neutral-100);
+  --color-background-neutral-action-hover: var(--color-neutral-200);
+  --color-background-neutral-action-active: var(--color-neutral-300);
+  --color-background-neutral-action-disabled: var(--color-neutral-100);
+  --color-foreground-on-neutral-action: var(--color-neutral-900);
+  --color-foreground-on-neutral-action-disabled: var(--color-neutral-300);
+  --color-border-neutral-action: var(--color-neutral-900);
+  --color-border-neutral-action-disabled: var(--color-neutral-300);
   --color-system-info-strong: var(--color-blue-500);
   --color-system-info-strong-hover: var(--color-blue-600);
   --color-system-info-strong-border: var(--color-border-transparent);
@@ -239,6 +268,19 @@
   --button-size-medium: var(--size-32);
   --button-size-large: var(--size-48);
   --button-gap: var(--spacing-4);
+  --button-gap-small: var(--spacing-4);
+  --button-gap-medium: var(--spacing-8);
+  --button-gap-large: var(--spacing-10);
+  --button-icon-size-small: var(--size-16);
+  --button-icon-size-medium: var(--size-20);
+  --button-icon-size-large: var(--size-24);
+  --button-padding-small: var(--size-12);
+  --button-padding-medium: var(--size-16);
+  --button-padding-large: var(--size-20);
+  --button-padding-small-alt: var(--size-8);
+  --button-padding-medium-alt: var(--size-12);
+  --button-padding-large-alt: var(--size-16);
+  --button-color-primary-border: var(--color-border-transparent);
   --button-color-secondary-foreground: var(--color-neutral-900);
   --button-color-secondary-foreground-disabled: var(--color-neutral-300);
   --button-color-secondary-background: var(--color-neutral-100);
@@ -247,11 +289,12 @@
   --button-color-secondary-background-disabled: var(--color-neutral-100);
   --button-color-secondary-border: var(--color-neutral-900);
   --button-color-secondary-border-disabled: var(--color-neutral-300);
-  --button-color-ghost-foreground: var(--color-foreground-primary);
-  --button-color-ghost-foreground-disabled: var(--color-foreground-disabled);
-  --button-color-ghost-background: var(--color-alpha-white-01);
-  --button-color-ghost-background-hover: var(--color-alpha-black-10);
-  --button-color-ghost-background-active: var(--color-alpha-black-20);
+  /* Figma: components/button/color/tertiary (Button "Tertiary" / IconButton "Ghost") */
+  --button-color-tertiary-foreground: var(--color-foreground-primary);
+  --button-color-tertiary-foreground-disabled: var(--color-foreground-disabled);
+  --button-color-tertiary-background: var(--color-background-transparent);
+  --button-color-tertiary-background-hover: var(--color-background-overlay-hover);
+  --button-color-tertiary-background-active: var(--color-background-overlay-active);
   --card-color-foreground: var(--color-foreground-primary);
   --card-color-background: var(--color-background-primary);
   --card-radius-default: var(--radius-24);
@@ -316,6 +359,13 @@
   --color-system-warning-weak-hover: var(--color-orange-700);
   --color-system-warning-on-weak: var(--color-orange-300);
   --color-system-warning-weak-border: var(--color-orange-700);
+  --color-background-neutral-action-hover: var(--color-neutral-900);
+  --color-background-neutral-action-active: var(--color-neutral-900);
+  --color-background-neutral-action-disabled: var(--color-alpha-black-01);
+  --color-foreground-on-neutral-action: var(--color-neutral-100);
+  --color-foreground-on-neutral-action-disabled: var(--color-neutral-700);
+  --color-border-neutral-action: var(--color-neutral-100);
+  --color-border-neutral-action-disabled: var(--color-neutral-700);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -359,5 +409,12 @@
     --color-system-warning-weak-hover: var(--color-orange-700);
     --color-system-warning-on-weak: var(--color-orange-300);
     --color-system-warning-weak-border: var(--color-orange-700);
+    --color-background-neutral-action-hover: var(--color-neutral-900);
+    --color-background-neutral-action-active: var(--color-neutral-900);
+    --color-background-neutral-action-disabled: var(--color-alpha-black-01);
+    --color-foreground-on-neutral-action: var(--color-neutral-100);
+    --color-foreground-on-neutral-action-disabled: var(--color-neutral-700);
+    --color-border-neutral-action: var(--color-neutral-100);
+    --color-border-neutral-action-disabled: var(--color-neutral-700);
   }
 }
