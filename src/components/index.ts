@@ -40,6 +40,12 @@ export type { ProgressProps, ProgressSize } from "./Progress";
 export { StepIndicator } from "./StepIndicator";
 export type { StepIndicatorProps, StepIndicatorSize } from "./StepIndicator";
 
+export { Sheet } from "./Sheet";
+export type { SheetProps } from "./Sheet";
+
+export { RatingButton } from "./RatingButton";
+export type { RatingButtonProps } from "./RatingButton";
+
 export { Alert } from "./Alert";
 export type { AlertProps, AlertTone } from "./Alert";
 

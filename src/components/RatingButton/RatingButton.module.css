@@ -1,0 +1,43 @@
+/* Raden med vurderingsknapper (Figma: gap 16). */
+.group {
+  display: flex;
+  gap: var(--spacing-16);
+  font-family: var(--typography-family-default);
+}
+
+/* Én knapp (Figma: Button-instans, pilleform 48px høy). */
+.item {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  height: var(--size-48);
+  padding-inline: var(--spacing-20);
+  border: none;
+  border-radius: var(--radius-999);
+  background: var(--toggle-background);
+  color: var(--toggle-foreground);
+  font-family: inherit;
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-16);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+/* Aktive knapper — alle til og med valgt verdi (Figma: "Active=1..5"). */
+.active {
+  background: var(--toggle-background-on);
+  color: var(--toggle-foreground-on);
+}
+
+.item:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--color-background-canvas),
+    0 0 0 6px var(--color-border-focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none;
+  }
+}

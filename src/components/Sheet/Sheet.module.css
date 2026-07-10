@@ -1,0 +1,52 @@
+.sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: var(--spacing-24);
+  border-radius: var(--radius-24) var(--radius-24) var(--radius-0) var(--radius-0);
+  background: var(--color-background-primary);
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+}
+
+/* Toppraden (Figma: "Sheet header") — tilbake, håndtak, lukk. */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  min-height: var(--size-48);
+  padding: var(--spacing-8) var(--spacing-20);
+}
+
+/* Plassholder som holder håndtaket sentrert når en knapp mangler. */
+.headerSpacer {
+  width: var(--size-32);
+  flex-shrink: 0;
+}
+
+/* Dra-håndtaket (Figma: "Sheet handle", 48×4). */
+.handle {
+  width: var(--size-48);
+  height: var(--size-4);
+  border-radius: var(--radius-999);
+  background: var(--color-foreground-secondary);
+}
+
+/* Innholdet (Figma: "content") — tittel + slot. */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  padding-inline: var(--spacing-20);
+}
+
+/* Overskriften (Figma: "Sheet title", Outfit Bold 24/24). */
+.title {
+  margin: 0;
+  font-family: var(--typography-family-headers);
+  font-weight: var(--typography-weight-bold);
+  font-size: var(--typography-size-24);
+  line-height: var(--spacing-24);
+}
