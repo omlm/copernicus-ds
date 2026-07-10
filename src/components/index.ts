@@ -34,6 +34,12 @@ export type { IconProps, IconSize } from "./Icon";
 export { Spinner } from "./Spinner";
 export type { SpinnerProps, SpinnerSize } from "./Spinner";
 
+export { Progress } from "./Progress";
+export type { ProgressProps, ProgressSize } from "./Progress";
+
+export { StepIndicator } from "./StepIndicator";
+export type { StepIndicatorProps, StepIndicatorSize } from "./StepIndicator";
+
 export { Alert } from "./Alert";
 export type { AlertProps, AlertTone } from "./Alert";
 

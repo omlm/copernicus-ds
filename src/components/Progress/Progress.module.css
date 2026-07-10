@@ -1,0 +1,26 @@
+.progress {
+  display: flex;
+  /* Figma bruker rå 1px gap uten variabel-binding — ingen spacing-token finnes for 1. */
+  gap: 1px;
+  width: 100%;
+}
+
+/* Figma: "Size=Medium" (20px) / "Size=Small" (12px). */
+.sizeMedium {
+  height: var(--size-20);
+}
+
+.sizeSmall {
+  height: var(--size-12);
+}
+
+/* Ett segment (Figma: "step") — like brede, flate hjørner. */
+.step {
+  flex: 1 1 0;
+  background: var(--progress-bar-passive);
+}
+
+/* Fullførte segmenter (Figma: "Active=1..7"). */
+.stepActive {
+  background: var(--progress-bar-active);
+}
