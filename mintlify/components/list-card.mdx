@@ -11,15 +11,13 @@ icon: "list"
 </CardGroup>
 
 <Note>
-  **Navngivings-fallgruve:** Figma-kilden for denne komponenten er
-  komponentsettet som literally heter **"Card"** (node `3151:5464`) — men i
-  kode heter komponenten `ListCard`. Det generisk navngitte "Card"-settet i
-  Figma er *ikke* kilden for kode-komponenten `Card`; den henter i stedet fra
-  et Figma-component kalt **"MM Card"** (node `3006:4949`, se
-  [`card.mdx`](/components/card)). Kort sagt: Figmas "Card" → kodens
-  `ListCard`, og Figmas "MM Card" → kodens `Card`. Dette er verifisert direkte
-  mot Figma-filen, og er også dokumentert i JSDoc-kommentaren på toppen av
-  `ListCard.tsx`.
+  **Navngiving:** Figma-kilden er komponentsettet **"List Item"**
+  (node `3151:5464`, egen «List Item»-side) — i kode heter komponenten
+  `ListCard`. Settet het tidligere «Card», men ble omdøpt og flyttet til egen
+  side 2026-07-06 for å unngå forveksling med kode-komponenten `Card`, som
+  henter fra Figma-komponenten **"MM Card"** (node `3006:4949`, se
+  [`card.mdx`](/components/card)). Kort sagt: Figmas "List Item" → kodens
+  `ListCard`, og Figmas "MM Card" → kodens `Card`.
 </Note>
 
 ## Oversikt
@@ -172,7 +170,7 @@ begge verdiene rendres likt siden Figma-variantene er visuelt identiske i dag.
 
 | Aspekt | Figma | Kode | Status |
 |--------|-------|------|--------|
-| Komponent-kilde | "Card" (node `3151:5464`) | `ListCard` | ✅ Bekreftet — se navngivingsnote øverst |
+| Komponent-kilde | "List Item" (node `3151:5464`) | `ListCard` | ✅ Bekreftet — se navngivingsnote øverst |
 | Type → `type` | "List card", "Feature" | `"list"`, `"feature"` | ✅ Samsvarer (forkortet verdi) |
 | Title → `title` | TEXT, default "Lyst modus" | `ReactNode` | ✅ Samsvarer |
 | Description → `description` | TEXT | `ReactNode` | ✅ Samsvarer |
