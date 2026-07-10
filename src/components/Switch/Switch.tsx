@@ -8,7 +8,7 @@ export interface SwitchProps
 }
 
 /**
- * Bryter (Figma: "Switch").
+ * Bryter (Figma: "Toggle", "is Selected=Yes|No").
  *
  * Et native `input type=checkbox` med `role="switch"`, stylet som en pille
  * med glidende knott. Tilstandene på/av og fokus følger inputen selv —

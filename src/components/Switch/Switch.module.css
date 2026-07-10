@@ -21,43 +21,43 @@
   white-space: nowrap;
 }
 
-/* Pillen (Figma: "switch", 48x24 m/ 4px padding — switch/size-tokens). */
+/*
+ * Pillen (Figma: "Toggle", 64×30 m/ 4px padding, toggle-tokens).
+ * Høyden (30) er ubundet i Figma — ingen size-token finnes for den.
+ */
 .track {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  width: var(--switch-size-track-width);
-  height: var(--switch-size-track-height);
+  width: var(--size-64);
+  height: 30px;
   padding: var(--spacing-4);
-  border: var(--border-width-100) solid var(--switch-color-track-border);
   border-radius: var(--radius-999);
-  background: var(--switch-color-track-off);
+  background: var(--toggle-background);
   transition: background 120ms ease;
 }
 
-/* Knotten (Figma: "thumb", 16px sirkel som glir til høyre når på). */
+/*
+ * Knotten (Figma: "btn", 40×22 avrundet rektangel som glir til høyre når på).
+ * Målene er ubundne i Figma — ingen size-tokens finnes for 40/22.
+ */
 .thumb {
-  width: var(--switch-size-thumb);
-  height: var(--switch-size-thumb);
+  width: 40px;
+  height: 22px;
   border-radius: var(--radius-999);
-  background: var(--switch-color-thumb);
+  background: var(--toggle-foreground);
   transition: transform 120ms ease, background 120ms ease;
 }
 
 .input:checked ~ .track {
-  border-color: var(--switch-color-track-on);
-  background: var(--switch-color-track-on);
+  background: var(--toggle-background-on);
 }
 
 .input:checked ~ .track .thumb {
-  /* Reiseavstand = track-bredde minus padding, border og thumb på begge sider */
-  transform: translateX(
-    calc(
-      var(--switch-size-track-width) - 2 * var(--spacing-4) -
-        2 * var(--border-width-100) - var(--switch-size-thumb)
-    )
-  );
+  background: var(--toggle-foreground-on);
+  /* Reiseavstand = track-bredde minus padding og thumb-bredde */
+  transform: translateX(calc(var(--size-64) - 2 * var(--spacing-4) - 40px));
 }
 
 /* Fokus-ring (Figma: "State=Focus") — samme som Checkbox/RadioButton. */
@@ -70,7 +70,7 @@
 .label {
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
 }
 
