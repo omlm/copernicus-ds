@@ -46,6 +46,15 @@ export type { SheetProps } from "./Sheet";
 export { RatingButton } from "./RatingButton";
 export type { RatingButtonProps } from "./RatingButton";
 
+export { Heading } from "./Heading";
+export type { HeadingProps, HeadingLevel } from "./Heading";
+
+export { Paragraph } from "./Paragraph";
+export type { ParagraphProps } from "./Paragraph";
+
+export { KeyValue } from "./KeyValue";
+export type { KeyValueProps } from "./KeyValue";
+
 export { Alert } from "./Alert";
 export type { AlertProps, AlertTone } from "./Alert";
 

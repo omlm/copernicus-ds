@@ -1,0 +1,17 @@
+/* Figma: "KeyValue" — nøkkel og verdi på hver sin side. */
+.keyValue {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+  /* Figma bruker Outfit Regular (400) — nærmeste token er normal (350). */
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--typography-size-20);
+  line-height: var(--typography-line-height);
+}
+
+.value {
+  text-align: right;
+}

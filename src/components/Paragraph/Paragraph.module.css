@@ -1,0 +1,9 @@
+/* Figma: "Paragraph" — Outfit Light 16/20 (typography/weight/normal). */
+.paragraph {
+  margin: 0;
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-default);
+  font-weight: var(--typography-weight-normal);
+  font-size: var(--typography-size-16);
+  line-height: var(--spacing-20);
+}

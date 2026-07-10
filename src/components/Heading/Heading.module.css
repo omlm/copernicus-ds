@@ -1,0 +1,9 @@
+/* Figma: "Heading" — Outfit SemiBold 24, line-height ~115 % (nærmeste token: 120 %). */
+.heading {
+  margin: 0;
+  color: var(--color-foreground-primary);
+  font-family: var(--typography-family-headers);
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-24);
+  line-height: var(--typography-line-height);
+}
