@@ -109,13 +109,18 @@
   height: 100%;
 }
 
+/* Figma: Large 48/32, Medium 32/24, Small 24/16 (boks/ikon) */
 .sizeLarge .icon {
-  width: var(--size-24);
-  height: var(--size-24);
+  width: var(--icon-size-large);
+  height: var(--icon-size-large);
 }
 
-.sizeMedium .icon,
+.sizeMedium .icon {
+  width: var(--icon-size-medium);
+  height: var(--icon-size-medium);
+}
+
 .sizeSmall .icon {
-  width: var(--size-16);
-  height: var(--size-16);
+  width: var(--icon-size-x-small);
+  height: var(--icon-size-x-small);
 }

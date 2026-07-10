@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { DynamicIcon, type IconName } from "lucide-react/dynamic";
 import styles from "./Icon.module.css";
 
-export type IconSize = "small" | "medium" | "large" | "huge";
+export type IconSize = "x-small" | "small" | "medium" | "large" | "huge";
 
 export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
   size?: IconSize;
@@ -19,6 +19,7 @@ export interface IconProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const sizeClass: Record<IconSize, string> = {
+  "x-small": styles.sizeXSmall,
   small: styles.sizeSmall,
   medium: styles.sizeMedium,
   large: styles.sizeLarge,

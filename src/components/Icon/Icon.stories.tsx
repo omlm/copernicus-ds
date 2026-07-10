@@ -8,7 +8,7 @@ const meta = {
   parameters: { layout: "centered" },
   tags: ["autodocs"],
   argTypes: {
-    size: { control: "inline-radio", options: ["small", "medium", "large", "huge"] },
+    size: { control: "inline-radio", options: ["x-small", "small", "medium", "large", "huge"] },
     // Velg fritt fra hele Lucide-katalogen (~1500 ikoner).
     name: { control: "select", options: iconNames },
   },
@@ -27,6 +27,7 @@ export const Default: Story = {};
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+      <Icon size="x-small" name="compass" />
       <Icon size="small" name="compass" />
       <Icon size="medium" name="compass" />
       <Icon size="large" name="compass" />

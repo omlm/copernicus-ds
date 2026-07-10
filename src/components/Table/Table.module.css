@@ -16,8 +16,8 @@
 /* Headerraden (Figma: "Header row" på neutral-weak). */
 .table thead th {
   background: var(--color-system-neutral-weak);
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--spacing-14);
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-14);
   text-align: left;
 }
 
@@ -29,7 +29,7 @@
 /* Cellene (Figma: "Cell", Outfit Light). */
 .table td {
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
 }
 

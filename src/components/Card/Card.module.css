@@ -4,17 +4,28 @@
   align-items: center;
   gap: var(--spacing-16);
   width: 100%;
-  padding: var(--spacing-32) var(--spacing-20) var(--spacing-20);
-  background: var(--color-background-primary);
+  padding: var(--spacing-24) var(--spacing-20) var(--spacing-20);
+  color: var(--card-color-foreground);
+  background: var(--card-color-background);
+  /* Figma-noden bruker 20px radius (card/radius/default-tokenet står i 24) */
   border-radius: var(--spacing-20);
+}
+
+/* Figma: Variation=Secondary/Tertiary */
+.variationSecondary {
+  background: var(--color-background-secondary);
+}
+
+.variationTertiary {
+  background: var(--color-background-transparent-0);
 }
 
 .title {
   margin: 0;
   font-family: var(--typography-family-headers);
   font-weight: var(--typography-weight-bold);
-  font-size: var(--spacing-24);
-  line-height: var(--size-24);
+  font-size: var(--typography-size-24);
+  line-height: var(--typography-line-height);
   color: var(--color-foreground-primary);
   text-align: center;
 }

@@ -11,17 +11,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-8);
+  gap: var(--spacing-10);
   width: 100%;
-  height: var(--size-48);
-  padding-inline: var(--spacing-16);
+  padding: var(--spacing-16);
   border: var(--border-width-100) solid var(--color-foreground-primary);
   border-radius: var(--radius-12);
   background: var(--color-background-canvas);
   color: var(--color-foreground-primary);
   font-family: inherit;
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   cursor: pointer;
 }
@@ -29,7 +28,7 @@
 .trigger:focus-visible {
   outline: none;
   border-color: var(--color-border-focus-ring);
-  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  background: var(--color-background-focus-ring-bg);
   box-shadow:
     0 0 0 3px var(--color-background-canvas),
     0 0 0 6px var(--color-border-focus-ring);
@@ -78,7 +77,7 @@
   color: var(--color-foreground-primary);
   font-family: inherit;
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   text-align: left;
   cursor: pointer;

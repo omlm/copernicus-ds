@@ -1,7 +1,7 @@
 .breadcrumbs {
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--spacing-14);
+  font-size: var(--typography-size-14);
   line-height: var(--spacing-20);
 }
 
@@ -46,5 +46,5 @@
 /* Gjeldende side (Figma: "Current", Outfit SemiBold). */
 .current {
   color: var(--color-foreground-primary);
-  font-weight: var(--typography-weight-bold);
+  font-weight: var(--typography-weight-semibold);
 }

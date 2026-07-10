@@ -1,7 +1,16 @@
 .divider {
   margin: 0;
   border: none;
+}
+
+/* Figma: "Type=Strong" — border-default (neutral-900 i light). */
+.strong {
   background: var(--color-border-default);
+}
+
+/* Figma: "Type=Subdued" — border-subdued (neutral-400 i light). */
+.subdued {
+  background: var(--color-border-subdued);
 }
 
 /* Figma: "Orientation=Horizontal" — 1px linje i full bredde. */

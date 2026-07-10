@@ -2,15 +2,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--button-gap);
   padding: 0 var(--button-padding);
   border: var(--border-width-100) solid transparent;
   border-radius: var(--radius-999);
   font-family: var(--typography-family-default);
-  font-weight: 600;
-  font-size: var(--size-16);
+  font-weight: var(--typography-weight-semibold);
   line-height: 1;
-  letter-spacing: 0.32px;
+  /* Figma: letter spacing 2 % av skriftstørrelsen */
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
@@ -29,25 +28,29 @@
   cursor: not-allowed;
 }
 
-/* Sizes — padding kommer fra button/padding/*-tokens; *-alt brukes på siden som har ikon */
+/* Sizes — padding/gap/etikett fra button/*-tokens; *-alt brukes på siden som har ikon */
 .sizeLarge {
   --button-padding: var(--button-padding-large);
   --button-padding-alt: var(--button-padding-large-alt);
   height: var(--button-size-large);
+  gap: var(--button-gap-large);
+  font-size: var(--typography-size-16);
 }
 
 .sizeMedium {
   --button-padding: var(--button-padding-medium);
   --button-padding-alt: var(--button-padding-medium-alt);
   height: var(--button-size-medium);
+  gap: var(--button-gap-medium);
+  font-size: var(--typography-size-14);
 }
 
 .sizeSmall {
   --button-padding: var(--button-padding-small);
   --button-padding-alt: var(--button-padding-small-alt);
   height: var(--button-size-small);
-  /* Figma: Size=Small bruker 14px etikett (typography/size/14). */
-  font-size: var(--spacing-14);
+  gap: var(--button-gap-small);
+  font-size: var(--typography-size-12);
 }
 
 .hasLeadingIcon {
@@ -60,21 +63,21 @@
 
 /* Primary */
 .primary {
-  background: var(--color-background-action);
-  color: var(--color-foreground-on-action);
+  background: var(--button-color-primary-background);
+  color: var(--button-color-primary-foreground);
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--color-background-action-hover);
+  background: var(--button-color-primary-background-hover);
 }
 
 .primary:active:not(:disabled) {
-  background: var(--color-background-action-active);
+  background: var(--button-color-primary-background-active);
 }
 
 .primary:disabled {
-  background: var(--color-background-action-disabled);
-  color: var(--color-foreground-on-action-disabled);
+  background: var(--button-color-primary-background-disabled);
+  color: var(--button-color-primary-foreground-disabled);
 }
 
 /* Secondary */
@@ -101,6 +104,15 @@
   background: var(--button-color-tertiary-background);
   color: var(--button-color-tertiary-foreground);
   border-color: var(--button-color-tertiary-foreground);
+}
+
+/* Figma: border-bredden på Tertiary følger størrelsen (200/150/100) */
+.tertiary.sizeLarge {
+  border-width: var(--border-width-200);
+}
+
+.tertiary.sizeMedium {
+  border-width: var(--border-width-150);
 }
 
 .tertiary:hover:not(:disabled) {
@@ -164,7 +176,7 @@
   border-color: var(--button-color-tertiary-foreground-disabled);
 }
 
-/* Trailing icon — størrelse per knappestørrelse */
+/* Trailing icon — størrelse per knappestørrelse (Figma: button/icon size/*) */
 .icon {
   display: inline-flex;
   align-items: center;
@@ -178,12 +190,16 @@
 }
 
 .sizeLarge .icon {
-  width: var(--size-24);
-  height: var(--size-24);
+  width: var(--button-icon-size-large);
+  height: var(--button-icon-size-large);
 }
 
-.sizeMedium .icon,
+.sizeMedium .icon {
+  width: var(--button-icon-size-medium);
+  height: var(--button-icon-size-medium);
+}
+
 .sizeSmall .icon {
-  width: var(--size-16);
-  height: var(--size-16);
+  width: var(--button-icon-size-small);
+  height: var(--button-icon-size-small);
 }

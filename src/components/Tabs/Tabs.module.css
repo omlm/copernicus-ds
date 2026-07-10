@@ -42,7 +42,7 @@
 /* Figma: "State=Focus". */
 .tab:focus-visible {
   outline: none;
-  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  background: var(--color-background-focus-ring-bg);
   box-shadow:
     0 0 0 3px var(--color-background-canvas),
     0 0 0 6px var(--color-border-focus-ring);

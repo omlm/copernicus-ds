@@ -10,6 +10,7 @@ const meta = {
   argTypes: {
     title: { control: "text" },
     description: { control: "text" },
+    variation: { control: "inline-radio", options: ["default", "secondary", "tertiary"] },
     buttonLabel: { control: "text" },
     // Velg ikon fritt fra hele Lucide-settet.
     iconName: { control: "select", options: iconNames },
@@ -30,6 +31,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** Figma: Variation=Secondary — bakgrunn fra background/secondary. */
+export const Secondary: Story = {
+  args: { variation: "secondary" },
+};
+
+/** Figma: Variation=Tertiary — gjennomsiktig bakgrunn. */
+export const Tertiary: Story = {
+  args: { variation: "tertiary" },
+};
 
 /** Velg et annet ikon fra Lucide-settet. */
 export const AnnetIkon: Story = {

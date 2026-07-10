@@ -21,7 +21,7 @@
   white-space: nowrap;
 }
 
-/* Pillen (Figma: "switch", 44x24 m/ 4px padding). */
+/* Pillen (Figma: "switch", 48x24 m/ 4px padding — switch/size-tokens). */
 .track {
   box-sizing: border-box;
   display: inline-flex;
@@ -51,7 +51,13 @@
 }
 
 .input:checked ~ .track .thumb {
-  transform: translateX(18px);
+  /* Reiseavstand = track-bredde minus padding, border og thumb på begge sider */
+  transform: translateX(
+    calc(
+      var(--switch-size-track-width) - 2 * var(--spacing-4) -
+        2 * var(--border-width-100) - var(--switch-size-thumb)
+    )
+  );
 }
 
 /* Fokus-ring (Figma: "State=Focus") — samme som Checkbox/RadioButton. */

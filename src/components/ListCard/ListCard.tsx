@@ -21,7 +21,8 @@ export interface ListCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "tit
 }
 
 /**
- * Listekort (Figma: "Card", Type=List card|Feature).
+ * Listekort (Figma: "List Item" på egen side, Type=List card|Feature —
+ * het «Card» fram til 2026-07-06).
  *
  * Et horisontalt kort med ledende ikon, tittel + beskrivelse og et
  * etterfølgende ikon. Bruker card/*-tokens (bakgrunn, radius). Det

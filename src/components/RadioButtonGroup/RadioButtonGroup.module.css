@@ -1,12 +1,13 @@
-/* Ytterste auto-layout (Figma: komponent-settet). */
+/* Ytterste auto-layout (Figma: komponent-settet, gap 8). */
 .group {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-16);
+  gap: var(--spacing-8);
 
+  /* Figma: "Group label" — Outfit Light 20/20. */
   .legend {
-    font-weight: var(--typography-weight-bold);
-    font-size: var(--spacing-20);
+    font-weight: var(--typography-weight-light);
+    font-size: var(--typography-size-20);
     line-height: var(--spacing-20);
   }
 
@@ -21,7 +22,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--spacing-24);
+    gap: var(--spacing-32);
     align-items: center;
   }
 }

@@ -10,7 +10,7 @@
   color: var(--badge-foreground);
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-bold);
-  font-size: var(--size-12);
+  font-size: var(--typography-size-12);
   line-height: var(--typography-line-height);
   white-space: nowrap;
 }

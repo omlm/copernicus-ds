@@ -23,7 +23,7 @@ export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";
 
 export { Card } from "./Card";
-export type { CardProps } from "./Card";
+export type { CardProps, CardVariation } from "./Card";
 
 export { PageTitle } from "./PageTitle";
 export type { PageTitleProps } from "./PageTitle";

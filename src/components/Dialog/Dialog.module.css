@@ -32,8 +32,8 @@
 .title {
   margin: 0;
   font-family: var(--typography-family-headers);
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--spacing-20);
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-20);
   line-height: var(--spacing-24);
 }
 
@@ -59,11 +59,11 @@
     0 0 0 6px var(--color-border-focus-ring);
 }
 
-/* Brødteksten (Figma: "Body", Outfit Light). */
+/* Brødteksten (Figma: "Slot", Outfit Light). */
 .body {
-  color: var(--color-foreground-secondary);
+  color: var(--color-foreground-primary);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
 }
 
@@ -71,9 +71,9 @@
   margin: 0;
 }
 
-/* Handlingene nederst til høyre (Figma: "Actions"). */
+/* Handlingene nederst til høyre (Figma: "Actions", gap 16). */
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--spacing-8);
+  gap: var(--spacing-16);
 }

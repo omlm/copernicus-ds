@@ -10,14 +10,20 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     orientation: { control: "radio", options: ["horizontal", "vertical"] },
+    type: { control: "radio", options: ["strong", "subdued"] },
   },
 } satisfies Meta<typeof Divider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Horisontal (Figma: "Orientation=Horizontal"). */
+/** Horisontal (Figma: "Orientation=Horizontal, Type=Strong"). */
 export const Horizontal: Story = {};
+
+/** Nedtonet (Figma: "Type=Subdued") — border-subdued i stedet for border-default. */
+export const Subdued: Story = {
+  args: { type: "subdued" },
+};
 
 /** Vertikal (Figma: "Orientation=Vertical") — i en horisontal rad. */
 export const Vertical: Story = {

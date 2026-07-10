@@ -2,15 +2,15 @@ import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 import { X } from "../Icon";
 import styles from "./Chip.module.css";
 
-export type ChipTone = "neutral" | "info" | "success" | "danger" | "warning";
+export type ChipTone = "neutral" | "info" | "success" | "danger" | "warning" | "accent";
 export type ChipEmphasis = "strong" | "weak";
 
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Fargefamilie (Figma: "Tone"). */
+  /** Fargefamilie (Figma: "Tone=Neutral|Info|Success|Danger|Warning|Accent"). */
   tone?: ChipTone;
-  /** Visuell tyngde (Figma: "Emphasis"). strong = fylt, weak = lys m/ border. */
+  /** Visuell tyngde (Figma: "Type=Strong|Weak"). strong = fylt, weak = lys m/ border. */
   emphasis?: ChipEmphasis;
-  /** Viser et X-ikon (Lucide) for å lukke chip-en (Figma: "Dismissable"). */
+  /** Viser et X-ikon (Lucide) for å lukke chip-en (Figma: "is Dismissable"). */
   dismissable?: boolean;
   /**
    * Kalles når X-ikonet trykkes. Når satt blir X-en en interaktiv knapp;
@@ -28,6 +28,7 @@ const toneClass: Record<ChipTone, string> = {
   success: styles.success,
   danger: styles.danger,
   warning: styles.warning,
+  accent: styles.accent,
 };
 
 const emphasisClass: Record<ChipEmphasis, string> = {
@@ -45,7 +46,13 @@ export function Chip({
   children,
   ...rest
 }: ChipProps) {
-  const classes = [styles.chip, toneClass[tone], emphasisClass[emphasis], className]
+  const classes = [
+    styles.chip,
+    toneClass[tone],
+    emphasisClass[emphasis],
+    dismissable ? styles.dismissable : undefined,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 

@@ -7,8 +7,8 @@
 /* Etikett (Figma: "Label", Outfit SemiBold). */
 .label {
   font-family: var(--typography-family-default);
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--size-16);
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   color: var(--color-foreground-primary);
 }
@@ -24,7 +24,7 @@
   color: var(--color-foreground-primary);
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   resize: vertical;
 }
@@ -37,7 +37,7 @@
 .field:focus-visible {
   outline: none;
   border-color: var(--color-border-focus-ring);
-  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  background: var(--color-background-focus-ring-bg);
   box-shadow:
     0 0 0 3px var(--color-background-canvas),
     0 0 0 6px var(--color-border-focus-ring);
@@ -45,13 +45,19 @@
 
 /* Error (Figma: "State=Error"). */
 .field[aria-invalid="true"] {
-  border-color: var(--color-system-danger-strong);
+  border-color: var(--color-system-danger-strong-border);
 }
 
+/* Deaktivert (Figma: "State=Disabled") — egne disabled-tokens, ikke opacity. */
 .field:disabled {
-  opacity: 0.5;
+  border-color: var(--color-border-disabled);
+  color: var(--color-foreground-disabled);
   cursor: not-allowed;
   resize: none;
+}
+
+.field:disabled::placeholder {
+  color: var(--color-foreground-disabled);
 }
 
 /* Hjelpetekst (Figma: "Textarea description"). */
@@ -60,7 +66,7 @@
   margin: 0;
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
 }
 

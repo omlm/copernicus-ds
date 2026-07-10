@@ -2,7 +2,7 @@
   color: var(--color-foreground-action);
   font-family: var(--typography-family-default);
   font-weight: var(--typography-weight-normal);
-  font-size: var(--size-16);
+  font-size: var(--typography-size-16);
   line-height: var(--spacing-20);
   text-decoration: underline;
   text-underline-offset: var(--spacing-4);
@@ -17,7 +17,7 @@
 /* Figma: "State=Focus" — samme ring som skjemafeltene. */
 .link:focus-visible {
   outline: none;
-  background: color-mix(in srgb, var(--color-border-focus-ring) 5%, transparent);
+  background: var(--color-background-focus-ring-bg);
   box-shadow:
     0 0 0 3px var(--color-background-canvas),
     0 0 0 6px var(--color-border-focus-ring);
