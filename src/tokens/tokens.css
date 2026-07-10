@@ -30,6 +30,7 @@
   --color-pink-900: #55001f;
 
   /* ---------- color/sand ---------- */
+  --color-sand-50: #fcf8f8;
   --color-sand-100: #f9f2f1;
   --color-sand-200: #f3e6e3;
   --color-sand-300: #ebd5d2;
@@ -47,10 +48,10 @@
   --color-neutral-300: #afb0b7;
   --color-neutral-400: #95979f;
   --color-neutral-500: #7a7c87;
-  --color-neutral-600: #62636c;
-  --color-neutral-700: #494a50;
-  --color-neutral-800: #313136;
-  --color-neutral-900: #000000;
+  --color-neutral-600: #575960;
+  --color-neutral-700: #3a3b40;
+  --color-neutral-800: #27272b;
+  --color-neutral-900: #131415;
 
   /* ---------- color/red ---------- */
   --color-red-100: #f2d9d9;
@@ -104,11 +105,27 @@
   --color-alpha-white-01: rgba(255, 255, 255, 0.01);
   --color-alpha-white-05: rgba(255, 255, 255, 0.05);
   --color-alpha-white-10: rgba(255, 255, 255, 0.1);
+  --color-alpha-white-50: rgba(255, 255, 255, 0.5);
+  --color-alpha-white-90: rgba(255, 255, 255, 0.9);
   --color-alpha-black-00: rgba(0, 0, 0, 0);
   --color-alpha-black-01: rgba(0, 0, 0, 0.01);
   --color-alpha-black-05: rgba(0, 0, 0, 0.05);
   --color-alpha-black-10: rgba(0, 0, 0, 0.1);
   --color-alpha-black-20: rgba(0, 0, 0, 0.2);
+  --color-alpha-black-50: rgba(0, 0, 0, 0.5);
+  --color-alpha-black-90: rgba(0, 0, 0, 0.9);
+  --color-alpha-sand-10: rgba(195, 160, 154, 0.1);
+  --color-alpha-sand-20: rgba(195, 160, 154, 0.2);
+  --color-alpha-sand-30: rgba(195, 160, 154, 0.3);
+  --color-alpha-sand-40: rgba(195, 160, 154, 0.4);
+  --color-alpha-sand-50: rgba(195, 160, 154, 0.5);
+  --color-alpha-sand-90: rgba(195, 160, 154, 0.9);
+  --color-alpha-pink-10: rgba(255, 26, 110, 0.1);
+  --color-alpha-pink-20: rgba(255, 26, 110, 0.2);
+  --color-alpha-pink-30: rgba(255, 26, 110, 0.3);
+  --color-alpha-pink-40: rgba(255, 26, 110, 0.4);
+  --color-alpha-pink-50: rgba(255, 26, 110, 0.5);
+  --color-alpha-pink-90: rgba(255, 26, 110, 0.9);
   --color-alpha-purple-05: rgba(138, 56, 245, 0.05);
 
   /* ---------- spacing ---------- */
@@ -147,7 +164,7 @@
   --border-width-150: 1.5px;
   --border-width-175: 1.75px;
   --border-width-200: 2px;
-  --border-width-300: 3px;
+  --border-width-400: 4px;
 
   /* ---------- radius (Figma-samling heter "raduis" — skrivefeil) ---------- */
   --radius-0: 0px;
@@ -185,16 +202,20 @@
   /* ================================================================= */
   --color-background-canvas: var(--color-neutral-50);
   --color-background-primary: var(--color-sand-200);
-  --color-background-secondary: var(--color-neutral-500);
+  --color-background-secondary: var(--color-sand-400);
+  --color-background-on-primary: var(--color-sand-400);
+  --color-background-primary-disabled: var(--color-alpha-black-10);
   --color-background-action: var(--color-pink-500);
   --color-background-action-hover: var(--color-pink-600);
-  --color-background-action-active: var(--color-pink-600);
+  --color-background-action-active: var(--color-pink-700);
   --color-background-action-disabled: var(--color-pink-200);
   --color-background-accent-weak: var(--color-pink-200);
+  --color-background-overlay: var(--color-alpha-white-50);
   --color-foreground-primary: var(--color-neutral-900);
   --color-foreground-secondary: var(--color-neutral-700);
-  --color-foreground-disabled: var(--color-neutral-500);
+  --color-foreground-disabled: var(--color-neutral-400);
   --color-border-disabled: var(--color-neutral-500);
+  --color-border-subdued: var(--color-neutral-400);
   --color-foreground-action: var(--color-pink-500);
   --color-foreground-on-action: var(--color-neutral-50);
   --color-foreground-on-action-disabled: var(--color-pink-300);
@@ -208,7 +229,7 @@
   --color-system-neutral-weak-border: var(--color-neutral-200);
   --color-system-danger-strong: var(--color-red-500);
   --color-system-danger-strong-hover: var(--color-red-600);
-  --color-system-danger-strong-border: var(--color-border-transparent);
+  --color-system-danger-strong-border: var(--color-red-500);
   --color-system-danger-on-strong: var(--color-neutral-50);
   --color-system-danger-weak: var(--color-red-200);
   --color-system-danger-weak-hover: var(--color-red-300);
@@ -220,9 +241,10 @@
   --color-border-transparent: transparent;
   --color-background-focus-ring-bg: var(--color-alpha-purple-05);
   --color-background-transparent: var(--color-alpha-white-01);
+  --color-background-transparent-0: var(--color-alpha-white-00);
   --color-background-overlay-hover: var(--color-alpha-black-10);
   --color-background-overlay-active: var(--color-alpha-black-20);
-  --color-background-neutral-action: var(--color-neutral-100);
+  --color-background-neutral-action: var(--color-sand-200);
   --color-background-neutral-action-hover: var(--color-neutral-200);
   --color-background-neutral-action-active: var(--color-neutral-300);
   --color-background-neutral-action-disabled: var(--color-neutral-100);
@@ -261,13 +283,12 @@
   --button-color-primary-foreground: var(--color-foreground-on-action);
   --button-color-primary-foreground-disabled: var(--color-foreground-on-action-disabled);
   --button-color-primary-background: var(--color-background-action);
-  --button-color-primary-background-hover: var(--color-background-action-active);
+  --button-color-primary-background-hover: var(--color-background-action-hover);
   --button-color-primary-background-active: var(--color-background-action-active);
   --button-color-primary-background-disabled: var(--color-background-action-disabled);
   --button-size-small: var(--size-24);
   --button-size-medium: var(--size-32);
   --button-size-large: var(--size-48);
-  --button-gap: var(--spacing-4);
   --button-gap-small: var(--spacing-4);
   --button-gap-medium: var(--spacing-8);
   --button-gap-large: var(--spacing-10);
@@ -281,14 +302,15 @@
   --button-padding-medium-alt: var(--size-12);
   --button-padding-large-alt: var(--size-16);
   --button-color-primary-border: var(--color-border-transparent);
-  --button-color-secondary-foreground: var(--color-neutral-900);
-  --button-color-secondary-foreground-disabled: var(--color-neutral-300);
-  --button-color-secondary-background: var(--color-neutral-100);
-  --button-color-secondary-background-hover: var(--color-neutral-200);
-  --button-color-secondary-background-active: var(--color-neutral-300);
-  --button-color-secondary-background-disabled: var(--color-neutral-100);
-  --button-color-secondary-border: var(--color-neutral-900);
-  --button-color-secondary-border-disabled: var(--color-neutral-300);
+  --button-color-secondary-foreground: var(--color-foreground-on-neutral-action);
+  --button-color-secondary-foreground-disabled: var(--color-foreground-on-neutral-action-disabled);
+  /* Figma: light -> alpha/sand/30, dark -> background/neutral-action (overstyres i dark) */
+  --button-color-secondary-background: var(--color-alpha-sand-30);
+  --button-color-secondary-background-hover: var(--color-background-neutral-action-hover);
+  --button-color-secondary-background-active: var(--color-background-neutral-action-active);
+  --button-color-secondary-background-disabled: var(--color-background-neutral-action-disabled);
+  --button-color-secondary-border: var(--color-border-neutral-action);
+  --button-color-secondary-border-disabled: var(--color-border-neutral-action-disabled);
   /* Figma: components/button/color/tertiary (Button "Tertiary" / IconButton "Ghost") */
   --button-color-tertiary-foreground: var(--color-foreground-primary);
   --button-color-tertiary-foreground-disabled: var(--color-foreground-disabled);
@@ -297,6 +319,7 @@
   --button-color-tertiary-background-active: var(--color-background-overlay-active);
   --card-color-foreground: var(--color-foreground-primary);
   --card-color-background: var(--color-background-primary);
+  --card-color-background-disabled: var(--color-background-primary-disabled);
   --card-radius-default: var(--radius-24);
   --spinner-size-x-small: var(--size-12);
   --spinner-size-small: var(--size-16);
@@ -307,12 +330,36 @@
   --spinner-color-track: var(--color-system-neutral-weak);
   --spinner-animation-duration: var(--duration-1000);
   --switch-color-track-on: var(--color-background-action);
-  --switch-color-track-off: var(--color-background-secondary);
+  /* Figma: light -> sand/500, dark -> neutral/300 (overstyres i dark) */
+  --switch-color-track-off: var(--color-sand-500);
   --switch-color-track-border: var(--color-border-default);
   --switch-color-thumb: var(--color-background-primary);
-  --switch-size-track-width: 44px;
+  --switch-size-track-width: var(--size-48);
   --switch-size-track-height: var(--size-24);
   --switch-size-thumb: var(--size-16);
+  /* Figma: components/tab-bar (Tab Bar iOS) */
+  --tab-bar-color-border: var(--color-sand-400);
+  --tab-bar-color-background: var(--color-alpha-black-50);
+  --tab-bar-color-background-active: var(--color-sand-200);
+  --tab-bar-color-foreground: var(--color-foreground-primary);
+  --tab-bar-color-foreground-active: var(--color-foreground-action);
+  /* Figma: components/step-incicator (skrivefeil i Figma) -> normalisert til step-indicator */
+  --step-indicator-active: var(--color-foreground-action);
+  --step-indicator-waiting: var(--color-background-primary);
+  /* Figma: components/progress-bar */
+  --progress-bar-active: var(--color-foreground-action);
+  --progress-bar-passive: var(--color-alpha-sand-30);
+  /* Figma: components/toggle (Toggle/Toggle group) */
+  --toggle-foreground: var(--color-foreground-on-action);
+  --toggle-foreground-on: var(--color-foreground-on-action);
+  --toggle-background: var(--color-neutral-300);
+  --toggle-background-on: var(--color-background-action);
+  /* Figma: icon/size */
+  --icon-size-x-small: var(--size-16);
+  --icon-size-small: var(--size-20);
+  --icon-size-medium: var(--size-24);
+  --icon-size-large: var(--size-32);
+  --icon-size-huge: var(--size-64);
 }
 
 /* ===================================================================== */
@@ -325,14 +372,17 @@
   --color-background-canvas: var(--color-neutral-900);
   --color-background-primary: var(--color-neutral-800);
   --color-background-secondary: var(--color-neutral-700);
+  --color-background-on-primary: var(--color-neutral-700);
+  --color-background-primary-disabled: var(--color-alpha-white-10);
+  --color-background-overlay: var(--color-alpha-black-20);
   --color-background-action-hover: var(--color-pink-400);
-  --color-background-action-active: var(--color-pink-400);
+  --color-background-action-active: var(--color-pink-500);
   --color-background-action-disabled: var(--color-neutral-800);
   --color-background-accent-weak: var(--color-pink-900);
   --color-foreground-primary: var(--color-neutral-50);
   --color-foreground-secondary: var(--color-neutral-300);
-  --color-foreground-action: var(--color-pink-400);
   --color-foreground-on-action-disabled: var(--color-neutral-500);
+  --color-border-subdued: var(--color-neutral-600);
   --color-system-neutral-strong: var(--color-neutral-100);
   --color-system-neutral-strong-hover: var(--color-neutral-50);
   --color-system-neutral-on-strong: var(--color-neutral-700);
@@ -359,13 +409,23 @@
   --color-system-warning-weak-hover: var(--color-orange-700);
   --color-system-warning-on-weak: var(--color-orange-300);
   --color-system-warning-weak-border: var(--color-orange-700);
+  --color-background-neutral-action: var(--color-neutral-400);
   --color-background-neutral-action-hover: var(--color-neutral-900);
   --color-background-neutral-action-active: var(--color-neutral-900);
   --color-background-neutral-action-disabled: var(--color-alpha-black-01);
-  --color-foreground-on-neutral-action: var(--color-neutral-100);
+  --color-foreground-on-neutral-action: var(--color-neutral-900);
   --color-foreground-on-neutral-action-disabled: var(--color-neutral-700);
   --color-border-neutral-action: var(--color-neutral-100);
   --color-border-neutral-action-disabled: var(--color-neutral-700);
+
+  /* Komponent-tokens med egne dark-bindinger i Figma */
+  --button-color-secondary-background: var(--color-background-neutral-action);
+  --button-color-tertiary-background: var(--color-background-transparent-0);
+  --switch-color-track-off: var(--color-neutral-300);
+  --tab-bar-color-border: var(--color-alpha-white-10);
+  --tab-bar-color-background: var(--color-alpha-white-50);
+  --tab-bar-color-background-active: var(--color-alpha-white-10);
+  --progress-bar-passive: var(--color-alpha-white-10);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -375,14 +435,17 @@
     --color-background-canvas: var(--color-neutral-900);
     --color-background-primary: var(--color-neutral-800);
     --color-background-secondary: var(--color-neutral-700);
+    --color-background-on-primary: var(--color-neutral-700);
+    --color-background-primary-disabled: var(--color-alpha-white-10);
+    --color-background-overlay: var(--color-alpha-black-20);
     --color-background-action-hover: var(--color-pink-400);
-    --color-background-action-active: var(--color-pink-400);
+    --color-background-action-active: var(--color-pink-500);
     --color-background-action-disabled: var(--color-neutral-800);
     --color-background-accent-weak: var(--color-pink-900);
     --color-foreground-primary: var(--color-neutral-50);
     --color-foreground-secondary: var(--color-neutral-300);
-    --color-foreground-action: var(--color-pink-400);
     --color-foreground-on-action-disabled: var(--color-neutral-500);
+    --color-border-subdued: var(--color-neutral-600);
     --color-system-neutral-strong: var(--color-neutral-100);
     --color-system-neutral-strong-hover: var(--color-neutral-50);
     --color-system-neutral-on-strong: var(--color-neutral-700);
@@ -409,12 +472,22 @@
     --color-system-warning-weak-hover: var(--color-orange-700);
     --color-system-warning-on-weak: var(--color-orange-300);
     --color-system-warning-weak-border: var(--color-orange-700);
+    --color-background-neutral-action: var(--color-neutral-400);
     --color-background-neutral-action-hover: var(--color-neutral-900);
     --color-background-neutral-action-active: var(--color-neutral-900);
     --color-background-neutral-action-disabled: var(--color-alpha-black-01);
-    --color-foreground-on-neutral-action: var(--color-neutral-100);
+    --color-foreground-on-neutral-action: var(--color-neutral-900);
     --color-foreground-on-neutral-action-disabled: var(--color-neutral-700);
     --color-border-neutral-action: var(--color-neutral-100);
     --color-border-neutral-action-disabled: var(--color-neutral-700);
+
+    /* Komponent-tokens med egne dark-bindinger i Figma */
+    --button-color-secondary-background: var(--color-background-neutral-action);
+    --button-color-tertiary-background: var(--color-background-transparent-0);
+    --switch-color-track-off: var(--color-neutral-300);
+    --tab-bar-color-border: var(--color-alpha-white-10);
+    --tab-bar-color-background: var(--color-alpha-white-50);
+    --tab-bar-color-background-active: var(--color-alpha-white-10);
+    --progress-bar-passive: var(--color-alpha-white-10);
   }
 }
